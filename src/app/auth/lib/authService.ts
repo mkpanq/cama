@@ -1,5 +1,5 @@
 import "server-only";
-import { createServerSupabaseClient } from "../lib/supabase/serverClient";
+import { createServerSupabaseClient } from "../../../lib/supabase/serverClient";
 
 export async function signInWithPassword(email: string, password: string) {
   const supabase = await createServerSupabaseClient();
