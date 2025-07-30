@@ -1,3 +1,5 @@
+import { login } from "./actions";
+
 export default function LoginPage() {
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -13,7 +15,7 @@ export default function LoginPage() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form action="#" method="POST" className="space-y-6">
+        <form action={login} className="space-y-6">
           <div>
             <label
               htmlFor="email"

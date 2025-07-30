@@ -1,5 +1,6 @@
 const APP_CONFIG = {
-  AUTH_PATH: process.env.AUTH_PATH || "/auth",
+  AUTH_PATH: "/auth",
+  HOME_PATH: "/",
 };
 
 export default APP_CONFIG;
