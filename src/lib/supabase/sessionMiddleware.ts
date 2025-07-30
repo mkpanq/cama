@@ -34,6 +34,13 @@ export async function updateSessionMiddleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  // TODO: Should this part be in separated middleware ?
+  if (user && request.nextUrl.pathname.startsWith(APP_CONFIG.AUTH_PATH)) {
+    const url = request.nextUrl.clone();
+    url.pathname = APP_CONFIG.HOME_PATH;
+    return NextResponse.redirect(url);
+  }
+
   if (!user && !request.nextUrl.pathname.startsWith(APP_CONFIG.AUTH_PATH)) {
     const url = request.nextUrl.clone();
     url.pathname = APP_CONFIG.AUTH_PATH;
