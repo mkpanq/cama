@@ -11,3 +11,11 @@ export async function signInWithPassword(email: string, password: string) {
 
   if (error) throw new Error("Failed to sign in", error);
 }
+
+export async function signOut() {
+  const supabase = await createServerSupabaseClient();
+
+  const { error } = await supabase.auth.signOut({ scope: "local" });
+
+  if (error) throw new Error("Failed to sign out", error);
+}

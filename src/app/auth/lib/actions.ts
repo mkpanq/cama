@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { signInWithPassword } from "./authService";
+import { signInWithPassword, signOut } from "./authService";
 import APP_CONFIG from "@/appConfig";
 
 export async function login(formData: FormData) {
@@ -19,4 +19,17 @@ export async function login(formData: FormData) {
 
   revalidatePath(APP_CONFIG.HOME_PATH);
   redirect(APP_CONFIG.HOME_PATH);
+}
+
+export async function logoutUser() {
+  try {
+    await signOut();
+  } catch (error) {
+    console.error("Failed to sign out", error);
+    revalidatePath(APP_CONFIG.HOME_PATH);
+    redirect(APP_CONFIG.HOME_PATH);
+  }
+
+  revalidatePath(APP_CONFIG.AUTH_PATH);
+  redirect(APP_CONFIG.AUTH_PATH);
 }

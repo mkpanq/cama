@@ -11,6 +11,7 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import type { Metadata } from "next";
 import "../globals.css";
 import Link from "next/link";
+import LogoutButton from "../auth/components/logoutButton";
 
 const user = {
   name: "Tom Cook",
@@ -69,14 +70,7 @@ export default function DashboardLayout({
             </div>
             <div className="hidden md:block">
               <div className="ml-4 flex items-center md:ml-6">
-                <button
-                  type="button"
-                  className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
-                >
-                  <span className="absolute -inset-1.5" />
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon aria-hidden="true" className="size-6" />
-                </button>
+                <LogoutButton />
 
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
@@ -155,14 +149,7 @@ export default function DashboardLayout({
                   {user.email}
                 </div>
               </div>
-              <button
-                type="button"
-                className="relative ml-auto shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
-              >
-                <span className="absolute -inset-1.5" />
-                <span className="sr-only">View notifications</span>
-                <BellIcon aria-hidden="true" className="size-6" />
-              </button>
+              <LogoutButton />
             </div>
             <div className="mt-3 space-y-1 px-2">
               {userNavigation.map((item) => (
