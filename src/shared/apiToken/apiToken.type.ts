@@ -5,4 +5,5 @@ export type ApiToken = {
   refresh_expires: number;
 };
 
-export type RefreshedToken = Pick<ApiToken, "access" | "access_expires">;
+export type AccessToken = Pick<ApiToken, "access" | "access_expires">;
+export type RefreshToken = Pick<ApiToken, "refresh" | "refresh_expires">;
