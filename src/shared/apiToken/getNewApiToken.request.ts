@@ -1,5 +1,11 @@
 import type { ErrorResponse } from "../errorResponse.type";
-import type { ReceivedApiToken } from "./apiToken.type";
+
+type ReceivedApiToken = {
+  access: string;
+  access_expires: number;
+  refresh: string;
+  refresh_expires: number;
+};
 
 const getNewApiToken = async (): Promise<ReceivedApiToken> => {
   const secretId = process.env.GOCARDLESS_SECRET_ID;
@@ -19,7 +25,7 @@ const getNewApiToken = async (): Promise<ReceivedApiToken> => {
 
   if (!response.ok) {
     const error: ErrorResponse = await response.json();
-    throw new Error(`${error.summary} - ${error.detail}`);
+    throw new Error(JSON.stringify(error));
   }
 
   const data = await response.json();

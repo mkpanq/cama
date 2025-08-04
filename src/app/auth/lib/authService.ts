@@ -5,8 +5,8 @@ import { getNewToken } from "@/shared/apiToken/apiToken";
 import APP_CONFIG from "@/appConfig";
 
 export async function signInWithPassword(email: string, password: string) {
-  const supabase = await createServerSupabaseClient();
   const cookieStore = await cookies();
+  const supabase = await createServerSupabaseClient();
 
   const { error } = await supabase.auth.signInWithPassword({
     email,

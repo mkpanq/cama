@@ -6,6 +6,8 @@ const ROUTE_CONFIG = {
 const API_CONFIG = {
   API_ACCESS_TOKEN_COOKIE_NAME: "api_access_token",
   API_REFRESH_TOKEN_COOKIE_NAME: "api_refresh_token",
+
+  API_URL_NEW_TOKEN: "/token/new/",
 };
 
 const APP_CONFIG = {

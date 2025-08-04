@@ -1,10 +1,3 @@
-export type ReceivedApiToken = {
-  access: string;
-  access_expires: number;
-  refresh: string;
-  refresh_expires: number;
-};
-
 export type ApiToken = {
   access: AccessToken;
   refresh: RefreshToken;

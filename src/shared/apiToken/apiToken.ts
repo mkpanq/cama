@@ -5,7 +5,7 @@ import refreshApiToken from "./refreshApiToken.request";
 export const getNewToken = async (): Promise<ApiToken | undefined> => {
   try {
     const data = await getNewApiToken();
-    console.log(data);
+
     return {
       access: {
         access: data.access,
