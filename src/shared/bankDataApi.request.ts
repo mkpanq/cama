@@ -1,4 +1,9 @@
-import type { ErrorResponse } from "./errorResponse.type";
+type ErrorResponse = {
+  detail: string;
+  summary: string;
+  status_code: number;
+  type?: string;
+};
 
 const bankDataApiRequest = async <T>({
   path,
@@ -18,8 +23,8 @@ const bankDataApiRequest = async <T>({
       accept: "application/json",
       "Content-Type": "application/json",
       ...(auth ? { authorization: `Bearer ${auth}` } : {}),
-      body: JSON.stringify(body),
     },
+    body: JSON.stringify(body),
   });
 
   if (!response.ok) {
@@ -31,3 +36,5 @@ const bankDataApiRequest = async <T>({
 
   return data;
 };
+
+export default bankDataApiRequest;

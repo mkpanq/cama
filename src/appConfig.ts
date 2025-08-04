@@ -8,6 +8,7 @@ const API_CONFIG = {
   API_REFRESH_TOKEN_COOKIE_NAME: "api_refresh_token",
 
   API_URL_NEW_TOKEN: "/token/new/",
+  API_URL_REFRESH_TOKEN: "/token/refresh/",
 };
 
 const APP_CONFIG = {

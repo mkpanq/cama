@@ -1,10 +1,22 @@
+import APP_CONFIG from "@/appConfig";
 import type { AccessToken, ApiToken } from "./apiToken.type";
-import getNewApiToken from "./getNewApiToken.request";
-import refreshApiToken from "./refreshApiToken.request";
+import bankDataApiRequest from "../bankDataApi.request";
 
 export const getNewToken = async (): Promise<ApiToken | undefined> => {
+  const secretId = process.env.GOCARDLESS_SECRET_ID;
+  const secretKey = process.env.GOCARDLESS_SECRET_KEY;
+
   try {
-    const data = await getNewApiToken();
+    const data = await bankDataApiRequest<{
+      access: string;
+      access_expires: number;
+      refresh: string;
+      refresh_expires: number;
+    }>({
+      path: APP_CONFIG.API_CONFIG.API_URL_NEW_TOKEN,
+      method: "POST",
+      body: { secret_id: secretId, secret_key: secretKey },
+    });
 
     return {
       access: {
@@ -22,11 +34,15 @@ export const getNewToken = async (): Promise<ApiToken | undefined> => {
   }
 };
 
-export const refreshToken = async (
+export const getRefreshedToken = async (
   refreshToken: string,
 ): Promise<AccessToken | undefined> => {
   try {
-    const data = await refreshApiToken(refreshToken);
+    const data = await bankDataApiRequest<AccessToken>({
+      path: APP_CONFIG.API_CONFIG.API_REFRESH_TOKEN_COOKIE_NAME,
+      method: "POST",
+      body: { refresh: refreshToken },
+    });
 
     return {
       access: data.access,

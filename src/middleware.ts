@@ -5,8 +5,7 @@ import type {
   AccessToken,
   RefreshToken,
 } from "./shared/apiToken/apiToken.type";
-import { isTokenValid } from "./shared/apiToken/apiToken";
-import refreshApiToken from "./shared/apiToken/refreshApiToken.request";
+import { getRefreshedToken, isTokenValid } from "./shared/apiToken/apiToken";
 
 // TODO: Right now I've decided to go with one middleware file due to need of creating separate parser for multiple middleware files
 // Will do it later, when more middlewares will be needed
@@ -79,7 +78,10 @@ export async function middleware(request: NextRequest) {
     !isTokenValid(accessingApiToken)
   ) {
     try {
-      const newAccessToken = await refreshApiToken(refreshingApiToken.refresh);
+      const newAccessToken = await getRefreshedToken(
+        refreshingApiToken.refresh,
+      );
+      if (!newAccessToken) throw new Error("Failed to refresh access token");
       outputResponse.cookies.set(
         APP_CONFIG.API_CONFIG.API_ACCESS_TOKEN_COOKIE_NAME,
         JSON.stringify(newAccessToken),
