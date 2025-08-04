@@ -9,7 +9,7 @@ const bankApiRequest = async <T>({
   needAuthorization?: boolean;
 }): Promise<T> => {
   const fullUrl = `${process.env.GOCARDLESS_API_URL}${path}`;
-  // TODO: Retrieve token from cookies if needAuthorization === truew
+
   try {
     const response = await fetch(fullUrl, {
       method,

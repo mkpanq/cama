@@ -14,11 +14,11 @@ export async function login(formData: FormData) {
     await signInWithPassword(email, password);
   } catch (error) {
     console.error("Failed to sign in", error);
-    redirect(APP_CONFIG.AUTH_PATH);
+    redirect(APP_CONFIG.ROUTE_CONFIG.AUTH_PATH);
   }
 
-  revalidatePath(APP_CONFIG.HOME_PATH);
-  redirect(APP_CONFIG.HOME_PATH);
+  revalidatePath(APP_CONFIG.ROUTE_CONFIG.HOME_PATH);
+  redirect(APP_CONFIG.ROUTE_CONFIG.HOME_PATH);
 }
 
 export async function logoutUser() {
@@ -26,10 +26,10 @@ export async function logoutUser() {
     await signOut();
   } catch (error) {
     console.error("Failed to sign out", error);
-    revalidatePath(APP_CONFIG.HOME_PATH);
-    redirect(APP_CONFIG.HOME_PATH);
+    revalidatePath(APP_CONFIG.ROUTE_CONFIG.HOME_PATH);
+    redirect(APP_CONFIG.ROUTE_CONFIG.HOME_PATH);
   }
 
-  revalidatePath(APP_CONFIG.AUTH_PATH);
-  redirect(APP_CONFIG.AUTH_PATH);
+  revalidatePath(APP_CONFIG.ROUTE_CONFIG.AUTH_PATH);
+  redirect(APP_CONFIG.ROUTE_CONFIG.AUTH_PATH);
 }

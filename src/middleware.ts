@@ -1,14 +1,12 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import APP_CONFIG from "./appConfig";
-import getNewApiToken from "./shared/apiToken/getNewApiToken.request";
 import type {
   AccessToken,
-  ApiToken,
   RefreshToken,
 } from "./shared/apiToken/apiToken.type";
-import refreshApiToken from "./shared/apiToken/refreshApiToken.request";
 import { isTokenValid } from "./shared/apiToken/apiToken";
+import refreshApiToken from "./shared/apiToken/refreshApiToken.request";
 
 // TODO: Right now I've decided to go with one middleware file due to need of creating separate parser for multiple middleware files
 // Will do it later, when more middlewares will be needed
@@ -44,61 +42,46 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Last - do not let user to access auth if it's logged in
-  if (!user && !request.nextUrl.pathname.startsWith(APP_CONFIG.AUTH_PATH)) {
+  if (
+    !user &&
+    !request.nextUrl.pathname.startsWith(APP_CONFIG.ROUTE_CONFIG.AUTH_PATH)
+  ) {
     const url = request.nextUrl.clone();
-    url.pathname = APP_CONFIG.AUTH_PATH;
+    url.pathname = APP_CONFIG.ROUTE_CONFIG.AUTH_PATH;
     return NextResponse.redirect(url);
   } else if (
     user &&
-    request.nextUrl.pathname.startsWith(APP_CONFIG.AUTH_PATH)
+    request.nextUrl.pathname.startsWith(APP_CONFIG.ROUTE_CONFIG.AUTH_PATH)
   ) {
     const url = request.nextUrl.clone();
-    url.pathname = APP_CONFIG.HOME_PATH;
+    url.pathname = APP_CONFIG.ROUTE_CONFIG.HOME_PATH;
     return NextResponse.redirect(url);
   }
 
-  const cookieValue = request.cookies.get(
-    APP_CONFIG.API_ACCESS_TOKEN_COOKIE_NAME,
+  const accessCookieValue = request.cookies.get(
+    APP_CONFIG.API_CONFIG.API_ACCESS_TOKEN_COOKIE_NAME,
+  );
+  const refreshCookieValue = request.cookies.get(
+    APP_CONFIG.API_CONFIG.API_REFRESH_TOKEN_COOKIE_NAME,
   );
 
-  if (!cookieValue) {
+  const accessingApiToken = accessCookieValue
+    ? (JSON.parse(accessCookieValue.value) as AccessToken)
+    : undefined;
+
+  const refreshingApiToken = refreshCookieValue
+    ? (JSON.parse(refreshCookieValue.value) as RefreshToken)
+    : undefined;
+
+  if (
+    accessingApiToken &&
+    refreshingApiToken &&
+    !isTokenValid(accessingApiToken)
+  ) {
     try {
-      const token = await getNewApiToken();
-
-      const accessToken: AccessToken = {
-        access: token.access,
-        access_expires: token.access_expires,
-      };
-      const refreshToken: RefreshToken = {
-        refresh: token.refresh,
-        refresh_expires: token.refresh_expires,
-      };
-
+      const newAccessToken = await refreshApiToken(refreshingApiToken.refresh);
       outputResponse.cookies.set(
-        APP_CONFIG.API_ACCESS_TOKEN_COOKIE_NAME,
-        JSON.stringify(accessToken),
-      );
-      outputResponse.cookies.set(
-        APP_CONFIG.API_REFRESH_TOKEN_COOKIE_NAME,
-        JSON.stringify(refreshToken),
-      );
-    } catch (error) {
-      console.error(error);
-
-      return outputResponse;
-    }
-
-    return outputResponse;
-  }
-
-  const currentApiToken = JSON.parse(cookieValue.value) as ApiToken;
-
-  if (!isTokenValid(currentApiToken)) {
-    try {
-      const newAccessToken = await refreshApiToken(currentApiToken.refresh);
-      outputResponse.cookies.set(
-        APP_CONFIG.API_ACCESS_TOKEN_COOKIE_NAME,
+        APP_CONFIG.API_CONFIG.API_ACCESS_TOKEN_COOKIE_NAME,
         JSON.stringify(newAccessToken),
       );
     } catch (error) {

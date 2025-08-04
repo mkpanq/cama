@@ -16,10 +16,12 @@ const refreshApiToken = async (refreshToken: string): Promise<AccessToken> => {
 
   if (!response.ok) {
     const error: ErrorResponse = await response.json();
-    throw new Error(`${error.summary} - ${error.detail}`);
+    throw new Error(
+      `${error.status_code} - ${error.summary} - ${error.detail}`,
+    );
   }
 
-  const data: AccessToken = await response.json();
+  const data = await response.json();
   return data;
 };
 

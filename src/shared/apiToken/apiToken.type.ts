@@ -1,9 +1,21 @@
-export type ApiToken = {
+export type ReceivedApiToken = {
   access: string;
   access_expires: number;
   refresh: string;
   refresh_expires: number;
 };
 
-export type AccessToken = Pick<ApiToken, "access" | "access_expires">;
-export type RefreshToken = Pick<ApiToken, "refresh" | "refresh_expires">;
+export type ApiToken = {
+  access: AccessToken;
+  refresh: RefreshToken;
+};
+
+export type AccessToken = {
+  access: string;
+  access_expires: number;
+};
+
+export type RefreshToken = {
+  refresh: string;
+  refresh_expires: number;
+};
