@@ -2,12 +2,10 @@ type Institution = {
   id: string;
   name: string;
   bic: string;
-  transaction_total_days: string;
-  countries: string[];
+  maxTransactionTotalDays: number;
   logo: string;
-  supported_features: string[];
-  identification_codes: string[];
-  max_access_valid_for_days: string;
+  supportedFeatures: string[];
+  maxDaysAccess: number;
 };
 
 export default Institution;

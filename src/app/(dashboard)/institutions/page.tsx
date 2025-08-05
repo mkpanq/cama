@@ -1,4 +1,4 @@
-import { getInstitutionList } from "@/app/(dashboard)/institutions/_lib/institutionsList";
+import { getInstitutionList } from "@/app/(dashboard)/institutions/_lib/institution";
 import InstitutionList from "./_components/institutionsList";
 
 export default async function MainInstitutionsPage() {

@@ -7,6 +7,9 @@
 // After that operation, we'll be able to retreive all data from the database and (if we would like to) refetch / update them
 // on demand from the dashboard
 
-export async function createDataAccess() {
-  console.log("Creating data access");
+export async function createDataAccess(formData: FormData) {
+  const institutionId = formData.get("institutionId");
+  console.log("Creating data access for institution ID:", institutionId);
 }
+
+// async function returnAgreement() {}
