@@ -1,0 +1,93 @@
+{
+  "id": "e344a1e8-960d-4168-9d21-c08d6ee2754a",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.agreements": {
+      "name": "agreements",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "institution_id": {
+          "name": "institution_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "max_historical_days": {
+          "name": "max_historical_days",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "valid_for": {
+          "name": "valid_for",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "creation_date": {
+          "name": "creation_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "acceptance_date": {
+          "name": "acceptance_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "agreements_user_id_users_id_fk": {
+          "name": "agreements_user_id_users_id_fk",
+          "tableFrom": "agreements",
+          "tableTo": "users",
+          "schemaTo": "auth",
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "agreements_institution_id_unique": {
+          "name": "agreements_institution_id_unique",
+          "nullsNotDistinct": false,
+          "columns": ["institution_id"]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
