@@ -1,6 +1,8 @@
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import type Institution from "../_lib/institution.type";
 import Image from "next/image";
+import Link from "next/link";
+import { createDataAccess } from "../_lib/actions";
 
 export default function InstitutionList({
   institutionsList,
@@ -23,12 +25,15 @@ export default function InstitutionList({
               alt="Logo"
             />
             <div className="min-w-0 flex-auto">
-              <p className="text-sm/6 font-semibold text-gray-900">
-                {/** biome-ignore lint/a11y/useValidAnchor: <explanation> */}
-                <a href="#">
+              <p className="text-sm/6 font-semibold text-gray-900 ">
+                <button
+                  type="submit"
+                  onClick={createDataAccess}
+                  className="hover:cursor-pointer"
+                >
                   <span className="absolute inset-x-0 -top-px bottom-0" />
                   {institution.name}
-                </a>
+                </button>
               </p>
               <p className="mt-1 flex text-xs/5 text-gray-500 relative truncate ">
                 {institution.bic}
