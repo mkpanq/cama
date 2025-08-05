@@ -9,6 +9,7 @@ const API_CONFIG = {
 
   API_URL_NEW_TOKEN: "/token/new/",
   API_URL_REFRESH_TOKEN: "/token/refresh/",
+  API_URL_INSTITUTIONS_LIST: "/institutions",
 };
 
 const APP_CONFIG = {

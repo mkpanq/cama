@@ -1,6 +1,7 @@
 import APP_CONFIG from "@/appConfig";
 import type { AccessToken, ApiToken } from "./apiToken.type";
 import bankDataApiRequest from "../bankDataApi.request";
+import { cookies } from "next/headers";
 
 export const getNewToken = async (): Promise<ApiToken | undefined> => {
   const secretId = process.env.GOCARDLESS_SECRET_ID;
@@ -52,6 +53,18 @@ export const getRefreshedToken = async (
     console.error(error);
     return undefined;
   }
+};
+
+export const getCurrentApiToken = async (): Promise<string | undefined> => {
+  const cookieStore = await cookies();
+  const cookie = cookieStore.get(
+    APP_CONFIG.API_CONFIG.API_ACCESS_TOKEN_COOKIE_NAME,
+  );
+
+  if (!cookie) return undefined;
+  const accessData = JSON.parse(cookie.value) as AccessToken;
+
+  return accessData.access;
 };
 
 export const isTokenValid = (token: AccessToken): boolean => {
