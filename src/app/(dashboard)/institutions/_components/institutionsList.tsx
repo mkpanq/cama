@@ -28,6 +28,16 @@ export default function InstitutionList({
                     name="institutionId"
                     value={institution.id}
                   />
+                  <input
+                    type="hidden"
+                    name="maxTransactionTotalDays"
+                    value={institution.maxTransactionTotalDays}
+                  />
+                  <input
+                    type="hidden"
+                    name="maxDaysAccess"
+                    value={institution.maxDaysAccess}
+                  />
                   <button type="submit" className="hover:cursor-pointer">
                     <span className="absolute inset-x-0 -top-px bottom-0" />
                     {institution.name}

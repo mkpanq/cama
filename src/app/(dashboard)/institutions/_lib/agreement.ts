@@ -5,25 +5,30 @@ import { getCurrentApiToken } from "@/shared/apiToken/apiToken";
 import bankDataApiRequest from "@/shared/bankDataApi.request";
 import { getCurrentUser } from "@/shared/currentUser";
 import { eq } from "drizzle-orm";
-import type Institution from "./institution.type";
 import type Agreement from "./agreement.type";
+import "server-only";
 
-export const getAgreementForInstitution = async (institution: Institution) => {
-  const currentAgreement = getAgreementForInstitutionFromDB(institution.id);
-  if (currentAgreement) return currentAgreement;
+export const getAgreementForInstitution = async (
+  institutionId: string,
+  maxDaysAccess: number,
+  maxTransactionTotalDays: number,
+): Promise<string> => {
+  const currentAgreementId =
+    await getAgreementForInstitutionFromDB(institutionId);
+  if (currentAgreementId) return currentAgreementId;
 
-  const newagreement = await createNewAgreement(
-    institution.id,
-    institution.maxTransactionTotalDays,
-    institution.maxDaysAccess,
+  const newAgreement = await createNewAgreement(
+    institutionId,
+    maxTransactionTotalDays,
+    maxDaysAccess,
   );
 
-  if (!newagreement) throw new Error("Failed to create agreement");
+  if (!newAgreement) throw new Error("Failed to create agreement");
 
-  const newagreementId = await saveAgreementToDB(newagreement);
-  if (!newagreementId) throw new Error("Failed to save agreement to DB");
+  const newAgreementId = await saveAgreementToDB(newAgreement);
+  if (!newAgreementId) throw new Error("Failed to save agreement to DB");
 
-  return newagreementId;
+  return newAgreementId;
 };
 
 const getAgreementForInstitutionFromDB = async (
@@ -67,7 +72,7 @@ const createNewAgreement = async (
       auth: await getCurrentApiToken(),
       body: {
         institution_id: institutionId,
-        max_istorical_days: maxHistoricalDays,
+        max_historical_days: maxHistoricalDays,
         access_valid_for_days: validFor,
         access_scope: ["balances", "details", "transactions"],
       },

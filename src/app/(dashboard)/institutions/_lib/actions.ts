@@ -1,15 +1,37 @@
 "use server";
-
-// Clicked on proper instituion, will create agreement and requisition  and save it to the DB
-// Then, we'll save current requistion institution details to DB
-// And after that we'll run background job for downloading all transactions and save it to DB
-
-// After that operation, we'll be able to retreive all data from the database and (if we would like to) refetch / update them
-// on demand from the dashboard
+import { getAgreementForInstitution } from "./agreement";
 
 export async function createDataAccess(formData: FormData) {
-  const institutionId = formData.get("institutionId");
-  console.log("Creating data access for institution ID:", institutionId);
+  const institutionId = formData.get("institutionId") as string;
+  const maxDaysAccess = Number.parseInt(
+    formData.get("maxDaysAccess") as string,
+  );
+  const maxTransactionTotalDays = Number.parseInt(
+    formData.get("maxTransactionTotalDays") as string,
+  );
+
+  const aggreementId = await returnAgreementForInstitution(
+    institutionId,
+    maxDaysAccess,
+    maxTransactionTotalDays,
+  );
+
+  console.log("Entered agreement id: ", aggreementId);
 }
 
-// async function returnAgreement() {}
+async function returnAgreementForInstitution(
+  institutionId: string,
+  maxDaysAccess: number,
+  maxTransactionTotalDays: number,
+) {
+  try {
+    return await getAgreementForInstitution(
+      institutionId,
+      maxDaysAccess,
+      maxTransactionTotalDays,
+    );
+  } catch (error) {
+    console.error("Error getting agreement for institution:", error);
+    return null;
+  }
+}
