@@ -3,13 +3,6 @@ import { getCurrentApiToken } from "@/shared/apiToken/apiToken";
 import bankDataApiRequest from "@/shared/bankDataApi.request";
 import type Institution from "./institution.type";
 
-// Clicked on proper instituion, will create requisition (or agreement) and save it to the DB
-// Then, we'll save current requistion institution details to DB
-// And after that we'll run background job for downloading all transactions and save it to DB
-
-// After that operation, we'll be able to retreive all data from the database and (if we would like to) refetch / update them
-// on demand from the dashboard
-
 export const getInstitutionList = async () => {
   try {
     const data = await bankDataApiRequest<Institution[]>({
