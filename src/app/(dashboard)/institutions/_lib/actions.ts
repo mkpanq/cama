@@ -1,5 +1,7 @@
 "use server";
+import { redirect } from "next/navigation";
 import { getAgreementForInstitution } from "./agreement";
+import { requestForRequisition } from "./requisition";
 
 export async function createDataAccess(formData: FormData) {
   const { institutionId, maxDaysAccess, maxTransactionTotalDays } =
@@ -10,8 +12,18 @@ export async function createDataAccess(formData: FormData) {
     maxDaysAccess,
     maxTransactionTotalDays,
   );
+  if (!aggreementId) throw new Error("AgreementId could not be found");
 
   console.log("Entered agreement id: ", aggreementId);
+
+  const requisitionRedirectLink = await requestForRequisition(
+    institutionId,
+    aggreementId,
+  );
+  if (!requisitionRedirectLink)
+    throw new Error("Requisition could not be requested");
+
+  redirect(requisitionRedirectLink);
 }
 
 const parseInstitutionData = (

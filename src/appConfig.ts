@@ -1,6 +1,8 @@
 const ROUTE_CONFIG = {
   AUTH_PATH: "/auth",
   HOME_PATH: "/",
+
+  API_CREATE_REQUISITION_WEBHOOK: "/api/requisition",
 };
 
 const API_CONFIG = {
@@ -11,6 +13,7 @@ const API_CONFIG = {
   API_URL_REFRESH_TOKEN: "/token/refresh/",
   API_URL_INSTITUTIONS_LIST: "/institutions",
   API_URL_CREATE_AGREEMENT: "/agreements/enduser/",
+  API_URL_CREATE_REQUISITION: "/requisitions/",
 };
 
 const APP_CONFIG = {

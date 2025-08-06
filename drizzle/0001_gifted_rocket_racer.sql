@@ -1,1 +1,0 @@
-ALTER TABLE "agreements" ADD COLUMN "expiration_date" timestamp NOT NULL;

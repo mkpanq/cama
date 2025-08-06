@@ -1,5 +1,5 @@
 {
-  "id": "e344a1e8-960d-4168-9d21-c08d6ee2754a",
+  "id": "c0747a9e-43b7-413d-b4a5-104961d851bb",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -51,6 +51,12 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "expiration_date": {
+          "name": "expiration_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {},
@@ -67,13 +73,71 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "agreements_institution_id_unique": {
-          "name": "agreements_institution_id_unique",
-          "nullsNotDistinct": false,
-          "columns": ["institution_id"]
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.requisitions": {
+      "name": "requisitions",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "institution_id": {
+          "name": "institution_id",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "agreement_id": {
+          "name": "agreement_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "creation_date": {
+          "name": "creation_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         }
       },
+      "indexes": {},
+      "foreignKeys": {
+        "requisitions_user_id_users_id_fk": {
+          "name": "requisitions_user_id_users_id_fk",
+          "tableFrom": "requisitions",
+          "tableTo": "users",
+          "schemaTo": "auth",
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "requisitions_agreement_id_agreements_id_fk": {
+          "name": "requisitions_agreement_id_agreements_id_fk",
+          "tableFrom": "requisitions",
+          "tableTo": "agreements",
+          "columnsFrom": ["agreement_id"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false

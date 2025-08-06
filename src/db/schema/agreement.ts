@@ -10,7 +10,7 @@ import { authUsers } from "drizzle-orm/supabase";
 export const agreementsTable = pgTable("agreements", {
   id: uuid("id").primaryKey(),
   userId: uuid("user_id").references(() => authUsers.id),
-  institutionId: varchar("institution_id", { length: 256 }).notNull().unique(),
+  institutionId: varchar("institution_id", { length: 256 }).notNull(),
   maxHistoricalDays: integer("max_historical_days").notNull(),
   validFor: integer("valid_for").notNull(),
   creationDate: timestamp("creation_date").notNull().defaultNow(),
