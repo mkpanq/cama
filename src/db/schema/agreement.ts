@@ -15,4 +15,5 @@ export const agreementsTable = pgTable("agreements", {
   validFor: integer("valid_for").notNull(),
   creationDate: timestamp("creation_date").notNull().defaultNow(),
   acceptanceDate: timestamp("acceptance_date").notNull().defaultNow(),
+  expirationDate: timestamp("expiration_date").notNull(),
 });

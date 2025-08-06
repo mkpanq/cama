@@ -88,6 +88,9 @@ const createNewAgreement = async (
       validFor: validFor,
       created: new Date(data.created),
       accepted: new Date(data.accepted),
+      expirationDate: new Date(
+        new Date(data.created).getTime() + validFor * 24 * 60 * 60 * 1000,
+      ),
     } as Agreement;
   } catch (error) {
     console.error(error);

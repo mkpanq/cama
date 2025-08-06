@@ -7,6 +7,7 @@ type Agreement = {
   validFor: number;
   created: Date;
   accepted: Date;
+  expirationDate: Date;
 };
 
 export default Agreement;
