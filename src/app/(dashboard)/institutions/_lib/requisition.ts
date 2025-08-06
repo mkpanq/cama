@@ -4,6 +4,7 @@ import bankDataApiRequest from "@/shared/bankDataApi.request";
 import type Requisition from "./requisition.type";
 import getDBClient from "@/db/client";
 import { requisitionTable } from "@/db/schema/requisition";
+import { getCurrentUser } from "@/shared/currentUser";
 
 // TODO: Think about move all agreement + requisition data to single table and single row
 // Only one requisition per institution + one agreement - easier to controll, manage, detele, etc.
@@ -56,13 +57,12 @@ export const requestForRequisition = async (
   }
 };
 
-export const getRequisition = async (
+export const getRequisitionFromApi = async (
   requisitionId: string,
-): Promise<
-  Requisition & {
-    accounts: string[];
-  }
-> => {
+): Promise<{
+  requisition: Requisition;
+  accounts: string[];
+}> => {
   const data = await bankDataApiRequest<{
     id: string;
     created: string;
@@ -84,17 +84,21 @@ export const getRequisition = async (
   });
 
   if (data.status !== "LN") throw new Error("Requisition is not linked !");
+  const user = await getCurrentUser();
 
   return {
-    id: data.id,
-    institutionId: data.institution_id,
-    agreementId: data.agreement,
-    created: new Date(data.created),
+    requisition: {
+      id: data.id,
+      userId: user.id,
+      institutionId: data.institution_id,
+      agreementId: data.agreement,
+      created: new Date(data.created),
+    },
     accounts: data.accounts,
   };
 };
 
-const saveRequistionToDB = async (requisition: Requisition) => {
+export const saveRequistionToDB = async (requisition: Requisition) => {
   const db = await getDBClient();
 
   try {
