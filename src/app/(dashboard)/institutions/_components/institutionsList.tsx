@@ -1,7 +1,11 @@
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
-import type Institution from "../_lib/institution.type";
+import type Institution from "../../../../lib/institution/institution.type";
 import Image from "next/image";
 import { createDataAccess } from "../_lib/actions";
+
+// TODO:
+// Need to differ already saved institution list from ones, that are already saved
+// We could add removal/sync options to those that are saved
 
 export default function InstitutionList({
   institutionsList,

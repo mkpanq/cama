@@ -1,12 +1,15 @@
 /** biome-ignore-all lint/style/noNonNullAssertion: This is a temporary fix to avoid linting errors */
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-import APP_CONFIG from "./appConfig";
+import APP_CONFIG from "./lib/appConfig";
 import type {
   AccessToken,
   RefreshToken,
-} from "./shared/apiToken/apiToken.type";
-import { getRefreshedToken, isTokenValid } from "./shared/apiToken/apiToken";
+} from "./lib/shared/apiToken/apiToken.type";
+import {
+  getRefreshedToken,
+  isTokenValid,
+} from "./lib/shared/apiToken/apiToken.service";
 
 // TODO: Right now I've decided to go with one middleware file due to need of creating separate parser for multiple middleware files
 // Will do it later, when more middlewares will be needed

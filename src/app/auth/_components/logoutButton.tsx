@@ -1,4 +1,4 @@
-import { logoutUser } from "../lib/actions";
+import { logoutUser } from "../_lib/actions";
 
 const LogoutButton = () => {
   return (

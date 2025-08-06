@@ -11,7 +11,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import type { Metadata } from "next";
 import "../globals.css";
 import Link from "next/link";
-import LogoutButton from "../auth/components/logoutButton";
+import LogoutButton from "../auth/_components/logoutButton";
 
 const user = {
   name: "Tom Cook",

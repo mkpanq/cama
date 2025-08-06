@@ -1,4 +1,4 @@
-import { login } from "./lib/actions";
+import { login } from "./_lib/actions";
 import Image from "next/image";
 
 export default function LoginPage() {

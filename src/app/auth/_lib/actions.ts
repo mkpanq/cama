@@ -2,8 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { signInWithPassword, signOut } from "./authService";
-import APP_CONFIG from "@/appConfig";
+import { signInWithPassword, signOut } from "../../../lib/auth/auth.service";
+import APP_CONFIG from "@/lib/appConfig";
 
 export async function login(formData: FormData) {
   // TODO: Think about zod library for parsing and validate such input

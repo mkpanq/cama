@@ -1,8 +1,8 @@
 import "server-only";
-import { createServerSupabaseClient } from "../../../shared/supabaseClients";
+import { createServerSupabaseClient } from "../shared/supabaseClients";
 import { cookies } from "next/headers";
-import { getNewToken } from "@/shared/apiToken/apiToken";
-import APP_CONFIG from "@/appConfig";
+import { getNewToken } from "@/lib/shared/apiToken/apiToken.service";
+import APP_CONFIG from "@/lib/appConfig";
 
 export async function signInWithPassword(email: string, password: string) {
   const cookieStore = await cookies();

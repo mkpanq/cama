@@ -1,4 +1,4 @@
-import APP_CONFIG from "@/appConfig";
+import APP_CONFIG from "@/lib/appConfig";
 import type { AccessToken, ApiToken } from "./apiToken.type";
 import bankDataApiRequest from "../bankDataApi.request";
 import { cookies } from "next/headers";

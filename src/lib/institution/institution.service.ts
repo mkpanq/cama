@@ -1,6 +1,6 @@
-import APP_CONFIG from "@/appConfig";
-import { getCurrentApiToken } from "@/shared/apiToken/apiToken";
-import bankDataApiRequest from "@/shared/bankDataApi.request";
+import APP_CONFIG from "@/lib/appConfig";
+import { getCurrentApiToken } from "@/lib/shared/apiToken/apiToken.service";
+import bankDataApiRequest from "@/lib/shared/bankDataApi.request";
 import type Institution from "./institution.type";
 
 export const getInstitutionList = async (): Promise<Institution[]> => {

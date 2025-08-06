@@ -1,12 +1,13 @@
-import APP_CONFIG from "@/appConfig";
+import "server-only";
+
+import APP_CONFIG from "@/lib/appConfig";
 import getDBClient from "@/db/client";
 import { agreementsTable } from "@/db/schema/agreement";
-import { getCurrentApiToken } from "@/shared/apiToken/apiToken";
-import bankDataApiRequest from "@/shared/bankDataApi.request";
-import { getCurrentUser } from "@/shared/currentUser";
+import { getCurrentApiToken } from "@/lib/shared/apiToken/apiToken.service";
+import bankDataApiRequest from "@/lib/shared/bankDataApi.request";
+import { getCurrentUser } from "@/lib/shared/getCurrentUser";
 import { eq } from "drizzle-orm";
 import type Agreement from "./agreement.type";
-import "server-only";
 
 export const getAgreementForInstitution = async (
   institutionId: string,

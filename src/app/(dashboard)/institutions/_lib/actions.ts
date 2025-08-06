@@ -1,7 +1,8 @@
 "use server";
+
 import { redirect } from "next/navigation";
-import { getAgreementForInstitution } from "./agreement";
-import { requestForRequisition } from "./requisition";
+import { getAgreementForInstitution } from "../../../../lib/agreement/agreement.service";
+import { requestForRequisition } from "../../../../lib/requisition/requisition.service";
 
 export async function createDataAccess(formData: FormData) {
   const { institutionId, maxDaysAccess, maxTransactionTotalDays } =

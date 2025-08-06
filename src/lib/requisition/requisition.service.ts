@@ -1,10 +1,11 @@
-import APP_CONFIG from "@/appConfig";
-import { getCurrentApiToken } from "@/shared/apiToken/apiToken";
-import bankDataApiRequest from "@/shared/bankDataApi.request";
-import type Requisition from "./requisition.type";
+import "server-only";
+import APP_CONFIG from "@/lib/appConfig";
+import { getCurrentApiToken } from "@/lib/shared/apiToken/apiToken.service";
+import bankDataApiRequest from "@/lib/shared/bankDataApi.request";
 import getDBClient from "@/db/client";
 import { requisitionTable } from "@/db/schema/requisition";
-import { getCurrentUser } from "@/shared/currentUser";
+import { getCurrentUser } from "@/lib/shared/getCurrentUser";
+import type Requisition from "./requisition.type";
 
 // TODO: Think about move all agreement + requisition data to single table and single row
 // Only one requisition per institution + one agreement - easier to controll, manage, detele, etc.
