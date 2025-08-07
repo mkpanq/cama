@@ -1,8 +1,3 @@
-// Create and save agreement - initialize bank connection
-// Request for req -> save id and redirect
-// When redirected from bank site to api -> get ref from url to get out already existing bankConnection and req id
-// Get req data from API, update bank connection, create accounts
-
 import "server-only";
 import { requestForNewAgreement } from "./agreement/agreement.service";
 import getDBClient from "@/db/client";
@@ -21,10 +16,6 @@ export const initializeBankConnection = async (
     maxHistoricalDays,
     validFor,
   );
-  if (!bankConnectionAgreement)
-    throw new Error(
-      "Failed to initialize bank connection - cannot create agreement",
-    );
 
   const db = await getDBClient();
 

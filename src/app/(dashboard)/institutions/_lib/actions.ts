@@ -16,21 +16,19 @@ export async function createBankConnection(formData: FormData) {
     maxTransactionTotalDays,
     maxDaysAccess,
   );
-
-  console.log("Bank connection initialized successfully", bankConnection);
   const inititalRequisition = await requestForRequisition(bankConnection);
-  if (!inititalRequisition)
-    throw new Error("Failed to request initial requisition");
+
+  if (!bankConnection || !inititalRequisition)
+    throw new Error(
+      "Failed to create initital bank connection with requisition",
+    );
 
   await updateRequisitionIdForBankConnection(
     bankConnection.id,
     inititalRequisition.requisitionId,
   );
 
-  console.log("Requisition created successfully", inititalRequisition);
-  const redirectLink = inititalRequisition.redirectLink;
-
-  redirect(redirectLink);
+  redirect(inititalRequisition.redirectLink);
 }
 
 const parseInstitutionData = (

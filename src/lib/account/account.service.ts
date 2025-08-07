@@ -8,102 +8,78 @@ import type Account from "./account.type";
 
 export const saveAccountsToDB = async (
   accounts: Account[],
-): Promise<string[] | null> => {
+): Promise<string[]> => {
   const db = await getDBClient();
 
-  try {
-    const data = await db
-      .insert(accountsTable)
-      .values(accounts)
-      .returning({ id: accountsTable.id });
+  const data = await db
+    .insert(accountsTable)
+    .values(accounts)
+    .returning({ id: accountsTable.id });
 
-    return data.map((acc) => acc.id);
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
+  return data.map((acc) => acc.id);
 };
 
 export const getAccountInfo = async (
   bankConnectionId: string,
   accountId: string,
-): Promise<Account | null> => {
-  try {
-    const accountMetadata = await getAccountMetadata(accountId);
-    const accountDetails = await getAccountDetails(accountId);
+): Promise<Account> => {
+  const accountMetadata = await getAccountMetadata(accountId);
+  const accountDetails = await getAccountDetails(accountId);
+  const currentUser = await getCurrentUser();
 
-    if (!accountMetadata || !accountDetails)
-      throw new Error("Could not fetch account metadata or details");
-
-    const currentUser = await getCurrentUser();
-
-    return {
-      id: accountMetadata.id,
-      userId: currentUser.id,
-      bankConnectionId: bankConnectionId,
-      institutionId: accountMetadata.institution_id,
-      institutionResourceId: accountDetails.account.resourceId,
-      iban: accountMetadata.iban,
-      currency: accountDetails.account.currency,
-      bban: accountMetadata.bban,
-      status: accountMetadata.status,
-      ownerName: accountMetadata.owner_name || accountDetails.account.ownerName,
-      name: accountMetadata.name || accountDetails.account.name,
-      product: accountDetails.account.product,
-      cashAccountType: accountDetails.account.cashAccountType,
-    };
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
+  return {
+    id: accountMetadata.id,
+    userId: currentUser.id,
+    bankConnectionId: bankConnectionId,
+    institutionId: accountMetadata.institution_id,
+    institutionResourceId: accountDetails.account.resourceId,
+    iban: accountMetadata.iban,
+    currency: accountDetails.account.currency,
+    bban: accountMetadata.bban,
+    status: accountMetadata.status,
+    ownerName: accountMetadata.owner_name || accountDetails.account.ownerName,
+    name: accountMetadata.name || accountDetails.account.name,
+    product: accountDetails.account.product,
+    cashAccountType: accountDetails.account.cashAccountType,
+  };
 };
 
 const getAccountMetadata = async (accountId: string) => {
-  try {
-    const data = bankDataApiRequest<{
-      id: string;
-      created: string;
-      last_accessed: string;
-      iban: string;
-      institution_id: string;
-      status: string;
-      owner_name: string | null;
-      bban: string | null;
-      name: string;
-    }>({
-      method: "GET",
-      path: APP_CONFIG.API_CONFIG.API_URL_GET_ACCOUNT_METADATA(accountId),
-      auth: await getCurrentApiToken(),
-    });
+  const data = bankDataApiRequest<{
+    id: string;
+    created: string;
+    last_accessed: string;
+    iban: string;
+    institution_id: string;
+    status: string;
+    owner_name: string | null;
+    bban: string | null;
+    name: string;
+  }>({
+    method: "GET",
+    path: APP_CONFIG.API_CONFIG.API_URL_GET_ACCOUNT_METADATA(accountId),
+    auth: await getCurrentApiToken(),
+  });
 
-    return data;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
+  return data;
 };
 
 const getAccountDetails = async (accountId: string) => {
-  try {
-    const data = bankDataApiRequest<{
-      account: {
-        resourceId: string;
-        iban: string;
-        currency: string;
-        ownerName: string;
-        name: string;
-        product: string;
-        cashAccountType: string;
-      };
-    }>({
-      method: "GET",
-      path: APP_CONFIG.API_CONFIG.API_URL_GET_ACCOUNT_DETAILS(accountId),
-      auth: await getCurrentApiToken(),
-    });
+  const data = bankDataApiRequest<{
+    account: {
+      resourceId: string;
+      iban: string;
+      currency: string;
+      ownerName: string;
+      name: string;
+      product: string;
+      cashAccountType: string;
+    };
+  }>({
+    method: "GET",
+    path: APP_CONFIG.API_CONFIG.API_URL_GET_ACCOUNT_DETAILS(accountId),
+    auth: await getCurrentApiToken(),
+  });
 
-    return data;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
+  return data;
 };

@@ -11,7 +11,7 @@ export const requestForRequisition = async (
 ): Promise<{
   requisitionId: string;
   redirectLink: string;
-} | null> => {
+}> => {
   const data = await bankDataApiRequest<{
     id: string;
     created: string;

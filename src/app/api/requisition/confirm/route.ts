@@ -14,7 +14,7 @@ import {
 export async function GET(request: Request) {
   try {
     const referenceId = getReferenceIdFromURL(request.url);
-    if (!referenceId) return;
+    if (!referenceId) throw new Error("No reference ID found in URL");
 
     const currentBankConnection =
       await getBankConnectionViaReferenceId(referenceId);
