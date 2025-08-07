@@ -8,6 +8,20 @@
       "when": 1754560442254,
       "tag": "0000_colossal_wolverine",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1754561817713,
+      "tag": "0001_lowly_boom_boom",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1754566143783,
+      "tag": "0002_demonic_vulture",
+      "breakpoints": true
     }
   ]
 }

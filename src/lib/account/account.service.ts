@@ -25,7 +25,7 @@ export const saveAccountsToDB = async (
 };
 
 export const getAccountInfo = async (
-  requisitionId: string,
+  bankConnectionId: string,
   accountId: string,
 ): Promise<Account | null> => {
   try {
@@ -40,7 +40,7 @@ export const getAccountInfo = async (
     return {
       id: accountMetadata.id,
       userId: currentUser.id,
-      requisitionId: requisitionId,
+      bankConnectionId: bankConnectionId,
       institutionId: accountMetadata.institution_id,
       institutionResourceId: accountDetails.account.resourceId,
       iban: accountMetadata.iban,

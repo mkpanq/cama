@@ -1,34 +1,40 @@
-import {
-  getRequisitionFromApi,
-  saveRequistionToDB,
-} from "@/lib/requisition/requisition.service";
+import { getRequisitionFromApi } from "@/lib/bankConnection/requisition/requisition.service";
 import APP_CONFIG from "@/lib/appConfig";
 import { redirect } from "next/navigation";
 import {
   getAccountInfo,
   saveAccountsToDB,
 } from "@/lib/account/account.service";
+import {
+  getBankConnectionViaReferenceId,
+  updateRequisitionCreationDateForBankConnection,
+} from "@/lib/bankConnection/bankConnection.service";
 
 // TODO: Think about better erroring strategy
 export async function GET(request: Request) {
   try {
-    const url = new URL(request.url);
-    const requisitionId = url.searchParams.get("ref");
-    if (!requisitionId) return;
+    const referenceId = getReferenceIdFromURL(request.url);
+    if (!referenceId) return;
 
-    const { savedRequisitionId, accounts } =
-      await getAndSaveRequisition(requisitionId);
+    const currentBankConnection =
+      await getBankConnectionViaReferenceId(referenceId);
+    if (!currentBankConnection)
+      throw new Error("Related bank connection not found");
+
+    const { requisitionDetails, accounts } = await getRequisitionFromApi(
+      currentBankConnection.requisitionId,
+    );
+
+    await updateRequisitionCreationDateForBankConnection(
+      currentBankConnection.id,
+      requisitionDetails.created,
+    );
 
     const savedAccountsIds = await getAndSaveAccounts(
       accounts,
-      savedRequisitionId,
+      currentBankConnection.id,
     );
     if (!savedAccountsIds) throw new Error("Account IDs could not be saved");
-
-    console.log("Account IDs saved:", savedAccountsIds);
-    console.log(
-      "Right now we should start downloading all accounts data to DB - transaction, details, balances etc",
-    );
   } catch (error) {
     console.error(error);
   }
@@ -36,21 +42,19 @@ export async function GET(request: Request) {
   redirect(APP_CONFIG.ROUTE_CONFIG.HOME_PATH);
 }
 
-const getAndSaveRequisition = async (requisitionId: string) => {
-  const { requisition, accounts } = await getRequisitionFromApi(requisitionId);
-  const savedRequisitionId = await saveRequistionToDB(requisition);
-  if (!savedRequisitionId) throw new Error("RequsitionId could not be saved");
-
-  return { savedRequisitionId, accounts };
+const getReferenceIdFromURL = (url: string): string | null => {
+  const urlObject = new URL(url);
+  const referenceId = urlObject.searchParams.get("ref");
+  return referenceId;
 };
 
 const getAndSaveAccounts = async (
   accounts: string[],
-  savedRequisitionId: string,
+  bankConnectionId: string,
 ) => {
   const accountsData = await Promise.all(
     accounts.map(async (accountId) => {
-      const data = await getAccountInfo(savedRequisitionId, accountId);
+      const data = await getAccountInfo(bankConnectionId, accountId);
       if (!data) throw new Error("Account data could not be fetched");
 
       return data;

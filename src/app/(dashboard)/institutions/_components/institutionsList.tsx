@@ -1,7 +1,7 @@
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import type Institution from "../../../../lib/institution/institution.type";
 import Image from "next/image";
-import { createDataAccess } from "../_lib/actions";
+import { createBankConnection } from "../_lib/actions";
 
 // TODO:
 // Need to differ already saved institution list from ones, that are already saved
@@ -25,7 +25,7 @@ export default function InstitutionList({
               alt="Logo"
             />
             <div className="min-w-0 flex-auto">
-              <form action={createDataAccess}>
+              <form action={createBankConnection}>
                 <p className="text-sm/6 font-semibold text-gray-900">
                   <input
                     type="hidden"

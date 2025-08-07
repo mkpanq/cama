@@ -1,7 +1,7 @@
 type Account = {
   id: string;
   userId: string;
-  requisitionId: string;
+  bankConnectionId: string;
   institutionId: string;
   institutionResourceId: string;
   iban: string;

@@ -1,30 +1,36 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { getAgreementForInstitution } from "../../../../lib/agreement/agreement.service";
-import { requestForRequisition } from "../../../../lib/requisition/requisition.service";
+import { requestForRequisition } from "../../../../lib/bankConnection/requisition/requisition.service";
+import {
+  initializeBankConnection,
+  updateRequisitionIdForBankConnection,
+} from "@/lib/bankConnection/bankConnection.service";
 
-export async function createDataAccess(formData: FormData) {
+export async function createBankConnection(formData: FormData) {
   const { institutionId, maxDaysAccess, maxTransactionTotalDays } =
     parseInstitutionData(formData);
 
-  const aggreementId = await returnAgreementForInstitution(
+  const bankConnection = await initializeBankConnection(
     institutionId,
-    maxDaysAccess,
     maxTransactionTotalDays,
+    maxDaysAccess,
   );
-  if (!aggreementId) throw new Error("AgreementId could not be found");
 
-  console.log("Entered agreement id: ", aggreementId);
+  console.log("Bank connection initialized successfully", bankConnection);
+  const inititalRequisition = await requestForRequisition(bankConnection);
+  if (!inititalRequisition)
+    throw new Error("Failed to request initial requisition");
 
-  const requisitionRedirectLink = await requestForRequisition(
-    institutionId,
-    aggreementId,
+  await updateRequisitionIdForBankConnection(
+    bankConnection.id,
+    inititalRequisition.requisitionId,
   );
-  if (!requisitionRedirectLink)
-    throw new Error("Requisition could not be requested");
 
-  redirect(requisitionRedirectLink);
+  console.log("Requisition created successfully", inititalRequisition);
+  const redirectLink = inititalRequisition.redirectLink;
+
+  redirect(redirectLink);
 }
 
 const parseInstitutionData = (
@@ -44,20 +50,3 @@ const parseInstitutionData = (
 
   return { institutionId, maxDaysAccess, maxTransactionTotalDays };
 };
-
-async function returnAgreementForInstitution(
-  institutionId: string,
-  maxDaysAccess: number,
-  maxTransactionTotalDays: number,
-) {
-  try {
-    return await getAgreementForInstitution(
-      institutionId,
-      maxDaysAccess,
-      maxTransactionTotalDays,
-    );
-  } catch (error) {
-    console.error("Error getting agreement for institution:", error);
-    return null;
-  }
-}

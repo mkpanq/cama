@@ -19,7 +19,7 @@ export const bankConnectionTable = pgTable("bank_connections", {
 
   institutionId: varchar("institution_id", { length: 256 }).notNull(),
   agreementId: uuid("agreement_id").unique().notNull(),
-  requisitionId: uuid("requisition_id").unique().notNull(),
+  requisitionId: uuid("requisition_id").unique(),
 
   maxHistoricalDays: integer("max_historical_days").notNull(),
   validFor: integer("valid_for").notNull(),
@@ -30,7 +30,5 @@ export const bankConnectionTable = pgTable("bank_connections", {
     .notNull()
     .defaultNow(),
   agreementExpirationDate: timestamp("agreement_expiration_date").notNull(),
-  requisitionCreationDate: timestamp("requisition_creation_date")
-    .notNull()
-    .defaultNow(),
+  requisitionCreationDate: timestamp("requisition_creation_date"),
 });
