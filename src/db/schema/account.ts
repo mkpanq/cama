@@ -1,21 +1,13 @@
-// Account - metadata, details, IBAN, number etc.
-// Balances
-// Transactions
-
-import {
-  integer,
-  pgTable,
-  timestamp,
-  uuid,
-  varchar,
-} from "drizzle-orm/pg-core";
+import { pgTable, uuid, varchar } from "drizzle-orm/pg-core";
 import { authUsers } from "drizzle-orm/supabase";
-import { requisitionTable } from "./requisition";
+import { bankConnectionTable } from "./bankConnection";
 
 export const accountsTable = pgTable("accounts", {
   id: uuid("id").primaryKey(),
   userId: uuid("user_id").references(() => authUsers.id),
-  requisitionId: uuid("requisition_id").references(() => requisitionTable.id),
+  bankConnectionId: uuid("bank_connection_id").references(
+    () => bankConnectionTable.id,
+  ),
   institutionId: varchar("institution_id", { length: 256 }).notNull(),
   institutionResourceId: varchar("institution_resource_id", {
     length: 256,
