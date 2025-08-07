@@ -1,0 +1,1 @@
+ALTER TABLE "bank_connections" DROP COLUMN "agreement_acceptance_date";

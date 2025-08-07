@@ -26,9 +26,6 @@ export const bankConnectionTable = pgTable("bank_connections", {
   agreementCreationDate: timestamp("agreement_creation_date")
     .notNull()
     .defaultNow(),
-  agreementAcceptanceDate: timestamp("agreement_acceptance_date")
-    .notNull()
-    .defaultNow(),
   agreementExpirationDate: timestamp("agreement_expiration_date").notNull(),
   requisitionCreationDate: timestamp("requisition_creation_date"),
 });

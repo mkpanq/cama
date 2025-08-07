@@ -7,6 +7,7 @@ export const accountsTable = pgTable("accounts", {
   userId: uuid("user_id").references(() => authUsers.id),
   bankConnectionId: uuid("bank_connection_id").references(
     () => bankConnectionTable.id,
+    { onDelete: "cascade" },
   ),
   institutionId: varchar("institution_id", { length: 256 }).notNull(),
   institutionResourceId: varchar("institution_resource_id", {

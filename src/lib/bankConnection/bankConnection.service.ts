@@ -31,7 +31,6 @@ export const initializeBankConnection = async (
       maxHistoricalDays,
       validFor,
       agreementCreationDate: new Date(bankConnectionAgreement.created),
-      agreementAcceptanceDate: new Date(bankConnectionAgreement.accepted),
       agreementExpirationDate: new Date(bankConnectionAgreement.expirationDate),
     })
     .returning();
@@ -72,4 +71,13 @@ export const updateRequisitionCreationDateForBankConnection = async (
     .update(bankConnectionTable)
     .set({ requisitionCreationDate: requisitionCreationDate })
     .where(eq(bankConnectionTable.id, bankConnectionId));
+};
+
+export const getAllConnectedInstitutions = async (): Promise<string[]> => {
+  const db = await getDBClient();
+  const institutions = await db
+    .select({ id: bankConnectionTable.institutionId })
+    .from(bankConnectionTable);
+
+  return institutions.map((institution) => institution.id);
 };
