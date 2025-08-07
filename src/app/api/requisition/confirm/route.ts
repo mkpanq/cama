@@ -35,6 +35,11 @@ export async function GET(request: Request) {
       currentBankConnection.id,
     );
     if (!savedAccountsIds) throw new Error("Account IDs could not be saved");
+
+    // TODO:
+    // Here we should add to the queue two jobs:
+    // - downdloading, parsing and save to DB all balances
+    // - downdloading, parsing and save to DB all transactions
   } catch (error) {
     console.error(error);
   }

@@ -1,2 +1,5 @@
+ignoredBuiltDependencies:
+  - msgpackr-extract
+
 onlyBuiltDependencies:
   - supabase

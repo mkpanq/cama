@@ -1,4 +1,30 @@
-// Balances (/:id/balances)
+import {
+  decimal,
+  pgTable,
+  timestamp,
+  uuid,
+  varchar,
+} from "drizzle-orm/pg-core";
+import { authUsers } from "drizzle-orm/supabase";
+import { accountsTable } from "./account";
+
+export const balancesTable = pgTable("balances", {
+  id: uuid("id").primaryKey(),
+  userId: uuid("user_id")
+    .references(() => authUsers.id)
+    .notNull(),
+  accountId: uuid("account_id")
+    .references(() => accountsTable.id, {
+      onDelete: "cascade",
+    })
+    .notNull(),
+  amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
+  currency: varchar("currency", { length: 256 }).notNull(),
+  type: varchar("type", { length: 256 }),
+  referenceDate: timestamp("reference_date").notNull(),
+});
+
+// Raw type (for API)
 // {
 //   "balances": [
 //     {
@@ -18,49 +44,4 @@
 //       "referenceDate": "2021-11-19"
 //     }
 //   ]
-// }
-
-// Transactions (/:id/transactions)
-// {
-//   "transactions": {
-//     "booked": [
-//       {
-//         "transactionId": "string",
-//         "debtorName": "string",
-//         "debtorAccount": {
-//           "iban": "string"
-//         },
-//         "transactionAmount": {
-//           "currency": "string",
-//           "amount": "328.18"
-//         },
-//         "bankTransactionCode": "string",
-//         "bookingDate": "date",
-//         "valueDate": "date",
-//         "remittanceInformationUnstructured": "string"
-//       },
-//       {
-//         "transactionId": "string",
-//         "transactionAmount": {
-//           "currency": "string",
-//           "amount": "947.26"
-//         },
-//         "bankTransactionCode": "string",
-//         "bookingDate": "date",
-//         "valueDate": "date",
-//         "remittanceInformationUnstructured": "string"
-//       }
-//     ],
-//     "pending": [
-//       {
-//         "transactionAmount": {
-//           "currency": "string",
-//           "amount": "99.20"
-//         },
-//         "valueDate": "date",
-//         "remittanceInformationUnstructured": "string"
-//       }
-//     ]
-//   },
-//   "last_updated": "ISO 8601 timestamp"
 // }

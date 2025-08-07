@@ -36,6 +36,13 @@
       "when": 1754571012804,
       "tag": "0004_big_pet_avengers",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1754578965832,
+      "tag": "0005_bitter_red_wolf",
+      "breakpoints": true
     }
   ]
 }

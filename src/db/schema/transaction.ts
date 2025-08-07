@@ -1,26 +1,4 @@
-// Balances (/:id/balances)
-// {
-//   "balances": [
-//     {
-//       "balanceAmount": {
-//         "amount": "657.49",
-//         "currency": "string"
-//       },
-//       "balanceType": "string",
-//       "referenceDate": "2021-11-22"
-//     },
-//     {
-//       "balanceAmount": {
-//         "amount": "185.67",
-//         "currency": "string"
-//       },
-//       "balanceType": "string",
-//       "referenceDate": "2021-11-19"
-//     }
-//   ]
-// }
-
-// Transactions (/:id/transactions)
+// Raw type (for API)
 // {
 //   "transactions": {
 //     "booked": [
