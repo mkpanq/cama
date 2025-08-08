@@ -1,3 +1,4 @@
+import "server-only";
 import APP_CONFIG from "@/lib/appConfig";
 import getDBClient from "@/db/client";
 import { accountsTable } from "@/db/schema/account";

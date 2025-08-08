@@ -38,7 +38,6 @@ export async function GET(request: Request) {
     if (!savedAccountsIds) throw new Error("Account IDs could not be saved");
 
     savedAccountsIds.forEach(async (id) => {
-      console.log("Retriving data for account ID:", id);
       await addAccountDataRetrivalJob(id);
     });
   } catch (error) {

@@ -1,0 +1,1 @@
+ALTER TABLE "balances" ALTER COLUMN "reference_date" SET DEFAULT now();

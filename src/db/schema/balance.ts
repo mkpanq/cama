@@ -1,10 +1,4 @@
-import {
-  decimal,
-  pgTable,
-  timestamp,
-  uuid,
-  varchar,
-} from "drizzle-orm/pg-core";
+import { date, numeric, pgTable, uuid, varchar } from "drizzle-orm/pg-core";
 import { authUsers } from "drizzle-orm/supabase";
 import { accountsTable } from "./account";
 
@@ -18,30 +12,14 @@ export const balancesTable = pgTable("balances", {
       onDelete: "cascade",
     })
     .notNull(),
-  amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
+  amount: numeric("amount", {
+    precision: 10,
+    scale: 2,
+    mode: "number",
+  }).notNull(),
   currency: varchar("currency", { length: 256 }).notNull(),
   type: varchar("type", { length: 256 }),
-  referenceDate: timestamp("reference_date").notNull(),
+  referenceDate: date("reference_date", { mode: "date" })
+    .notNull()
+    .defaultNow(),
 });
-
-// Raw type (for API)
-// {
-//   "balances": [
-//     {
-//       "balanceAmount": {
-//         "amount": "657.49",
-//         "currency": "string"
-//       },
-//       "balanceType": "string",
-//       "referenceDate": "2021-11-22"
-//     },
-//     {
-//       "balanceAmount": {
-//         "amount": "185.67",
-//         "currency": "string"
-//       },
-//       "balanceType": "string",
-//       "referenceDate": "2021-11-19"
-//     }
-//   ]
-// }
