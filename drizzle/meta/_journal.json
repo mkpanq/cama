@@ -57,6 +57,13 @@
       "when": 1754648756495,
       "tag": "0007_natural_black_crow",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1754663412649,
+      "tag": "0008_magenta_ma_gnuci",
+      "breakpoints": true
     }
   ]
 }
