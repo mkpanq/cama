@@ -22,7 +22,6 @@ export const transactionsTable = pgTable("transactions", {
   userId: uuid("user_id")
     .references(() => authUsers.id)
     .notNull(),
-  transactionId: varchar("transaction_id", { length: 256 }).notNull(),
   internalTransactionId: varchar("internal_transaction_id", {
     length: 256,
   }).notNull(),

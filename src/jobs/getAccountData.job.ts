@@ -8,6 +8,11 @@ import { type Job, Queue, Worker } from "bullmq";
 import Redis from "ioredis";
 import { getCurrentUser } from "@/lib/shared/getCurrentUser";
 import { getCurrentApiToken } from "@/lib/shared/apiToken/apiToken.service";
+import { getMaxHistoricalDays } from "@/lib/account/account.service";
+import {
+  getBookedTransactionsDataFromAPI,
+  saveTransactionsDataToDB,
+} from "@/lib/transaction/transaction.service";
 
 const redisConnection = new Redis(process.env.REDIS_URL!, {
   maxRetriesPerRequest: null,
@@ -31,6 +36,7 @@ const getAccountDataQueue = new Queue(
 
 // TODO: Remember to improve Error handling - thanks to that we would know what happened in the
 // background jobs
+
 new Worker(
   APP_CONFIG.JOBS_CONFIG.ACCOUNT_DATA_QUEUE_NAME,
   async (
@@ -51,7 +57,34 @@ new Worker(
     );
     const savedIds = await saveBalanceDataToDB(balanceData);
 
-    return savedIds;
+    const maxDays = await getMaxHistoricalDays(accountId);
+    job.updateProgress(
+      `Balance data for ids: ${savedIds} saved.\nDownloading transactions from ${maxDays} days for account: ${accountId}`,
+    );
+
+    // --------------------------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------------------------
+    // TODO: Need to separate balance from transactions jobs - in case of error balances are duplicating...
+    // --------------------------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------------------------
+
+    const transactions = await getBookedTransactionsDataFromAPI(
+      accountId,
+      userId,
+      token,
+      maxDays,
+    );
+
+    job.updateProgress(
+      `Data downloaded. Saving data transactions for account: ${accountId}`,
+    );
+    const savedTransactionsIds = await saveTransactionsDataToDB(transactions);
+
+    return savedTransactionsIds;
   },
   {
     connection: redisConnection,
@@ -74,7 +107,8 @@ new Worker(
   });
 
 export const addAccountDataRetrivalJob = async (accountId: string) => {
-  // TODO: Not a fan of this solution - will need to rethink implementation of strict job methods
+  // TODO: Not a fan of this solution when need to extract token and userId separately just for those methods
+  //  - will need to rethink implementation of strict job methods
   const { id } = await getCurrentUser();
   const token = await getCurrentApiToken();
 

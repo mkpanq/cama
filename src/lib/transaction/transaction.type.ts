@@ -2,9 +2,8 @@ type Transaction = {
   id: string;
   accountId: string;
   userId: string;
-  transactionId: string;
   internalTransactionId: string;
-  bookingData: Date;
+  bookingDate: Date;
   type: "OUTGOING" | "INCOMING";
   amount: number;
   currency: string;

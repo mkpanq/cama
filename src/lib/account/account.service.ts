@@ -6,6 +6,8 @@ import { getCurrentApiToken } from "../shared/apiToken/apiToken.service";
 import bankDataApiRequest from "../shared/bankDataApi.request";
 import { getCurrentUser } from "../shared/getCurrentUser";
 import type Account from "./account.type";
+import { bankConnectionTable } from "@/db/schema/bankConnection";
+import { eq } from "drizzle-orm";
 
 export const saveAccountsToDB = async (
   accounts: Account[],
@@ -83,4 +85,22 @@ const getAccountDetails = async (accountId: string) => {
   });
 
   return data;
+};
+
+// TODO: Needs refactor - rather save historical days together with the accounts table rather than making such joins
+export const getMaxHistoricalDays = async (
+  accountId: string,
+): Promise<number | null> => {
+  const db = await getDBClient();
+
+  const data = await db
+    .select({ maxDays: bankConnectionTable.maxHistoricalDays })
+    .from(accountsTable)
+    .where(eq(accountsTable.id, accountId))
+    .leftJoin(
+      bankConnectionTable,
+      eq(accountsTable.bankConnectionId, bankConnectionTable.id),
+    );
+
+  return data[0].maxDays;
 };
