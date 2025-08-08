@@ -24,9 +24,16 @@ const API_CONFIG = {
     `/accounts/${id}/transactions`,
 };
 
+const JOBS_CONFIG = {
+  ACCOUNT_DATA_QUEUE_NAME: "account_data_retrieval",
+  ACCOUNT_DATA_JOB_NAME: "get_account_data",
+  ACCOUNT_DATA_WORKER_CONCURRENCY: 3,
+};
+
 const APP_CONFIG = {
   ROUTE_CONFIG,
   API_CONFIG,
+  JOBS_CONFIG,
 };
 
 export default APP_CONFIG;

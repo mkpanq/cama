@@ -9,6 +9,7 @@ import {
   getBankConnectionViaReferenceId,
   updateRequisitionCreationDateForBankConnection,
 } from "@/lib/bankConnection/bankConnection.service";
+import { addAccountDataRetrivalJob } from "@/jobs/getAccountData.job";
 
 // TODO: Think about better erroring strategy
 export async function GET(request: Request) {
@@ -36,10 +37,10 @@ export async function GET(request: Request) {
     );
     if (!savedAccountsIds) throw new Error("Account IDs could not be saved");
 
-    // TODO:
-    // Here we should add to the queue two jobs:
-    // - downdloading, parsing and save to DB all balances
-    // - downdloading, parsing and save to DB all transactions
+    savedAccountsIds.forEach(async (id) => {
+      console.log("Retriving data for account ID:", id);
+      await addAccountDataRetrivalJob(id);
+    });
   } catch (error) {
     console.error(error);
   }
