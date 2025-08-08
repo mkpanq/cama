@@ -25,8 +25,15 @@ const API_CONFIG = {
 };
 
 const JOBS_CONFIG = {
-  ACCOUNT_DATA_QUEUE_NAME: "account_data_retrieval",
-  ACCOUNT_DATA_JOB_NAME: "get_account_data",
+  QUEUES: {
+    BALANCES_QUEUE_NAME: "account_balances_retrieval_queue",
+    TRANSACTIONS_QUEUE_NAME: "account_transactions_retrieval_queue",
+  },
+  JOB_NAMES: {
+    BALANCES_JOB_NAME: "get_account_balances_job",
+    TRANSACTIONS_JOB_NAME: "get_account_transactions_job",
+  },
+
   ACCOUNT_DATA_WORKER_CONCURRENCY: 3,
 };
 

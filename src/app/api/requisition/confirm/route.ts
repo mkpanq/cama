@@ -9,7 +9,8 @@ import {
   getBankConnectionViaReferenceId,
   updateRequisitionCreationDateForBankConnection,
 } from "@/lib/bankConnection/bankConnection.service";
-import { addAccountDataRetrivalJob } from "@/jobs/getAccountData.job";
+import { addAccountBalanceDataRetrivalJob } from "@/jobs/getAccountBalances.job";
+import { addAccountTransactionDataRetrivalJob } from "@/jobs/getAccountTransactions.job";
 
 // TODO: Think about better erroring strategy
 export async function GET(request: Request) {
@@ -37,9 +38,13 @@ export async function GET(request: Request) {
     );
     if (!savedAccountsIds) throw new Error("Account IDs could not be saved");
 
-    savedAccountsIds.forEach(async (id) => {
-      await addAccountDataRetrivalJob(id);
-    });
+    savedAccountsIds.forEach(
+      async (id) => await addAccountBalanceDataRetrivalJob(id),
+    );
+
+    savedAccountsIds.forEach(
+      async (id) => await addAccountTransactionDataRetrivalJob(id),
+    );
   } catch (error) {
     console.error(error);
   }

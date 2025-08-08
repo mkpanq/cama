@@ -22,9 +22,6 @@ export const transactionsTable = pgTable("transactions", {
   userId: uuid("user_id")
     .references(() => authUsers.id)
     .notNull(),
-  internalTransactionId: varchar("internal_transaction_id", {
-    length: 256,
-  }).notNull(),
   type: transactionTypeEnum("type").notNull(),
   bookingDate: date("booking_date", { mode: "date" }).notNull(),
   amount: numeric("amount", {

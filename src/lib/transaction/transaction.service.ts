@@ -58,10 +58,9 @@ export const getBookedTransactionsDataFromAPI = async (
   const convertedData: Transaction[] = data.transactions.booked.map(
     (rawTransaction) => {
       return {
-        id: rawTransaction.transactionId,
+        id: rawTransaction.internalTransactionId,
         accountId: accountId,
         userId: userId,
-        internalTransactionId: rawTransaction.internalTransactionId,
         bookingDate: new Date(rawTransaction.bookingDate),
         type:
           parseFloat(rawTransaction.transactionAmount.amount) > 0

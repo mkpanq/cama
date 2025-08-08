@@ -1,0 +1,1 @@
+ALTER TABLE "transactions" DROP COLUMN "internal_transaction_id";

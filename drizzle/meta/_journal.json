@@ -71,6 +71,13 @@
       "when": 1754666122472,
       "tag": "0009_keen_cobalt_man",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1754691000603,
+      "tag": "0010_smooth_black_widow",
+      "breakpoints": true
     }
   ]
 }
