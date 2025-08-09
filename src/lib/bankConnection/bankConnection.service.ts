@@ -4,7 +4,8 @@ import getDBClient from "@/db/client";
 import { bankConnectionTable } from "@/db/schema/bankConnection";
 import type BankConnection from "./bankConnection.type";
 import { getCurrentUser } from "../shared/getCurrentUser";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
+import { deleteRequisitionFromApi } from "./requisition/requisition.service";
 
 export const initializeBankConnection = async (
   institutionId: string,
@@ -73,11 +74,58 @@ export const updateRequisitionCreationDateForBankConnection = async (
     .where(eq(bankConnectionTable.id, bankConnectionId));
 };
 
-export const getAllConnectedInstitutions = async (): Promise<string[]> => {
+export const getAllConnectedInstitutions = async () => {
   const db = await getDBClient();
+  const { id } = await getCurrentUser();
   const institutions = await db
-    .select({ id: bankConnectionTable.institutionId })
-    .from(bankConnectionTable);
+    .select({
+      id: bankConnectionTable.institutionId,
+      bankConnectionId: bankConnectionTable.id,
+    })
+    .from(bankConnectionTable)
+    .where(eq(bankConnectionTable.userId, id));
 
-  return institutions.map((institution) => institution.id);
+  return institutions.map((institution) => {
+    return {
+      id: institution.id,
+      bankConnectionId: institution.bankConnectionId,
+    };
+  });
+};
+
+export const deleteBankConnection = async (
+  bankConnectionId: string,
+  institutionId: string,
+): Promise<string> => {
+  const db = await getDBClient();
+  const data = await db
+    .select({ id: bankConnectionTable.requisitionId })
+    .from(bankConnectionTable)
+    .where(
+      and(
+        // this institution removal is just in case
+        eq(bankConnectionTable.id, bankConnectionId),
+        eq(bankConnectionTable.institutionId, institutionId),
+      ),
+    );
+
+  const requisitionId = data[0]?.id;
+  if (!requisitionId) {
+    console.error("No requisition found for the given bank connection ID");
+    return;
+  }
+
+  const result = await deleteRequisitionFromApi(requisitionId);
+
+  if (!result) {
+    console.error("Failed to delete requisition from API");
+    return;
+  }
+
+  const deletedId = await db
+    .delete(bankConnectionTable)
+    .where(eq(bankConnectionTable.id, bankConnectionId))
+    .returning({ id: bankConnectionTable.id });
+
+  return deletedId[0]?.id;
 };

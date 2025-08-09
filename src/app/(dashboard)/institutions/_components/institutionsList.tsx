@@ -1,22 +1,16 @@
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import type Institution from "../../../../lib/institution/institution.type";
 import Image from "next/image";
-import { createBankConnection } from "../_lib/actions";
+import { createBankConnection, removeBankConnection } from "../_lib/actions";
 
 export default function InstitutionList({
   institutionsList,
 }: {
   institutionsList: Institution[];
 }) {
-  const institutionsSorted = institutionsList.sort((a, b) => {
-    if (b.status === "NOT_CONNECTED") return 1;
-    if (a.status === "NOT_CONNECTED") return -1;
-    return 0;
-  });
-
   return (
     <ul className="divide-y divide-gray-100 space-y-2">
-      {institutionsSorted.map((institution) => (
+      {institutionsList.map((institution) => (
         <InstitutionListElement
           key={institution.id}
           institution={institution}
@@ -61,15 +55,29 @@ function InstitutionListElement({ institution }: { institution: Institution }) {
             </p>
           </div>
         </div>
-        {institution.status === "CONNECTED" ? (
+        {institution.bankConnectionId ? (
           <div className="flex flex-col items-end">
             <div className="flex items-center gap-x-1.5">
               <div className="size-2 rounded-full bg-emerald-500" />
               <p className="text-xs/5 text-gray-500">Connected</p>
             </div>
-            <p className="text-xs/5 text-gray-500 hover:text-red-400 hover:cursor-pointer">
-              Click to remove connection (Soon)
-            </p>
+            <form action={removeBankConnection}>
+              <input
+                type="hidden"
+                name="institutionId"
+                value={institution.id}
+              />
+              <input
+                type="hidden"
+                name="bankConnectionId"
+                value={institution.bankConnectionId}
+              />
+              <button type="submit" className="hover:cursor-pointer">
+                <p className="text-xs/5 text-gray-500 hover:text-red-400 hover:cursor-pointer">
+                  Click to remove connection
+                </p>
+              </button>
+            </form>
           </div>
         ) : (
           <form action={createBankConnection}>

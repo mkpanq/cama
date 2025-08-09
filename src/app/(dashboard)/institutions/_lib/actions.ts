@@ -3,13 +3,20 @@
 import { redirect } from "next/navigation";
 import { requestForRequisition } from "../../../../lib/bankConnection/requisition/requisition.service";
 import {
+  deleteBankConnection,
   initializeBankConnection,
   updateRequisitionIdForBankConnection,
 } from "@/lib/bankConnection/bankConnection.service";
+import APP_CONFIG from "@/lib/appConfig";
 
 export async function createBankConnection(formData: FormData) {
-  const { institutionId, maxDaysAccess, maxTransactionTotalDays } =
-    parseInstitutionData(formData);
+  const institutionId = formData.get("institutionId") as string;
+  const maxDaysAccess = Number.parseInt(
+    formData.get("maxDaysAccess") as string,
+  );
+  const maxTransactionTotalDays = Number.parseInt(
+    formData.get("maxTransactionTotalDays") as string,
+  );
 
   const bankConnection = await initializeBankConnection(
     institutionId,
@@ -31,20 +38,12 @@ export async function createBankConnection(formData: FormData) {
   redirect(inititalRequisition.redirectLink);
 }
 
-const parseInstitutionData = (
-  formData: FormData,
-): {
-  institutionId: string;
-  maxDaysAccess: number;
-  maxTransactionTotalDays: number;
-} => {
+export async function removeBankConnection(formData: FormData) {
   const institutionId = formData.get("institutionId") as string;
-  const maxDaysAccess = Number.parseInt(
-    formData.get("maxDaysAccess") as string,
-  );
-  const maxTransactionTotalDays = Number.parseInt(
-    formData.get("maxTransactionTotalDays") as string,
-  );
+  const bankConnectionId = formData.get("bankConnectionId") as string;
 
-  return { institutionId, maxDaysAccess, maxTransactionTotalDays };
-};
+  const deletedId = await deleteBankConnection(bankConnectionId, institutionId);
+  console.log(`Deleted Bank Connection ID: ${deletedId}`);
+
+  redirect(APP_CONFIG.ROUTE_CONFIG.INSTITUTIONS_PATH);
+}

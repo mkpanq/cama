@@ -72,7 +72,7 @@ export const getRequisitionFromApi = async (
     redirect_immediate: boolean;
   }>({
     method: "GET",
-    path: `${APP_CONFIG.API_CONFIG.API_URL_CREATE_REQUISITION}${requisitionId}`,
+    path: APP_CONFIG.API_CONFIG.API_URL_GET_REQUISITION(requisitionId),
     auth: await getCurrentApiToken(),
   });
 
@@ -89,4 +89,22 @@ export const getRequisitionFromApi = async (
     },
     accounts: data.accounts,
   };
+};
+
+export const deleteRequisitionFromApi = async (requisitionId: string) => {
+  try {
+    await bankDataApiRequest<{
+      summary: string;
+      detail: string;
+    }>({
+      method: "DELETE",
+      path: APP_CONFIG.API_CONFIG.API_URL_GET_REQUISITION(requisitionId),
+      auth: await getCurrentApiToken(),
+    });
+  } catch (error) {
+    console.error(`Error deleting requisition ${requisitionId}: `, error);
+    return false;
+  }
+
+  return true;
 };

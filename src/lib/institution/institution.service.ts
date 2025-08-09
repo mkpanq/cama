@@ -30,44 +30,19 @@ export const getInstitutionList = async (): Promise<Institution[]> => {
     (institution) => institution.id === "SANDBOXFINANCE_SFIN0000",
   );
 
-  const additionalTestData = [
-    {
-      id: "TESTBANK_TSTBNK0000",
-      name: "Test Bank 01",
-      bic: "TESTBANK_TSTBNK000",
-      transaction_total_days: "180",
-      countries: ["PL", "DE"],
-      logo: testData[0].logo,
-      supported_features: [],
-      identification_codes: [],
-      max_access_valid_for_days: "1000",
-    },
-    {
-      id: "EXAMPLEBANK_EXBNK0000",
-      name: "Example Bank Corporation",
-      bic: "EXAMPLEBANK_EXBNK0000",
-      transaction_total_days: "180",
-      countries: ["PL", "DE"],
-      logo: testData[0].logo,
-      supported_features: [],
-      identification_codes: [],
-      max_access_valid_for_days: "1000",
-    },
-  ];
-
-  const exampleData = [...additionalTestData, ...testData];
   const alreadyConnected = await getAllConnectedInstitutions();
 
-  return exampleData.map((rawInstitution) => ({
+  return testData.map((rawInstitution) => ({
     id: rawInstitution.id,
     name: rawInstitution.name,
     bic: rawInstitution.bic,
     maxTransactionTotalDays: Number.parseInt(
       rawInstitution.transaction_total_days,
     ),
-    status: alreadyConnected.includes(rawInstitution.id)
-      ? "CONNECTED"
-      : "NOT_CONNECTED",
+    bankConnectionId:
+      alreadyConnected.filter(
+        (institution) => institution.id === rawInstitution.id,
+      )[0]?.bankConnectionId ?? null,
     logo: rawInstitution.logo,
     supportedFeatures: rawInstitution.supported_features,
     maxDaysAccess: Number.parseInt(rawInstitution.max_access_valid_for_days),

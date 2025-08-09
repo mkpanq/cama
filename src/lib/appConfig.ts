@@ -1,6 +1,7 @@
 const ROUTE_CONFIG = {
-  AUTH_PATH: "/auth",
   HOME_PATH: "/",
+  AUTH_PATH: "/auth",
+  INSTITUTIONS_PATH: "/institutions",
 
   API_CREATE_REQUISITION_WEBHOOK: "/api/requisition/confirm",
 };
@@ -16,6 +17,7 @@ const API_CONFIG = {
 
   API_URL_CREATE_AGREEMENT: "/agreements/enduser/",
   API_URL_CREATE_REQUISITION: "/requisitions/",
+  API_URL_GET_REQUISITION: (id: string) => `/requisitions/${id}/`,
 
   API_URL_GET_ACCOUNT_METADATA: (id: string) => `/accounts/${id}`,
   API_URL_GET_ACCOUNT_DETAILS: (id: string) => `/accounts/${id}/details`,
