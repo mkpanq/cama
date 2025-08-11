@@ -2,7 +2,7 @@ import "server-only";
 import APP_CONFIG from "@/lib/appConfig";
 import {
   getBalanceDataFromAPI,
-  saveBalanceDataToDB,
+  saveBalanceData,
 } from "@/lib/balance/balance.service";
 import { type Job, Queue, Worker } from "bullmq";
 import { getCurrentUser } from "@/lib/shared/getCurrentUser";
@@ -53,7 +53,7 @@ new Worker(
     job.updateProgress(
       `Data downloaded. Saving balance data for account: ${accountId}`,
     );
-    const savedIds = await saveBalanceDataToDB(balanceData);
+    const savedIds = await saveBalanceData(balanceData);
     return savedIds;
   },
   {

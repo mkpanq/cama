@@ -1,3 +1,5 @@
-export default function MainDashboardPage() {
-  return <div>Hello Main Dashboard!</div>;
+import Stats from "./_components/stats";
+
+export default function DashboardPage() {
+  return <Stats />;
 }

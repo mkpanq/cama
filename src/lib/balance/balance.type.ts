@@ -4,7 +4,7 @@ type AccountBalance = {
   accountId: string;
   amount: number;
   currency: string;
-  type: string;
+  type: string | null;
   referenceDate: Date;
 };
 

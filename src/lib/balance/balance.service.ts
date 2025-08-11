@@ -1,9 +1,11 @@
 import "server-only";
-import getDBClient from "@/db/client";
 import APP_CONFIG from "../appConfig";
 import bankDataApiRequest from "../shared/bankDataApi.request";
 import type AccountBalance from "./balance.type";
-import { balancesTable } from "@/db/schema/balance";
+import {
+  getBalanceForCurrentUser,
+  saveBalanceDataToDB,
+} from "./balance.repository";
 
 // TODO: We should create separate "Job Method wrapper" to identify why some requests
 // Need to have tokena and current user passed as an argument, instead of getting parsed
@@ -41,13 +43,41 @@ export const getBalanceDataFromAPI = async (
   return accountBalances;
 };
 
-export const saveBalanceDataToDB = async (balances: AccountBalance[]) => {
-  const db = await getDBClient();
+export const saveBalanceData = async (balances: AccountBalance[]) => {
+  const savedBalanacesIds = await saveBalanceDataToDB(balances);
+  return savedBalanacesIds;
+};
 
-  const data = await db
-    .insert(balancesTable)
-    .values(balances)
-    .returning({ id: balancesTable.id });
+export const returnBalanceStatsData = async (): Promise<{
+  totalBalancesByCurrency: Record<string, number>;
+}> => {
+  const balancesData = await getBalanceForCurrentUser();
 
-  return data.map((balance) => balance.id);
+  const groupedByCurrency = balancesData.reduce(
+    (acc, balance) => {
+      if (!acc[balance.currency]) {
+        acc[balance.currency] = [];
+      }
+      acc[balance.currency].push(balance);
+      return acc;
+    },
+    {} as Record<string, AccountBalance[]>,
+  );
+
+  const totalBalancesByCurrency = Object.keys(groupedByCurrency).reduce(
+    (acc, currency) => {
+      const balancesForCurrency = groupedByCurrency[currency];
+      const totalForCurrency = balancesForCurrency.reduce(
+        (sum, balance) => sum + balance.amount,
+        0,
+      );
+      acc[currency] = totalForCurrency;
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
+
+  return {
+    totalBalancesByCurrency,
+  };
 };
