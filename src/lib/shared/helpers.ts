@@ -12,3 +12,9 @@ export function currencyFormat(
     currency,
   }).format(amount);
 }
+
+// {transaction.type === "OUTGOING" ? (
+//   <ArrowUpIcon/>
+// ) : (
+//   <ArrowDownIcon />
+// )}
