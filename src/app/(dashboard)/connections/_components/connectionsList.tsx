@@ -29,13 +29,15 @@ function ConnectionListElement({ connection }: { connection: BankConnection }) {
         <div className="hidden sm:block">
           <p className="text-sm/6 text-gray-900">
             Valid For:{" "}
-            <span className="font-black">{connection.validFor} days</span>
+            <span className="font-black">
+              {calculateValidForDays(connection)} days
+            </span>
           </p>
           <div className="mt-1 flex items-center gap-x-1.5">
             <p className="text-xs/5 text-gray-500">
               Expires:{" "}
               <span className="font-black">
-                {connection.agreementExpirationDate.toLocaleString()}
+                {connection.agreementExpirationDate.toDateString()}
               </span>
             </p>
           </div>
@@ -51,4 +53,15 @@ function ConnectionListElement({ connection }: { connection: BankConnection }) {
       </div>
     </li>
   );
+}
+
+function calculateValidForDays(connection: BankConnection): number {
+  const currentDate = new Date();
+  const agreementExpirationDate = new Date(connection.agreementExpirationDate);
+  const differenceInMilliseconds =
+    agreementExpirationDate.getTime() - currentDate.getTime();
+  const differenceInDays = Math.ceil(
+    differenceInMilliseconds / (1000 * 60 * 60 * 24),
+  );
+  return differenceInDays;
 }
