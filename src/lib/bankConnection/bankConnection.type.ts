@@ -8,7 +8,6 @@ type BankConnection = {
   maxHistoricalDays: number;
   validFor: number;
   agreementCreationDate: Date;
-  agreementAcceptanceDate: Date;
   agreementExpirationDate: Date;
   requisitionCreationDate: Date;
 };

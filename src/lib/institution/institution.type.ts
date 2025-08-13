@@ -4,7 +4,6 @@ type Institution = {
   bic: string;
   maxTransactionTotalDays: number;
   logo: string;
-  bankConnectionId: string | null;
   supportedFeatures: string[];
   maxDaysAccess: number;
 };

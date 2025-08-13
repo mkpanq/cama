@@ -7,7 +7,6 @@ import {
 } from "drizzle-orm/pg-core";
 import { authUsers } from "drizzle-orm/supabase";
 
-// TODO: Uniqe index on id++userId+ref+institutionId+aggId+reqId
 export const bankConnectionTable = pgTable("bank_connections", {
   id: uuid("id").primaryKey(),
 

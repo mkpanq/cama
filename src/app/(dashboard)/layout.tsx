@@ -12,6 +12,7 @@ import type { Metadata } from "next";
 import "../globals.css";
 import Link from "next/link";
 import LogoutButton from "../auth/_components/logoutButton";
+import APP_CONFIG from "@/lib/appConfig";
 
 const user = {
   name: "Tom Cook",
@@ -21,8 +22,9 @@ const user = {
 };
 
 const navigation = [
-  { name: "Home", href: "/" },
-  { name: "Institutions", href: "/institutions" },
+  { name: "Home", href: APP_CONFIG.ROUTE_CONFIG.HOME_PATH },
+  { name: "Institutions", href: APP_CONFIG.ROUTE_CONFIG.INSTITUTIONS_PATH },
+  { name: "Connections", href: APP_CONFIG.ROUTE_CONFIG.CONNECTIONS_PATH },
 ];
 
 const userNavigation = [

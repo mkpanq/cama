@@ -4,7 +4,7 @@ import getDBClient from "@/db/client";
 import { bankConnectionTable } from "@/db/schema/bankConnection";
 import type BankConnection from "./bankConnection.type";
 import { getCurrentUser } from "../shared/getCurrentUser";
-import { eq, and } from "drizzle-orm";
+import { eq, and, isNotNull } from "drizzle-orm";
 import { deleteRequisitionFromApi } from "./requisition/requisition.service";
 
 export const initializeBankConnection = async (
@@ -74,40 +74,32 @@ export const updateRequisitionCreationDateForBankConnection = async (
     .where(eq(bankConnectionTable.id, bankConnectionId));
 };
 
-export const getAllConnectedInstitutions = async () => {
+export const getAllConnections = async (): Promise<BankConnection[]> => {
   const db = await getDBClient();
   const { id } = await getCurrentUser();
-  const institutions = await db
-    .select({
-      id: bankConnectionTable.institutionId,
-      bankConnectionId: bankConnectionTable.id,
-    })
+  const connections = await db
+    .select()
     .from(bankConnectionTable)
-    .where(eq(bankConnectionTable.userId, id));
+    .where(
+      and(
+        eq(bankConnectionTable.userId, id),
+        isNotNull(bankConnectionTable.requisitionId),
+        isNotNull(bankConnectionTable.requisitionCreationDate),
+      ),
+    );
 
-  return institutions.map((institution) => {
-    return {
-      id: institution.id,
-      bankConnectionId: institution.bankConnectionId,
-    };
-  });
+  // TODO: Just for remove any compilator issues with potential nulls
+  return connections as BankConnection[];
 };
 
 export const deleteBankConnection = async (
   bankConnectionId: string,
-  institutionId: string,
 ): Promise<string> => {
   const db = await getDBClient();
   const data = await db
     .select({ id: bankConnectionTable.requisitionId })
     .from(bankConnectionTable)
-    .where(
-      and(
-        // this institution removal is just in case
-        eq(bankConnectionTable.id, bankConnectionId),
-        eq(bankConnectionTable.institutionId, institutionId),
-      ),
-    );
+    .where(and(eq(bankConnectionTable.id, bankConnectionId)));
 
   const requisitionId = data[0]?.id;
   if (!requisitionId) {

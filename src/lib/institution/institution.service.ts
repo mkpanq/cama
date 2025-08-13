@@ -2,7 +2,6 @@ import APP_CONFIG from "@/lib/appConfig";
 import { getCurrentApiToken } from "@/lib/shared/apiToken/apiToken.service";
 import bankDataApiRequest from "@/lib/shared/bankDataApi.request";
 import type Institution from "./institution.type";
-import { getAllConnectedInstitutions } from "../bankConnection/bankConnection.service";
 
 export const getInstitutionList = async (): Promise<Institution[]> => {
   const data = await bankDataApiRequest<
@@ -30,8 +29,6 @@ export const getInstitutionList = async (): Promise<Institution[]> => {
     (institution) => institution.id === "SANDBOXFINANCE_SFIN0000",
   );
 
-  const alreadyConnected = await getAllConnectedInstitutions();
-
   return testData.map((rawInstitution) => ({
     id: rawInstitution.id,
     name: rawInstitution.name,
@@ -39,10 +36,6 @@ export const getInstitutionList = async (): Promise<Institution[]> => {
     maxTransactionTotalDays: Number.parseInt(
       rawInstitution.transaction_total_days,
     ),
-    bankConnectionId:
-      alreadyConnected.filter(
-        (institution) => institution.id === rawInstitution.id,
-      )[0]?.bankConnectionId ?? null,
     logo: rawInstitution.logo,
     supportedFeatures: rawInstitution.supported_features,
     maxDaysAccess: Number.parseInt(rawInstitution.max_access_valid_for_days),

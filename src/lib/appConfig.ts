@@ -2,6 +2,7 @@ const ROUTE_CONFIG = {
   HOME_PATH: "/",
   AUTH_PATH: "/auth",
   INSTITUTIONS_PATH: "/institutions",
+  CONNECTIONS_PATH: "/connections",
 
   API_CREATE_REQUISITION_WEBHOOK: "/api/requisition/confirm",
 };

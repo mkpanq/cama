@@ -55,7 +55,30 @@ function InstitutionListElement({ institution }: { institution: Institution }) {
             </p>
           </div>
         </div>
-        {institution.bankConnectionId ? (
+        <form action={createBankConnection}>
+          <input type="hidden" name="institutionId" value={institution.id} />
+          <input
+            type="hidden"
+            name="maxTransactionTotalDays"
+            value={institution.maxTransactionTotalDays}
+          />
+          <input
+            type="hidden"
+            name="maxDaysAccess"
+            value={institution.maxDaysAccess}
+          />
+          <button type="submit" className="hover:cursor-pointer">
+            <div className="flex items-center px-3 py-1 rounded-2xl border border-gray-300">
+              <p className="text-xs/5 text-gray-500 ">Click to connect</p>
+              <ChevronRightIcon
+                aria-hidden="true"
+                className="size-5 flex-none text-gray-400"
+              />
+            </div>
+          </button>
+        </form>
+        {/* TODO: Remove bank connenction on the separate page with bank connections - institutions are only for creating the new ones! */}
+        {/* {
           <div className="flex flex-col items-end">
             <div className="flex items-center gap-x-1.5">
               <div className="size-2 rounded-full bg-emerald-500" />
@@ -79,30 +102,7 @@ function InstitutionListElement({ institution }: { institution: Institution }) {
               </button>
             </form>
           </div>
-        ) : (
-          <form action={createBankConnection}>
-            <input type="hidden" name="institutionId" value={institution.id} />
-            <input
-              type="hidden"
-              name="maxTransactionTotalDays"
-              value={institution.maxTransactionTotalDays}
-            />
-            <input
-              type="hidden"
-              name="maxDaysAccess"
-              value={institution.maxDaysAccess}
-            />
-            <button type="submit" className="hover:cursor-pointer">
-              <div className="flex items-center px-3 py-1 rounded-2xl border border-gray-300">
-                <p className="text-xs/5 text-gray-500 ">Click to connect</p>
-                <ChevronRightIcon
-                  aria-hidden="true"
-                  className="size-5 flex-none text-gray-400"
-                />
-              </div>
-            </button>
-          </form>
-        )}
+        } */}
       </div>
     </li>
   );
