@@ -55,25 +55,34 @@ function parseFile(filePath) {
   });
 }
 
-// Start full walk
 walk(repoRoot);
 
-// Write markdown
 if (todos.length > 0) {
-  const markdown = [
-    "# TODOs in Codebase",
-    "",
-    ...todos.map(
-      (todo) =>
-        `- [${todo.id}] ${todo.message}\n  [${todo.file}:${todo.line}](./${todo.file}#L${todo.line})`,
-    ),
-    "",
-  ].join("\n");
+  const markdown = ["# TODOs in Codebase", ""];
 
-  fs.writeFileSync(todoFilePath, markdown);
-  execSync("git add TODO.md");
-  console.log(`📄 TODO.md updated with ${todos.length} items.`);
+  todos.forEach((todo) => {
+    const fileLabel = `${todo.file}:${todo.line}`;
+    const link = `./${todo.file}#L${todo.line}`;
+
+    markdown.push(`### [${todo.id}]`);
+    markdown.push(`${todo.message}`);
+    markdown.push(`File: [${fileLabel}](${link})`);
+    markdown.push("");
+  });
+
+  fs.writeFileSync(todoFilePath, markdown.join("\n"));
+
+  // Automatically add TODO.md to staging
+  execSync(`git add ${todoFilePath}`);
+
+  console.log(
+    `📄 TODO.md updated with ${todos.length} items and staged for commit.`,
+  );
 } else {
-  if (fs.existsSync(todoFilePath)) fs.unlinkSync(todoFilePath);
-  console.log("✅ No TODOs found. Removed TODO.md.");
+  if (fs.existsSync(todoFilePath)) {
+    fs.unlinkSync(todoFilePath);
+    console.log("🧹 No TODOs found. Removed existing TODO.md.");
+  } else {
+    console.log("✅ No TODOs found.");
+  }
 }
