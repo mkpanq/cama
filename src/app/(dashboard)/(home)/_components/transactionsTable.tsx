@@ -1,86 +1,12 @@
 import { currencyFormat } from "@/lib/shared/helpers";
+import { getAllTransactions } from "@/lib/transaction/transaction.service";
 import type Transaction from "@/lib/transaction/transaction.type";
 import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/20/solid";
 
-const transactions: Transaction[] = [
-  {
-    id: "1",
-    accountId: "A12345",
-    userId: "U98765",
-    bookingDate: new Date("2023-04-01"),
-    type: "OUTGOING",
-    amount: 100.5,
-    currency: "EUR",
-    counterpartyDetails: {
-      name: "John Doe",
-      iban: "DE89370400440532013000",
-    },
-    transactionCode: "TX12345",
-    description: "Payment to supplier",
-  },
-  {
-    id: "2",
-    accountId: "A67890",
-    userId: "U54321",
-    bookingDate: new Date("2023-04-02"),
-    type: "INCOMING",
-    amount: 50.75,
-    currency: "USD",
-    counterpartyDetails: {
-      name: "Jane Smith",
-      iban: "FR1420041010050500013M02",
-    },
-    transactionCode: "TX67890",
-    description: "Interest earned",
-  },
-  {
-    id: "3",
-    accountId: "A24680",
-    userId: "U13579",
-    bookingDate: new Date("2023-04-03"),
-    type: "OUTGOING",
-    amount: 25.0,
-    currency: "GBP",
-    counterpartyDetails: {
-      name: "Alice Johnson",
-      iban: "GB33BUKB20201555555555",
-    },
-    transactionCode: "TX24680",
-    description: "Online purchase",
-  },
-  {
-    id: "4",
-    accountId: "A13579",
-    userId: "U24680",
-    bookingDate: new Date("2023-04-04"),
-    type: "INCOMING",
-    amount: 75.2,
-    currency: "EUR",
-    counterpartyDetails: {
-      name: "Bob Brown",
-      iban: "DE89370400440532013000",
-    },
-    transactionCode: "TX13579",
-    description: "Refund from merchant",
-  },
-  {
-    id: "5",
-    accountId: "A24681",
-    userId: "U13578",
-    bookingDate: new Date("2023-04-05"),
-    type: "OUTGOING",
-    amount: 15.9,
-    currency: "USD",
-    counterpartyDetails: {
-      name: "Charlie Davis",
-      iban: "FR1420041010050500013M02",
-    },
-    transactionCode: "TX24681",
-    description: "ATM withdrawal",
-  },
-];
+// TODO: Fix displaying of transactions - pagination, account name, etc.
+export default async function TransactionsTable() {
+  const transactions: Transaction[] = await getAllTransactions();
 
-export default function TransactionsTable() {
   return (
     <div className="mt-8 flow-root">
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">

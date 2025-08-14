@@ -7,11 +7,11 @@ type Transaction = {
   amount: number;
   currency: string;
   counterpartyDetails: {
-    name: string;
-    iban: string;
+    name: string | null;
+    iban: string | null;
   };
-  transactionCode: string;
-  description: string;
+  transactionCode: string | null;
+  description: string | null;
 };
 
 export default Transaction;

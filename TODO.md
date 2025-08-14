@@ -1,5 +1,9 @@
 # TODOs in Codebase
 
+#### [TODO-952999]
+Fix displaying of transactions - pagination, account name, etc.<br/>
+File: [src/app/(dashboard)/(home)/_components/transactionsTable.tsx:6](./src/app/(dashboard)/(home)/_components/transactionsTable.tsx#L6)
+
 #### [TODO-a7bea2]
 Remove bank connenction on the separate page with bank connections - institutions are only for creating the new ones! */}<br/>
 File: [src/app/(dashboard)/institutions/_components/institutionsList.tsx:80](./src/app/(dashboard)/institutions/_components/institutionsList.tsx#L80)
@@ -50,15 +54,19 @@ File: [src/lib/bankConnection/bankConnection.service.ts:91](./src/lib/bankConnec
 
 #### [TODO-465426]
 For testing and development let's add just test bank<br/>
-File: [src/lib/institution/institution.service.ts:21](./src/lib/institution/institution.service.ts#L21)
+File: [src/lib/institution/institution.service.ts:22](./src/lib/institution/institution.service.ts#L22)
 
 #### [TODO-04f44b]
 Just for testing<br/>
-File: [src/lib/institution/institution.service.ts:27](./src/lib/institution/institution.service.ts#L27)
+File: [src/lib/institution/institution.service.ts:28](./src/lib/institution/institution.service.ts#L28)
 
 #### [TODO-40b042]
 We should create separate "Job Method wrapper" to identify why some requests<br/>
 File: [src/lib/transaction/transaction.service.ts:1](./src/lib/transaction/transaction.service.ts#L1)
+
+#### [TODO-ec3693]
+For now server-only - but I guess, due to possible need of having pagination, we'll need to make it client-side<br/>
+File: [src/lib/transaction/transaction.service.ts:5](./src/lib/transaction/transaction.service.ts#L5)
 
 #### [TODO-7c1d9c]
 Right now I've decided to go with one middleware file due to need of creating separate parser for multiple middleware files - Will do it later, when more middlewares will be needed<br/>
