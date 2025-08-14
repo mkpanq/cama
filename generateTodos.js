@@ -64,8 +64,8 @@ if (todos.length > 0) {
     const fileLabel = `${todo.file}:${todo.line}`;
     const link = `./${todo.file}#L${todo.line}`;
 
-    markdown.push(`### [${todo.id}]`);
-    markdown.push(`${todo.message}`);
+    markdown.push(`#### [${todo.id}]`);
+    markdown.push(`${todo.message}<br/>`);
     markdown.push(`File: [${fileLabel}](${link})`);
     markdown.push("");
   });
