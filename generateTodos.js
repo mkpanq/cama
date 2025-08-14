@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
+const { execSync } = require("child_process");
 
 const repoRoot = process.cwd();
 const todoFilePath = path.join(repoRoot, "TODO.md");
@@ -70,6 +71,7 @@ if (todos.length > 0) {
   ].join("\n");
 
   fs.writeFileSync(todoFilePath, markdown);
+  execSync("git add TODO.md");
   console.log(`📄 TODO.md updated with ${todos.length} items.`);
 } else {
   if (fs.existsSync(todoFilePath)) fs.unlinkSync(todoFilePath);
