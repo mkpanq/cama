@@ -4,6 +4,10 @@
 Fix displaying of transactions - pagination, account name, etc.<br/>
 File: [src/app/(dashboard)/(home)/_components/transactionsTable.tsx:6](./src/app/(dashboard)/(home)/_components/transactionsTable.tsx#L6)
 
+#### [TODO-a69783]
+Page Header should be configurable in the Layout */}<br/>
+File: [src/app/(dashboard)/accounts/page.tsx:6](./src/app/(dashboard)/accounts/page.tsx#L6)
+
 #### [TODO-a7bea2]
 Remove bank connenction on the separate page with bank connections - institutions are only for creating the new ones! */}<br/>
 File: [src/app/(dashboard)/institutions/_components/institutionsList.tsx:80](./src/app/(dashboard)/institutions/_components/institutionsList.tsx#L80)
