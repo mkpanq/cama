@@ -16,8 +16,7 @@ const transactions: Transaction[] = [
       iban: "DE89370400440532013000",
     },
     transactionCode: "TX12345",
-    description:
-      "Payment to supplier shdbkasjndfbjlajfo'asbhdfjasdfm ad'OUFHad",
+    description: "Payment to supplier",
   },
   {
     id: "2",

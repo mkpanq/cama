@@ -5,6 +5,8 @@ type ErrorResponse = {
   type?: string;
 };
 
+// Proper error handling - for now, I've decided to just throw Errors and catch them in the most upper level of the app (controllers, server action, API routes). Perfect way would be installing some monitoring / error logging together with it, with some error notification toasts for user.
+
 const bankDataApiRequest = async <T>({
   path,
   method,

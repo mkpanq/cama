@@ -11,8 +11,8 @@ import {
   isTokenValid,
 } from "./lib/shared/apiToken/apiToken.service";
 
-// TODO: Right now I've decided to go with one middleware file due to need of creating separate parser for multiple middleware files
-// Will do it later, when more middlewares will be needed
+// TODO: Right now I've decided to go with one middleware file due to need of creating separate parser for multiple middleware files - Will do it later, when more middlewares will be needed
+// TODO: Redirect to login page, when browser token is expired - I've noticed that when token is expired, we get 500 error, instead of redirection to login page. Need to create mechanism to check expiration and proper redirect each time token is needed. Probably the issue is also with some errors related to the refreshing token - we'll focus on this later
 export async function middleware(request: NextRequest) {
   let outputResponse = NextResponse.next({
     request,
