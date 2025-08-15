@@ -55,13 +55,13 @@ export default function TransactionsTable({
                 </th>
                 <th
                   scope="col"
-                  className="px-2 py-3.5 text-left text-sm font-semibold whitespace-nowrap text-gray-900"
+                  className="max-sm:hidden px-2 py-3.5 text-left text-sm font-semibold whitespace-nowrap text-gray-900"
                 >
                   Account
                 </th>
                 <th
                   scope="col"
-                  className="px-2 py-3.5 text-left text-sm font-semibold whitespace-nowrap text-gray-900"
+                  className="max-sm:hidden px-2 py-3.5 text-left text-sm font-semibold whitespace-nowrap text-gray-900"
                 >
                   Booking Date
                 </th>
@@ -81,10 +81,10 @@ export default function TransactionsTable({
                   <td className="px-2 py-2 text-sm font-medium truncate text-gray-900">
                     {transaction.description}
                   </td>
-                  <td className="px-2 py-2 text-sm whitespace-nowrap text-gray-900">
+                  <td className="max-sm:hidden px-2 py-2 text-sm whitespace-nowrap text-gray-900">
                     {transaction.accountName} - {transaction.institutionName}
                   </td>
-                  <td className="px-2 py-2 text-sm whitespace-nowrap text-gray-500">
+                  <td className="max-sm:hidden px-2 py-2 text-sm whitespace-nowrap text-gray-500">
                     {transaction.bookingDate.toDateString()}
                   </td>
                 </tr>
@@ -95,7 +95,7 @@ export default function TransactionsTable({
       </div>
       <nav
         aria-label="Pagination"
-        className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6"
+        className="flex items-center justify-between border-t border-gray-200  px-4 py-3 sm:px-6"
       >
         <div className="hidden sm:block">
           <p className="text-sm text-gray-700">
