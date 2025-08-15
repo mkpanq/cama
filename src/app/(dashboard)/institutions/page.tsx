@@ -40,7 +40,6 @@ const getConnectionsData = async (): Promise<
       const relatedInstitutionData = await getInstitutionDetails(
         connection.institutionId,
       );
-      console.log(relatedInstitutionData);
 
       const updatedConnection = {
         ...connection,
