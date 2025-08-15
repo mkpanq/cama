@@ -9,8 +9,6 @@ import APP_CONFIG from "../appConfig";
 import bankDataApiRequest from "../shared/bankDataApi.request";
 import type Transaction from "./transaction.type";
 import { transactionsTable } from "@/db/schema/transaction";
-import { eq } from "drizzle-orm";
-import { getCurrentUser } from "../shared/getCurrentUser";
 
 export const getBookedTransactionsDataFromAPI = async (
   accountId: string,
@@ -102,34 +100,34 @@ export const saveTransactionsDataToDB = async (transactions: Transaction[]) => {
   return data.map((transaction) => transaction.id);
 };
 
-export const getAllTransactions = async (): Promise<Transaction[]> => {
-  const db = await getDBClient();
-  const { id } = await getCurrentUser();
+// export const getAllTransactions = async (): Promise<Transaction[]> => {
+//   const db = await getDBClient();
+//   const { id } = await getCurrentUser();
 
-  // Fetch transactions from the database
-  const dbTransactions = await db
-    .select()
-    .from(transactionsTable)
-    .where(eq(transactionsTable.userId, id));
+//   // Fetch transactions from the database
+//   const dbTransactions = await db
+//     .select()
+//     .from(transactionsTable)
+//     .where(eq(transactionsTable.userId, id));
 
-  // Convert each dbTransaction to a Transaction type
-  const transactions: Transaction[] = dbTransactions.map((dbTransaction) => {
-    return {
-      id: dbTransaction.id,
-      accountId: dbTransaction.accountId,
-      userId: dbTransaction.userId,
-      bookingDate: new Date(dbTransaction.bookingDate),
-      type: dbTransaction.type,
-      amount: dbTransaction.amount,
-      currency: dbTransaction.currency,
-      counterpartyDetails: {
-        name: dbTransaction.counterpartyName,
-        iban: dbTransaction.counterpartyIban,
-      },
-      transactionCode: dbTransaction.transactionCode,
-      description: dbTransaction.description,
-    };
-  });
+//   // Convert each dbTransaction to a Transaction type
+//   const transactions: Transaction[] = dbTransactions.map((dbTransaction) => {
+//     return {
+//       id: dbTransaction.id,
+//       accountId: dbTransaction.accountId,
+//       userId: dbTransaction.userId,
+//       bookingDate: new Date(dbTransaction.bookingDate),
+//       type: dbTransaction.type,
+//       amount: dbTransaction.amount,
+//       currency: dbTransaction.currency,
+//       counterpartyDetails: {
+//         name: dbTransaction.counterpartyName,
+//         iban: dbTransaction.counterpartyIban,
+//       },
+//       transactionCode: dbTransaction.transactionCode,
+//       description: dbTransaction.description,
+//     };
+//   });
 
-  return transactions;
-};
+//   return transactions;
+// };

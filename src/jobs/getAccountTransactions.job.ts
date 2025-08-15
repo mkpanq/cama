@@ -1,7 +1,7 @@
 import "server-only";
 import APP_CONFIG from "@/lib/appConfig";
 import { type Job, Queue, Worker } from "bullmq";
-import { getCurrentUser } from "@/lib/shared/getCurrentUser";
+import { getCurrentUser } from "@/lib/shared/supabaseServerClient";
 import { getCurrentApiToken } from "@/lib/shared/apiToken/apiToken.service";
 import { getMaxHistoricalDays } from "@/lib/account/account.service";
 import {

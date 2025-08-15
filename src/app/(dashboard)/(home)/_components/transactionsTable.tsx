@@ -1,11 +1,17 @@
+"use client";
+
 import { currencyFormat } from "@/lib/shared/helpers";
-import { getAllTransactions } from "@/lib/transaction/transaction.service";
 import type Transaction from "@/lib/transaction/transaction.type";
 import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/20/solid";
+import getDBClient from "@/db/client";
+import { transactionsTable } from "@/db/schema/transaction";
+// import { getCurrentUser } from "@/lib/shared/supabaseServerClient";
+import { eq } from "drizzle-orm";
 
 // TODO: Fix displaying of transactions - pagination, account name, etc.
-export default async function TransactionsTable() {
-  const transactions: Transaction[] = await getAllTransactions();
+export default function TransactionsTable() {
+  const transactions: Transaction[] = [];
+  // const transactions: Transaction[] = await getAllTransactions();
 
   return (
     <div className="mt-8 flow-root">
@@ -76,3 +82,35 @@ export default async function TransactionsTable() {
     </div>
   );
 }
+
+// const getAllTransactions = async (): Promise<Transaction[]> => {
+//   const db = await getDBClient();
+//   // const { id } = await getCurrentUser("BROWSER");
+
+//   // Fetch transactions from the database
+//   const dbTransactions = await db
+//     .select()
+//     .from(transactionsTable)
+//     .where(eq(transactionsTable.userId, id));
+
+//   // Convert each dbTransaction to a Transaction type
+//   const transactions: Transaction[] = dbTransactions.map((dbTransaction) => {
+//     return {
+//       id: dbTransaction.id,
+//       accountId: dbTransaction.accountId,
+//       userId: dbTransaction.userId,
+//       bookingDate: new Date(dbTransaction.bookingDate),
+//       type: dbTransaction.type,
+//       amount: dbTransaction.amount,
+//       currency: dbTransaction.currency,
+//       counterpartyDetails: {
+//         name: dbTransaction.counterpartyName,
+//         iban: dbTransaction.counterpartyIban,
+//       },
+//       transactionCode: dbTransaction.transactionCode,
+//       description: dbTransaction.description,
+//     };
+//   });
+
+//   return transactions;
+// };

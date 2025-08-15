@@ -1,5 +1,5 @@
 import "server-only";
-import { createServerSupabaseClient } from "../shared/supabaseClients";
+import { createServerSupabaseClient } from "../shared/supabaseServerClient";
 import { cookies } from "next/headers";
 import { getNewToken } from "@/lib/shared/apiToken/apiToken.service";
 import APP_CONFIG from "@/lib/appConfig";

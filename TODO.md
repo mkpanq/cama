@@ -2,7 +2,7 @@
 
 #### [TODO-952999]
 Fix displaying of transactions - pagination, account name, etc.<br/>
-File: [src/app/(dashboard)/(home)/_components/transactionsTable.tsx:6](./src/app/(dashboard)/(home)/_components/transactionsTable.tsx#L6)
+File: [src/app/(dashboard)/(home)/_components/transactionsTable.tsx:11](./src/app/(dashboard)/(home)/_components/transactionsTable.tsx#L11)
 
 #### [TODO-a69783]
 Page Header should be configurable in the Layout */}<br/>

@@ -5,7 +5,6 @@ import {
   saveBalanceData,
 } from "@/lib/balance/balance.service";
 import { type Job, Queue, Worker } from "bullmq";
-import { getCurrentUser } from "@/lib/shared/getCurrentUser";
 import { getCurrentApiToken } from "@/lib/shared/apiToken/apiToken.service";
 import {
   completedLog,
@@ -14,6 +13,7 @@ import {
   progressLog,
   redisConnection,
 } from "./jobs.config";
+import { getCurrentUser } from "@/lib/shared/supabaseServerClient";
 
 const getAccountBalanceDataQueue = new Queue(
   APP_CONFIG.JOBS_CONFIG.QUEUES.BALANCES_QUEUE_NAME,

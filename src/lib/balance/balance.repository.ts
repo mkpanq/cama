@@ -1,7 +1,7 @@
 import getDBClient from "@/db/client";
 import { balancesTable } from "@/db/schema/balance";
 import { and, eq } from "drizzle-orm";
-import { getCurrentUser } from "../shared/getCurrentUser";
+import { getCurrentUser } from "../shared/supabaseServerClient";
 import type AccountBalance from "./balance.type";
 
 export const saveBalanceDataToDB = async (balances: AccountBalance[]) => {

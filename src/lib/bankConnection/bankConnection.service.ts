@@ -3,7 +3,7 @@ import { requestForNewAgreement } from "./agreement/agreement.service";
 import getDBClient from "@/db/client";
 import { bankConnectionTable } from "@/db/schema/bankConnection";
 import type BankConnection from "./bankConnection.type";
-import { getCurrentUser } from "../shared/getCurrentUser";
+import { getCurrentUser } from "../shared/supabaseServerClient";
 import { eq, and, isNotNull } from "drizzle-orm";
 import { deleteRequisitionFromApi } from "./requisition/requisition.service";
 

@@ -4,7 +4,7 @@ import getDBClient from "@/db/client";
 import { accountsTable } from "@/db/schema/account";
 import { getCurrentApiToken } from "../shared/apiToken/apiToken.service";
 import bankDataApiRequest from "../shared/bankDataApi.request";
-import { getCurrentUser } from "../shared/getCurrentUser";
+import { getCurrentUser } from "../shared/supabaseServerClient";
 import type Account from "./account.type";
 import { bankConnectionTable } from "@/db/schema/bankConnection";
 import { eq } from "drizzle-orm";
