@@ -5,8 +5,7 @@ type ErrorResponse = {
   type?: string;
 };
 
-// TODO: Proper error handling - for now, I've decided to just throw Errors and catch them in the most upper level of the app (controllers, server action, API routes). Perfect way would be installing some monitoring / error logging together with it, with some error notification toasts for user.
-// TODO: I think we can handle a a lot of things by using Tanstack Query
+// TODO: Add Tanstack Query for improving data caching and Errors and it's handling - decide where to return empty return and where to throw exception to catch it later.
 const bankDataApiRequest = async <T>({
   path,
   method,

@@ -1,12 +1,9 @@
-// TODO: We should create separate "Job Method wrapper" to identify why some requests
-// Need to have tokena and current user passed as an argument, instead of getting parsed
-// from the method itself
 import "server-only";
 
 import getDBClient from "@/db/client";
 import APP_CONFIG from "../appConfig";
 import bankDataApiRequest from "../shared/bankDataApi.request";
-import type Transaction from "./transaction.type";
+import type { Transaction } from "./transaction.type";
 import { transactionsTable } from "@/db/schema/transaction";
 import { getCurrentUser } from "../shared/supabaseServerClient";
 import { eq } from "drizzle-orm";

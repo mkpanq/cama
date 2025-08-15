@@ -10,7 +10,6 @@ export default async function AccountsPage() {
 
   return (
     <div>
-      {/* TODO: Page Header should be configurable in the Layout */}
       <PageHeader title="Accounts" />
       <ul className="divide-y divide-gray-100">
         {accountsBalancesData.map((data) => (

@@ -1,13 +1,5 @@
 # TODOs in Codebase
 
-#### [TODO-a69783]
-Page Header should be configurable in the Layout */}<br/>
-File: [src/app/(dashboard)/accounts/page.tsx:13](./src/app/(dashboard)/accounts/page.tsx#L13)
-
-#### [TODO-4272c7]
-Think about better erroring strategy<br/>
-File: [src/app/api/requisition/confirm/route.ts:15](./src/app/api/requisition/confirm/route.ts#L15)
-
 #### [TODO-03677c]
 Think about zod library for parsing and validate such input<br/>
 File: [src/app/auth/_lib/actions.ts:9](./src/app/auth/_lib/actions.ts#L9)
@@ -16,33 +8,21 @@ File: [src/app/auth/_lib/actions.ts:9](./src/app/auth/_lib/actions.ts#L9)
 Set default userId automatically - setup RLS!<br/>
 File: [src/db/client.ts:5](./src/db/client.ts#L5)
 
-#### [TODO-66dd18]
-Remember to improve Error handling - thanks to that we would know what happened in the<br/>
-File: [src/jobs/getAccountBalances.job.ts:34](./src/jobs/getAccountBalances.job.ts#L34)
-
 #### [TODO-cf30f0]
 Not a fan of this solution when need to extract token and userId separately just for those methods<br/>
-File: [src/jobs/getAccountBalances.job.ts:69](./src/jobs/getAccountBalances.job.ts#L69)
+File: [src/jobs/getAccountBalances.job.ts:66](./src/jobs/getAccountBalances.job.ts#L66)
 
 #### [TODO-a74078]
 Remember to improve Error handling - thanks to that we would know what happened in the<br/>
 File: [src/jobs/getAccountTransactions.job.ts:35](./src/jobs/getAccountTransactions.job.ts#L35)
 
-#### [TODO-d7950d]
-Not a fan of this solution when need to extract token and userId separately just for those methods<br/>
-File: [src/jobs/getAccountTransactions.job.ts:81](./src/jobs/getAccountTransactions.job.ts#L81)
+#### [TODO-76c4fc]
+Create separate "Job Method wrapper" to identify why some requests needs to have tokens and current user passed as an argument, instead of getting parsed from the method itself<br/>
+File: [src/jobs/jobs.config.ts:26](./src/jobs/jobs.config.ts#L26)
 
 #### [TODO-e66542]
 Needs refactor - rather save historical days together with the accounts table rather than making such joins<br/>
 File: [src/lib/account/account.service.ts:96](./src/lib/account/account.service.ts#L96)
-
-#### [TODO-826156]
-We should create separate "Job Method wrapper" to identify why some requests<br/>
-File: [src/lib/balance/balance.service.ts:14](./src/lib/balance/balance.service.ts#L14)
-
-#### [TODO-bc4b3e]
-Just for remove any compilator issues with potential nulls<br/>
-File: [src/lib/bankConnection/bankConnection.service.ts:91](./src/lib/bankConnection/bankConnection.service.ts#L91)
 
 #### [TODO-465426]
 For testing and development let's add just test bank<br/>
@@ -52,17 +32,9 @@ File: [src/lib/institution/institution.service.ts:22](./src/lib/institution/inst
 Just for testing<br/>
 File: [src/lib/institution/institution.service.ts:28](./src/lib/institution/institution.service.ts#L28)
 
-#### [TODO-8369b7]
-Proper error handling - for now, I've decided to just throw Errors and catch them in the most upper level of the app (controllers, server action, API routes). Perfect way would be installing some monitoring / error logging together with it, with some error notification toasts for user.<br/>
+#### [TODO-16083b]
+Add Tanstack Query for improving data caching and Errors and it's handling - decide where to return empty return and where to throw exception to catch it later.<br/>
 File: [src/lib/shared/bankDataApi.request.ts:8](./src/lib/shared/bankDataApi.request.ts#L8)
-
-#### [TODO-013c68]
-I think we can handle a a lot of things by using Tanstack Query<br/>
-File: [src/lib/shared/bankDataApi.request.ts:9](./src/lib/shared/bankDataApi.request.ts#L9)
-
-#### [TODO-40b042]
-We should create separate "Job Method wrapper" to identify why some requests<br/>
-File: [src/lib/transaction/transaction.service.ts:1](./src/lib/transaction/transaction.service.ts#L1)
 
 #### [TODO-7c1d9c]
 Right now I've decided to go with one middleware file due to need of creating separate parser for multiple middleware files - Will do it later, when more middlewares will be needed<br/>

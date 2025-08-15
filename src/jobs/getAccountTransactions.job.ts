@@ -78,8 +78,6 @@ new Worker(
 export const addAccountTransactionDataRetrivalJob = async (
   accountId: string,
 ) => {
-  // TODO: Not a fan of this solution when need to extract token and userId separately just for those methods
-  //  - will need to rethink implementation of strict job methods
   const { id } = await getCurrentUser();
   const token = await getCurrentApiToken();
 

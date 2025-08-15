@@ -12,7 +12,6 @@ import {
 import { addAccountBalanceDataRetrivalJob } from "@/jobs/getAccountBalances.job";
 import { addAccountTransactionDataRetrivalJob } from "@/jobs/getAccountTransactions.job";
 
-// TODO: Think about better erroring strategy
 export async function GET(request: Request) {
   try {
     const referenceId = getReferenceIdFromURL(request.url);

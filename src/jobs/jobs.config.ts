@@ -22,3 +22,5 @@ export const errorLog = (err: Error) => {
 export const completedLog = (job: Job) => {
   console.log(`[JOB::${job.id}::COMPLETE] ${job.name} has been completed`);
 };
+
+// TODO: Create separate "Job Method wrapper" to identify why some requests needs to have tokens and current user passed as an argument, instead of getting parsed from the method itself

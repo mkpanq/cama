@@ -6,14 +6,7 @@ import {
   getBalanceForCurrentUser,
   saveBalanceDataToDB,
 } from "./balance.repository";
-import getDBClient from "@/db/client";
-import { getCurrentUser } from "../shared/supabaseServerClient";
-import { balancesTable } from "@/db/schema/balance";
-import { eq } from "drizzle-orm";
 
-// TODO: We should create separate "Job Method wrapper" to identify why some requests
-// Need to have tokena and current user passed as an argument, instead of getting parsed
-// from the method itself
 export const getBalanceDataFromAPI = async (
   accountId: string,
   userId: string,

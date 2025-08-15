@@ -31,9 +31,6 @@ const getAccountBalanceDataQueue = new Queue(
   },
 );
 
-// TODO: Remember to improve Error handling - thanks to that we would know what happened in the
-// background jobs
-
 new Worker(
   APP_CONFIG.JOBS_CONFIG.QUEUES.BALANCES_QUEUE_NAME,
   async (

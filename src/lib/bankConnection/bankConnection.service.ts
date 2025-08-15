@@ -88,7 +88,6 @@ export const getAllConnections = async (): Promise<BankConnection[]> => {
       ),
     );
 
-  // TODO: Just for remove any compilator issues with potential nulls
   return connections as BankConnection[];
 };
 
