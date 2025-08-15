@@ -1,4 +1,4 @@
-type Transaction = {
+export type Transaction = {
   id: string;
   accountId: string;
   userId: string;
@@ -14,4 +14,7 @@ type Transaction = {
   description: string | null;
 };
 
-export default Transaction;
+export type DisplayedTransaction = Transaction & {
+  accountName: string | undefined | null;
+  institutionName: string | undefined;
+};

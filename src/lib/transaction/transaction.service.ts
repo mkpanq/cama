@@ -10,6 +10,8 @@ import type Transaction from "./transaction.type";
 import { transactionsTable } from "@/db/schema/transaction";
 import { getCurrentUser } from "../shared/supabaseServerClient";
 import { eq } from "drizzle-orm";
+import { accountsTable } from "@/db/schema/account";
+import type { DisplayedTransaction } from "./transaction.type";
 
 export const getBookedTransactionsDataFromAPI = async (
   accountId: string,
@@ -101,7 +103,7 @@ export const saveTransactionsDataToDB = async (transactions: Transaction[]) => {
   return data.map((transaction) => transaction.id);
 };
 
-export const getAllTransactions = async (): Promise<Transaction[]> => {
+export const getAllTransactions = async (): Promise<DisplayedTransaction[]> => {
   const db = await getDBClient();
   const { id } = await getCurrentUser();
 
@@ -109,26 +111,31 @@ export const getAllTransactions = async (): Promise<Transaction[]> => {
   const dbTransactions = await db
     .select()
     .from(transactionsTable)
-    .where(eq(transactionsTable.userId, id));
+    .where(eq(transactionsTable.userId, id))
+    .leftJoin(accountsTable, eq(transactionsTable.accountId, accountsTable.id));
 
   // Convert each dbTransaction to a Transaction type
-  const transactions: Transaction[] = dbTransactions.map((dbTransaction) => {
-    return {
-      id: dbTransaction.id,
-      accountId: dbTransaction.accountId,
-      userId: dbTransaction.userId,
-      bookingDate: new Date(dbTransaction.bookingDate),
-      type: dbTransaction.type,
-      amount: dbTransaction.amount,
-      currency: dbTransaction.currency,
-      counterpartyDetails: {
-        name: dbTransaction.counterpartyName,
-        iban: dbTransaction.counterpartyIban,
-      },
-      transactionCode: dbTransaction.transactionCode,
-      description: dbTransaction.description,
-    };
-  });
+  const transactions: DisplayedTransaction[] = dbTransactions.map(
+    (dbTransaction) => {
+      return {
+        id: dbTransaction.transactions.id,
+        accountId: dbTransaction.transactions.accountId,
+        accountName: dbTransaction.accounts?.name,
+        institutionName: dbTransaction.accounts?.institutionName,
+        userId: dbTransaction.transactions.userId,
+        bookingDate: new Date(dbTransaction.transactions.bookingDate),
+        type: dbTransaction.transactions.type,
+        amount: dbTransaction.transactions.amount,
+        currency: dbTransaction.transactions.currency,
+        counterpartyDetails: {
+          name: dbTransaction.transactions.counterpartyName,
+          iban: dbTransaction.transactions.counterpartyIban,
+        },
+        transactionCode: dbTransaction.transactions.transactionCode,
+        description: dbTransaction.transactions.description,
+      };
+    },
+  );
 
   return transactions;
 };

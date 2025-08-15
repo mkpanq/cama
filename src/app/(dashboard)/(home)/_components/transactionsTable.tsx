@@ -1,20 +1,20 @@
 "use client";
 
 import { currencyFormat } from "@/lib/shared/helpers";
-import type Transaction from "@/lib/transaction/transaction.type";
+import type { DisplayedTransaction } from "@/lib/transaction/transaction.type";
 import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/20/solid";
 import { useEffect, useState } from "react";
 
 export default function TransactionsTable({
   transactions,
 }: {
-  transactions: Transaction[];
+  transactions: DisplayedTransaction[];
 }) {
   const transactionsPerPage = 20;
   const maxPage = Math.ceil(transactions.length / transactionsPerPage);
   const [currentPage, setCurrentPage] = useState(1);
   const [displayedTransactions, setDisplayedTransactions] = useState<
-    Transaction[]
+    DisplayedTransaction[]
   >([]);
 
   const nextPage = (currentPage: number) => {
@@ -63,12 +63,6 @@ export default function TransactionsTable({
                   scope="col"
                   className="px-2 py-3.5 text-left text-sm font-semibold whitespace-nowrap text-gray-900"
                 >
-                  TransactionCode
-                </th>
-                <th
-                  scope="col"
-                  className="px-2 py-3.5 text-left text-sm font-semibold whitespace-nowrap text-gray-900"
-                >
                   Booking Date
                 </th>
               </tr>
@@ -88,10 +82,7 @@ export default function TransactionsTable({
                     {transaction.description}
                   </td>
                   <td className="px-2 py-2 text-sm whitespace-nowrap text-gray-900">
-                    {transaction.accountId}
-                  </td>
-                  <td className="px-2 py-2 text-sm whitespace-nowrap text-gray-500">
-                    {transaction.transactionCode}
+                    {transaction.accountName} - {transaction.institutionName}
                   </td>
                   <td className="px-2 py-2 text-sm whitespace-nowrap text-gray-500">
                     {transaction.bookingDate.toDateString()}
