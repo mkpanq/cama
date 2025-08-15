@@ -5,7 +5,7 @@ import { accountsTable } from "@/db/schema/account";
 import { getCurrentApiToken } from "../shared/apiToken/apiToken.service";
 import bankDataApiRequest from "../shared/bankDataApi.request";
 import { getCurrentUser } from "../shared/supabaseServerClient";
-import type Account from "./account.type";
+import type { Account } from "./account.type";
 import { bankConnectionTable } from "@/db/schema/bankConnection";
 import { eq } from "drizzle-orm";
 import { getInstitutionDetails } from "../institution/institution.service";
@@ -109,4 +109,16 @@ export const getMaxHistoricalDays = async (
     );
 
   return data[0].maxDays;
+};
+
+export const getAccountList = async (): Promise<Account[]> => {
+  const db = await getDBClient();
+  const { id } = await getCurrentUser();
+
+  const data = await db
+    .select()
+    .from(accountsTable)
+    .where(eq(accountsTable.userId, id));
+
+  return data;
 };

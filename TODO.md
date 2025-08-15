@@ -2,7 +2,7 @@
 
 #### [TODO-a69783]
 Page Header should be configurable in the Layout */}<br/>
-File: [src/app/(dashboard)/accounts/page.tsx:6](./src/app/(dashboard)/accounts/page.tsx#L6)
+File: [src/app/(dashboard)/accounts/page.tsx:13](./src/app/(dashboard)/accounts/page.tsx#L13)
 
 #### [TODO-4272c7]
 Think about better erroring strategy<br/>
@@ -42,7 +42,7 @@ File: [src/lib/account/account.service.ts:96](./src/lib/account/account.service.
 
 #### [TODO-826156]
 We should create separate "Job Method wrapper" to identify why some requests<br/>
-File: [src/lib/balance/balance.service.ts:10](./src/lib/balance/balance.service.ts#L10)
+File: [src/lib/balance/balance.service.ts:14](./src/lib/balance/balance.service.ts#L14)
 
 #### [TODO-bc4b3e]
 Just for remove any compilator issues with potential nulls<br/>

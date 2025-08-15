@@ -6,6 +6,10 @@ import {
   getBalanceForCurrentUser,
   saveBalanceDataToDB,
 } from "./balance.repository";
+import getDBClient from "@/db/client";
+import { getCurrentUser } from "../shared/supabaseServerClient";
+import { balancesTable } from "@/db/schema/balance";
+import { eq } from "drizzle-orm";
 
 // TODO: We should create separate "Job Method wrapper" to identify why some requests
 // Need to have tokena and current user passed as an argument, instead of getting parsed
@@ -80,4 +84,10 @@ export const returnBalanceStatsData = async (): Promise<{
   return {
     totalBalancesByCurrency,
   };
+};
+
+export const getBalancesList = async (): Promise<AccountBalance[]> => {
+  const balancesData = await getBalanceForCurrentUser();
+
+  return balancesData;
 };
