@@ -8,10 +8,6 @@ File: [src/app/(dashboard)/(home)/_components/transactionsTable.tsx:6](./src/app
 Page Header should be configurable in the Layout */}<br/>
 File: [src/app/(dashboard)/accounts/page.tsx:6](./src/app/(dashboard)/accounts/page.tsx#L6)
 
-#### [TODO-a7bea2]
-Remove bank connenction on the separate page with bank connections - institutions are only for creating the new ones! */}<br/>
-File: [src/app/(dashboard)/institutions/_components/institutionsList.tsx:80](./src/app/(dashboard)/institutions/_components/institutionsList.tsx#L80)
-
 #### [TODO-4272c7]
 Think about better erroring strategy<br/>
 File: [src/app/api/requisition/confirm/route.ts:15](./src/app/api/requisition/confirm/route.ts#L15)
@@ -63,6 +59,14 @@ File: [src/lib/institution/institution.service.ts:22](./src/lib/institution/inst
 #### [TODO-04f44b]
 Just for testing<br/>
 File: [src/lib/institution/institution.service.ts:28](./src/lib/institution/institution.service.ts#L28)
+
+#### [TODO-8369b7]
+Proper error handling - for now, I've decided to just throw Errors and catch them in the most upper level of the app (controllers, server action, API routes). Perfect way would be installing some monitoring / error logging together with it, with some error notification toasts for user.<br/>
+File: [src/lib/shared/bankDataApi.request.ts:8](./src/lib/shared/bankDataApi.request.ts#L8)
+
+#### [TODO-013c68]
+I think we can handle a a lot of things by using Tanstack Query<br/>
+File: [src/lib/shared/bankDataApi.request.ts:9](./src/lib/shared/bankDataApi.request.ts#L9)
 
 #### [TODO-40b042]
 We should create separate "Job Method wrapper" to identify why some requests<br/>

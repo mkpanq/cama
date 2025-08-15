@@ -5,7 +5,7 @@ const AccountsPage = () => {
     <div>
       {/* TODO: Page Header should be configurable in the Layout */}
       <PageHeader title="Accounts" />
-      <h1>Hello Accounts!</h1>
+      <h1>Soon</h1>
     </div>
   );
 };

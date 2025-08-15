@@ -1,7 +1,7 @@
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import type Institution from "../../../../lib/institution/institution.type";
 import Image from "next/image";
-import { createBankConnection, removeBankConnection } from "../_lib/actions";
+import { createBankConnection } from "../_lib/actions";
 
 export default function InstitutionList({
   institutionsList,
@@ -77,32 +77,6 @@ function InstitutionListElement({ institution }: { institution: Institution }) {
             </div>
           </button>
         </form>
-        {/* TODO: Remove bank connenction on the separate page with bank connections - institutions are only for creating the new ones! */}
-        {/* {
-          <div className="flex flex-col items-end">
-            <div className="flex items-center gap-x-1.5">
-              <div className="size-2 rounded-full bg-emerald-500" />
-              <p className="text-xs/5 text-gray-500">Connected</p>
-            </div>
-            <form action={removeBankConnection}>
-              <input
-                type="hidden"
-                name="institutionId"
-                value={institution.id}
-              />
-              <input
-                type="hidden"
-                name="bankConnectionId"
-                value={institution.bankConnectionId}
-              />
-              <button type="submit" className="hover:cursor-pointer">
-                <p className="text-xs/5 text-gray-500 hover:text-red-400 hover:cursor-pointer">
-                  Click to remove connection
-                </p>
-              </button>
-            </form>
-          </div>
-        } */}
       </div>
     </li>
   );

@@ -2,7 +2,6 @@ const ROUTE_CONFIG = {
   HOME_PATH: "/",
   AUTH_PATH: "/auth",
   INSTITUTIONS_PATH: "/institutions",
-  CONNECTIONS_PATH: "/connections",
   ACCOUNTS_PATH: "/accounts",
 
   API_CREATE_REQUISITION_WEBHOOK: "/api/requisition/confirm",
@@ -11,9 +10,8 @@ const ROUTE_CONFIG = {
 const UI_CONFIG = {
   NAVIGATION: [
     { name: "Home", href: ROUTE_CONFIG.HOME_PATH },
-    { name: "Accounts", href: ROUTE_CONFIG.ACCOUNTS_PATH },
     { name: "Institutions", href: ROUTE_CONFIG.INSTITUTIONS_PATH },
-    { name: "Connections", href: ROUTE_CONFIG.CONNECTIONS_PATH },
+    { name: "Accounts", href: ROUTE_CONFIG.ACCOUNTS_PATH },
   ],
 };
 

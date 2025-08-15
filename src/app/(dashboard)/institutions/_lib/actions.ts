@@ -37,3 +37,12 @@ export async function createBankConnection(formData: FormData) {
 
   redirect(inititalRequisition.redirectLink);
 }
+
+export async function removeBankConnection(formData: FormData) {
+  const bankConnectionId = formData.get("bankConnectionId") as string;
+
+  const deletedId = await deleteBankConnection(bankConnectionId);
+  console.log(`Deleted Bank Connection ID: ${deletedId}`);
+
+  redirect(APP_CONFIG.ROUTE_CONFIG.HOME_PATH);
+}
