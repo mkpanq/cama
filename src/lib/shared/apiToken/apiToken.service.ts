@@ -40,7 +40,7 @@ export const getRefreshedToken = async (
 ): Promise<AccessToken | undefined> => {
   try {
     const data = await bankDataApiRequest<AccessToken>({
-      path: APP_CONFIG.API_CONFIG.API_REFRESH_TOKEN_COOKIE_NAME,
+      path: APP_CONFIG.API_CONFIG.API_URL_REFRESH_TOKEN,
       method: "POST",
       body: { refresh: refreshToken },
     });

@@ -4,8 +4,8 @@
 Think about zod library for parsing and validate such input<br/>
 File: [src/app/auth/_lib/actions.ts:9](./src/app/auth/_lib/actions.ts#L9)
 
-#### [TODO-e7923d]
-Set default userId automatically - setup RLS!<br/>
+#### [TODO-06c741]
+Set default userId automatically - setup RLS<br/>
 File: [src/db/client.ts:5](./src/db/client.ts#L5)
 
 #### [TODO-cf30f0]
@@ -38,8 +38,4 @@ File: [src/lib/shared/bankDataApi.request.ts:8](./src/lib/shared/bankDataApi.req
 
 #### [TODO-7c1d9c]
 Right now I've decided to go with one middleware file due to need of creating separate parser for multiple middleware files - Will do it later, when more middlewares will be needed<br/>
-File: [src/middleware.ts:14](./src/middleware.ts#L14)
-
-#### [TODO-415fee]
-Redirect to login page, when browser token is expired - I've noticed that when token is expired, we get 500 error, instead of redirection to login page. Need to create mechanism to check expiration and proper redirect each time token is needed. Probably the issue is also with some errors related to the refreshing token - we'll focus on this later<br/>
 File: [src/middleware.ts:15](./src/middleware.ts#L15)

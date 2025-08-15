@@ -2,9 +2,14 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 
-// TODO: Set default userId automatically - setup RLS!
-export default async function getDBClient() {
-  const client = postgres(process.env.DATABASE_URL!, { prepare: false });
+// TODO: Set default userId automatically - setup RLS
+let dbInstance: ReturnType<typeof drizzle> | null = null;
 
-  return drizzle({ client });
+export default function getDbClient() {
+  if (!dbInstance) {
+    const client = postgres(process.env.DATABASE_URL!);
+    dbInstance = drizzle(client);
+  }
+
+  return dbInstance;
 }
