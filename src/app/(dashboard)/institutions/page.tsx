@@ -34,19 +34,23 @@ const getConnectionsData = async (): Promise<
   })[] = [];
 
   const connections = await getAllConnections();
-  connections.forEach(async (connection) => {
-    const relatedInstitutionData = await getInstitutionDetails(
-      connection.institutionId,
-    );
 
-    const updatedConnection = {
-      ...connection,
-      institutionName: relatedInstitutionData.name,
-      institutionLogo: relatedInstitutionData.logo,
-    };
+  await Promise.all(
+    connections.map(async (connection) => {
+      const relatedInstitutionData = await getInstitutionDetails(
+        connection.institutionId,
+      );
+      console.log(relatedInstitutionData);
 
-    bankConnections.push(updatedConnection);
-  });
+      const updatedConnection = {
+        ...connection,
+        institutionName: relatedInstitutionData.name,
+        institutionLogo: relatedInstitutionData.logo,
+      };
+
+      bankConnections.push(updatedConnection);
+    }),
+  );
 
   return bankConnections;
 };
