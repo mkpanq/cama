@@ -12,13 +12,9 @@ File: [src/app/api/requisition/confirm/route.ts:15](./src/app/api/requisition/co
 Think about zod library for parsing and validate such input<br/>
 File: [src/app/auth/_lib/actions.ts:9](./src/app/auth/_lib/actions.ts#L9)
 
-#### [TODO-edfdae]
-Set default userId automatically, whenever user has active session?<br/>
+#### [TODO-e7923d]
+Set default userId automatically - setup RLS!<br/>
 File: [src/db/client.ts:5](./src/db/client.ts#L5)
-
-#### [TODO-f759d0]
-Database connections limit - we need to handle the error that appeared during development: - ``[Error [PostgresError]: remaining connection slots are reserved for roles with the SUPERUSER attribute``<br/>
-File: [src/db/client.ts:6](./src/db/client.ts#L6)
 
 #### [TODO-66dd18]
 Remember to improve Error handling - thanks to that we would know what happened in the<br/>
