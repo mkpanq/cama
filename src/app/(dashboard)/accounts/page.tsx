@@ -34,7 +34,7 @@ export default async function AccountsPage() {
                 </p>
               </div>
             </div>
-            <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+            <div className="shrink-0 sm:flex sm:flex-col sm:items-end">
               <p className="text-xl font-bold text-gray-900">
                 {currencyFormat(data.balance, data.currency)}
               </p>

@@ -18,7 +18,7 @@ export const initializeBankConnection = async (
     validFor,
   );
 
-  const db = await getDBClient();
+  const db = getDBClient();
 
   const currentUser = await getCurrentUser();
   const data = await db
@@ -43,7 +43,7 @@ export const initializeBankConnection = async (
 export const getBankConnectionViaReferenceId = async (
   referenceId: string,
 ): Promise<BankConnection> => {
-  const db = await getDBClient();
+  const db = getDBClient();
   const bankConnection = await db
     .select()
     .from(bankConnectionTable)
@@ -56,7 +56,7 @@ export const updateRequisitionIdForBankConnection = async (
   bankConnectionId: string,
   requisitionId: string,
 ): Promise<void> => {
-  const db = await getDBClient();
+  const db = getDBClient();
   await db
     .update(bankConnectionTable)
     .set({ requisitionId: requisitionId })
@@ -67,7 +67,7 @@ export const updateRequisitionCreationDateForBankConnection = async (
   bankConnectionId: string,
   requisitionCreationDate: Date,
 ): Promise<void> => {
-  const db = await getDBClient();
+  const db = getDBClient();
   await db
     .update(bankConnectionTable)
     .set({ requisitionCreationDate: requisitionCreationDate })
@@ -75,7 +75,7 @@ export const updateRequisitionCreationDateForBankConnection = async (
 };
 
 export const getAllConnections = async (): Promise<BankConnection[]> => {
-  const db = await getDBClient();
+  const db = getDBClient();
   const { id } = await getCurrentUser();
   const connections = await db
     .select()
@@ -94,7 +94,7 @@ export const getAllConnections = async (): Promise<BankConnection[]> => {
 export const deleteBankConnection = async (
   bankConnectionId: string,
 ): Promise<string> => {
-  const db = await getDBClient();
+  const db = getDBClient();
   const data = await db
     .select({ id: bankConnectionTable.requisitionId })
     .from(bankConnectionTable)

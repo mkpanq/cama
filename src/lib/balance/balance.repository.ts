@@ -5,7 +5,7 @@ import { getCurrentUser } from "../shared/supabaseServerClient";
 import type AccountBalance from "./balance.type";
 
 export const saveBalanceDataToDB = async (balances: AccountBalance[]) => {
-  const db = await getDBClient();
+  const db = getDBClient();
 
   const data = await db
     .insert(balancesTable)
@@ -16,7 +16,7 @@ export const saveBalanceDataToDB = async (balances: AccountBalance[]) => {
 };
 
 export const getBalanceForCurrentUser = async (): Promise<AccountBalance[]> => {
-  const db = await getDBClient();
+  const db = getDBClient();
   const { id } = await getCurrentUser();
 
   return db

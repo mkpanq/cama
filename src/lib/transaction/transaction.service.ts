@@ -87,7 +87,7 @@ export const getBookedTransactionsDataFromAPI = async (
 };
 
 export const saveTransactionsDataToDB = async (transactions: Transaction[]) => {
-  const db = await getDBClient();
+  const db = getDBClient();
 
   const data = await db
     .insert(transactionsTable)
@@ -101,7 +101,7 @@ export const saveTransactionsDataToDB = async (transactions: Transaction[]) => {
 };
 
 export const getAllTransactions = async (): Promise<DisplayedTransaction[]> => {
-  const db = await getDBClient();
+  const db = getDBClient();
   const { id } = await getCurrentUser();
 
   // Fetch transactions from the database

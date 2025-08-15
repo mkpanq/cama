@@ -5,7 +5,7 @@ import { accountsTable } from "@/db/schema/account";
 import { getCurrentApiToken } from "../shared/apiToken/apiToken.service";
 import bankDataApiRequest from "../shared/bankDataApi.request";
 import { getCurrentUser } from "../shared/supabaseServerClient";
-import type { Account } from "./account.type";
+import type Account from "./account.type";
 import { bankConnectionTable } from "@/db/schema/bankConnection";
 import { eq } from "drizzle-orm";
 import { getInstitutionDetails } from "../institution/institution.service";
@@ -13,7 +13,7 @@ import { getInstitutionDetails } from "../institution/institution.service";
 export const saveAccountsToDB = async (
   accounts: Account[],
 ): Promise<string[]> => {
-  const db = await getDBClient();
+  const db = getDBClient();
 
   const data = await db
     .insert(accountsTable)
@@ -97,7 +97,7 @@ const getAccountDetails = async (accountId: string) => {
 export const getMaxHistoricalDays = async (
   accountId: string,
 ): Promise<number | null> => {
-  const db = await getDBClient();
+  const db = getDBClient();
 
   const data = await db
     .select({ maxDays: bankConnectionTable.maxHistoricalDays })
@@ -112,7 +112,7 @@ export const getMaxHistoricalDays = async (
 };
 
 export const getAccountList = async (): Promise<Account[]> => {
-  const db = await getDBClient();
+  const db = getDBClient();
   const { id } = await getCurrentUser();
 
   const data = await db

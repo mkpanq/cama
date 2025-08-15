@@ -4,6 +4,7 @@ import { getCurrentApiToken } from "@/lib/shared/apiToken/apiToken.service";
 import bankDataApiRequest from "@/lib/shared/bankDataApi.request";
 import type Institution from "./institution.type";
 
+// TODO: Institutions data should be saved to DB and it's most important details like name and logo should be joined to multiple records
 export const getInstitutionList = async (): Promise<Institution[]> => {
   const data = await bankDataApiRequest<
     {
