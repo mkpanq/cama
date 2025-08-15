@@ -3,6 +3,8 @@ type Account = {
   userId: string;
   bankConnectionId: string;
   institutionId: string;
+  institutionName: string;
+  institutionLogoUrl: string | null;
   institutionResourceId: string;
   iban: string;
   currency: string;

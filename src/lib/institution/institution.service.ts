@@ -42,3 +42,35 @@ export const getInstitutionList = async (): Promise<Institution[]> => {
     maxDaysAccess: Number.parseInt(rawInstitution.max_access_valid_for_days),
   }));
 };
+
+export const getInstitutionDetails = async (
+  institutionId: string,
+): Promise<Institution> => {
+  const rawInstitution = await bankDataApiRequest<{
+    id: string;
+    name: string;
+    bic: string;
+    transaction_total_days: string;
+    countries: string[];
+    logo: string;
+    supported_features: string[];
+    identification_codes: string[];
+    max_access_valid_for_days: string;
+  }>({
+    method: "GET",
+    path: `${APP_CONFIG.API_CONFIG.API_URL_INSTITUTION_DETAILS(institutionId)}`,
+    auth: await getCurrentApiToken(),
+  });
+
+  return {
+    id: rawInstitution.id,
+    name: rawInstitution.name,
+    bic: rawInstitution.bic,
+    maxTransactionTotalDays: Number.parseInt(
+      rawInstitution.transaction_total_days,
+    ),
+    logo: rawInstitution.logo,
+    supportedFeatures: rawInstitution.supported_features,
+    maxDaysAccess: Number.parseInt(rawInstitution.max_access_valid_for_days),
+  };
+};

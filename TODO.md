@@ -38,7 +38,7 @@ File: [src/jobs/getAccountTransactions.job.ts:81](./src/jobs/getAccountTransacti
 
 #### [TODO-e66542]
 Needs refactor - rather save historical days together with the accounts table rather than making such joins<br/>
-File: [src/lib/account/account.service.ts:90](./src/lib/account/account.service.ts#L90)
+File: [src/lib/account/account.service.ts:96](./src/lib/account/account.service.ts#L96)
 
 #### [TODO-826156]
 We should create separate "Job Method wrapper" to identify why some requests<br/>

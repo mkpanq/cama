@@ -8,6 +8,7 @@ import { getCurrentUser } from "../shared/supabaseServerClient";
 import type Account from "./account.type";
 import { bankConnectionTable } from "@/db/schema/bankConnection";
 import { eq } from "drizzle-orm";
+import { getInstitutionDetails } from "../institution/institution.service";
 
 export const saveAccountsToDB = async (
   accounts: Account[],
@@ -28,6 +29,9 @@ export const getAccountInfo = async (
 ): Promise<Account> => {
   const accountMetadata = await getAccountMetadata(accountId);
   const accountDetails = await getAccountDetails(accountId);
+  const institutionDetails = await getInstitutionDetails(
+    accountMetadata.institution_id,
+  );
   const currentUser = await getCurrentUser();
 
   return {
@@ -35,6 +39,8 @@ export const getAccountInfo = async (
     userId: currentUser.id,
     bankConnectionId: bankConnectionId,
     institutionId: accountMetadata.institution_id,
+    institutionName: institutionDetails.name,
+    institutionLogoUrl: institutionDetails.logo,
     institutionResourceId: accountDetails.account.resourceId,
     iban: accountMetadata.iban,
     currency: accountDetails.account.currency,

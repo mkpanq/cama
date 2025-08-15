@@ -23,6 +23,7 @@ const API_CONFIG = {
   API_URL_REFRESH_TOKEN: "/token/refresh/",
 
   API_URL_INSTITUTIONS_LIST: "/institutions",
+  API_URL_INSTITUTION_DETAILS: (id: string) => `/institutions/${id}`,
 
   API_URL_CREATE_AGREEMENT: "/agreements/enduser/",
   API_URL_CREATE_REQUISITION: "/requisitions/",

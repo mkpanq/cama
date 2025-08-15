@@ -10,6 +10,8 @@ export const accountsTable = pgTable("accounts", {
     { onDelete: "cascade" },
   ),
   institutionId: varchar("institution_id", { length: 256 }).notNull(),
+  institutionName: varchar("institution_name", { length: 256 }).notNull(),
+  institutionLogoUrl: varchar("institution_logo_url", { length: 256 }),
   institutionResourceId: varchar("institution_resource_id", {
     length: 256,
   }).notNull(),

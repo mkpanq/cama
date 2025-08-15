@@ -78,6 +78,13 @@
       "when": 1754691000603,
       "tag": "0010_smooth_black_widow",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1755259262665,
+      "tag": "0011_square_moon_knight",
+      "breakpoints": true
     }
   ]
 }
