@@ -1,9 +1,5 @@
 # TODOs in Codebase
 
-#### [TODO-952999]
-Fix displaying of transactions - pagination, account name, etc.<br/>
-File: [src/app/(dashboard)/(home)/_components/transactionsTable.tsx:11](./src/app/(dashboard)/(home)/_components/transactionsTable.tsx#L11)
-
 #### [TODO-a69783]
 Page Header should be configurable in the Layout */}<br/>
 File: [src/app/(dashboard)/accounts/page.tsx:6](./src/app/(dashboard)/accounts/page.tsx#L6)
@@ -71,10 +67,6 @@ File: [src/lib/shared/bankDataApi.request.ts:9](./src/lib/shared/bankDataApi.req
 #### [TODO-40b042]
 We should create separate "Job Method wrapper" to identify why some requests<br/>
 File: [src/lib/transaction/transaction.service.ts:1](./src/lib/transaction/transaction.service.ts#L1)
-
-#### [TODO-ec3693]
-For now server-only - but I guess, due to possible need of having pagination, we'll need to make it client-side<br/>
-File: [src/lib/transaction/transaction.service.ts:5](./src/lib/transaction/transaction.service.ts#L5)
 
 #### [TODO-7c1d9c]
 Right now I've decided to go with one middleware file due to need of creating separate parser for multiple middleware files - Will do it later, when more middlewares will be needed<br/>

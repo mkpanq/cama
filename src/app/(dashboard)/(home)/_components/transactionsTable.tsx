@@ -3,15 +3,38 @@
 import { currencyFormat } from "@/lib/shared/helpers";
 import type Transaction from "@/lib/transaction/transaction.type";
 import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/20/solid";
-import getDBClient from "@/db/client";
-import { transactionsTable } from "@/db/schema/transaction";
-// import { getCurrentUser } from "@/lib/shared/supabaseServerClient";
-import { eq } from "drizzle-orm";
+import { useEffect, useState } from "react";
 
-// TODO: Fix displaying of transactions - pagination, account name, etc.
-export default function TransactionsTable() {
-  const transactions: Transaction[] = [];
-  // const transactions: Transaction[] = await getAllTransactions();
+export default function TransactionsTable({
+  transactions,
+}: {
+  transactions: Transaction[];
+}) {
+  const transactionsPerPage = 20;
+  const maxPage = Math.ceil(transactions.length / transactionsPerPage);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [displayedTransactions, setDisplayedTransactions] = useState<
+    Transaction[]
+  >([]);
+
+  const nextPage = (currentPage: number) => {
+    if (currentPage < maxPage) setCurrentPage(currentPage + 1);
+  };
+
+  const previousPage = (currentPage: number) => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  useEffect(() => {
+    const getTransactionSlice = (page: number) => {
+      return transactions.slice(
+        (currentPage - 1) * transactionsPerPage,
+        currentPage * transactionsPerPage,
+      );
+    };
+
+    setDisplayedTransactions(getTransactionSlice(currentPage));
+  }, [currentPage, transactions]);
 
   return (
     <div className="mt-8 flow-root">
@@ -51,7 +74,7 @@ export default function TransactionsTable() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white">
-              {transactions.map((transaction) => (
+              {displayedTransactions.map((transaction) => (
                 <tr key={transaction.id}>
                   <td className="flex gap-4 items-center justify-end py-2 pr-3 pl-4 text-right font-bold text-sm text-gray-500 sm:pl-0">
                     {currencyFormat(transaction.amount, transaction.currency)}
@@ -79,38 +102,33 @@ export default function TransactionsTable() {
           </table>
         </div>
       </div>
+      <nav
+        aria-label="Pagination"
+        className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6"
+      >
+        <div className="hidden sm:block">
+          <p className="text-sm text-gray-700">
+            Page <span className="font-medium">{currentPage}</span> of{" "}
+            <span className="font-medium">{maxPage}</span>
+          </p>
+        </div>
+        <div className="flex flex-1 justify-between sm:justify-end">
+          <button
+            type="button"
+            onClick={() => previousPage(currentPage)}
+            className="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-700 inset-ring inset-ring-gray-300 hover:bg-gray-50"
+          >
+            Previous
+          </button>
+          <button
+            type="button"
+            onClick={() => nextPage(currentPage)}
+            className="relative ml-3 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-700 inset-ring inset-ring-gray-300 hover:bg-gray-50"
+          >
+            Next
+          </button>
+        </div>
+      </nav>
     </div>
   );
 }
-
-// const getAllTransactions = async (): Promise<Transaction[]> => {
-//   const db = await getDBClient();
-//   // const { id } = await getCurrentUser("BROWSER");
-
-//   // Fetch transactions from the database
-//   const dbTransactions = await db
-//     .select()
-//     .from(transactionsTable)
-//     .where(eq(transactionsTable.userId, id));
-
-//   // Convert each dbTransaction to a Transaction type
-//   const transactions: Transaction[] = dbTransactions.map((dbTransaction) => {
-//     return {
-//       id: dbTransaction.id,
-//       accountId: dbTransaction.accountId,
-//       userId: dbTransaction.userId,
-//       bookingDate: new Date(dbTransaction.bookingDate),
-//       type: dbTransaction.type,
-//       amount: dbTransaction.amount,
-//       currency: dbTransaction.currency,
-//       counterpartyDetails: {
-//         name: dbTransaction.counterpartyName,
-//         iban: dbTransaction.counterpartyIban,
-//       },
-//       transactionCode: dbTransaction.transactionCode,
-//       description: dbTransaction.description,
-//     };
-//   });
-
-//   return transactions;
-// };
