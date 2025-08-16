@@ -120,5 +120,5 @@ export const getAccountList = async (): Promise<Account[]> => {
     .from(accountsTable)
     .where(eq(accountsTable.userId, id));
 
-  return data;
+  return data as Account[];
 };

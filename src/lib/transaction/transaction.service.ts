@@ -6,7 +6,7 @@ import bankDataApiRequest from "../shared/bankDataApi.request";
 import type { Transaction } from "./transaction.type";
 import { transactionsTable } from "@/db/schema/transaction";
 import { getCurrentUser } from "../shared/supabaseServerClient";
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import { accountsTable } from "@/db/schema/account";
 import type { DisplayedTransaction } from "./transaction.type";
 
@@ -109,6 +109,7 @@ export const getAllTransactions = async (): Promise<DisplayedTransaction[]> => {
     .select()
     .from(transactionsTable)
     .where(eq(transactionsTable.userId, id))
+    .orderBy(desc(transactionsTable.bookingDate))
     .leftJoin(accountsTable, eq(transactionsTable.accountId, accountsTable.id));
 
   // Convert each dbTransaction to a Transaction type

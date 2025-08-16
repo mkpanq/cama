@@ -1,6 +1,6 @@
 import getDBClient from "@/db/client";
 import { balancesTable } from "@/db/schema/balance";
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { getCurrentUser } from "../shared/supabaseServerClient";
 import type AccountBalance from "./balance.type";
 
@@ -10,6 +10,13 @@ export const saveBalanceDataToDB = async (balances: AccountBalance[]) => {
   const data = await db
     .insert(balancesTable)
     .values(balances)
+    .onConflictDoUpdate({
+      target: [balancesTable.accountId, balancesTable.type],
+      set: {
+        amount: sql`excluded.amount`,
+        referenceDate: sql`excluded.reference_date`,
+      },
+    })
     .returning({ id: balancesTable.id });
 
   return data.map((balance) => balance.id);

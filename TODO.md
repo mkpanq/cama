@@ -8,12 +8,12 @@ File: [src/app/auth/_lib/actions.ts:9](./src/app/auth/_lib/actions.ts#L9)
 Set default userId automatically - setup RLS<br/>
 File: [src/db/client.ts:5](./src/db/client.ts#L5)
 
-#### [TODO-cf30f0]
-Not a fan of this solution when need to extract token and userId separately just for those methods<br/>
+#### [TODO-34ce4f]
+Not a fan of this solution when need to extract token and userId separately just for those methods - will need to rethink implementation of strict job methods<br/>
 File: [src/jobs/getAccountBalances.job.ts:66](./src/jobs/getAccountBalances.job.ts#L66)
 
-#### [TODO-a74078]
-Remember to improve Error handling - thanks to that we would know what happened in the<br/>
+#### [TODO-5b8c4a]
+Remember to improve Error handling - thanks to that we would know what happened in the background jobs<br/>
 File: [src/jobs/getAccountTransactions.job.ts:35](./src/jobs/getAccountTransactions.job.ts#L35)
 
 #### [TODO-76c4fc]

@@ -32,9 +32,7 @@ const getAccountTransactionDataQueue = new Queue(
   },
 );
 
-// TODO: Remember to improve Error handling - thanks to that we would know what happened in the
-// background jobs
-
+// TODO: Remember to improve Error handling - thanks to that we would know what happened in the background jobs
 new Worker(
   APP_CONFIG.JOBS_CONFIG.QUEUES.TRANSACTIONS_QUEUE_NAME,
   async (

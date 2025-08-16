@@ -63,8 +63,7 @@ new Worker(
   .on("failed", (job, failedReason) => failedLog(job, failedReason))
   .on("completed", (job) => completedLog(job));
 
-// TODO: Not a fan of this solution when need to extract token and userId separately just for those methods
-//  - will need to rethink implementation of strict job methods
+// TODO: Not a fan of this solution when need to extract token and userId separately just for those methods - will need to rethink implementation of strict job methods
 export const addAccountBalanceDataRetrivalJob = async (accountId: string) => {
   const { id } = await getCurrentUser();
   const token = await getCurrentApiToken();

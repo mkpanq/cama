@@ -1,0 +1,1 @@
+ALTER TABLE "balances" ADD CONSTRAINT "balances_account_id_type_unique" UNIQUE("account_id","type");
