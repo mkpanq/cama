@@ -23,7 +23,7 @@ export default async function DashboardPage() {
           </button>
         </Form>
       </div>
-      <Stats />
+      <Stats transactions={transactions} />
       <TransactionsTable transactions={transactions} />
     </>
   );
