@@ -48,6 +48,10 @@ File: [src/lib/institution/institution.service.ts:29](./src/lib/institution/inst
 Add Tanstack Query for improving data caching and Errors and it's handling - decide where to return empty return and where to throw exception to catch it later.<br/>
 File: [src/lib/shared/bankDataApi.request.ts:8](./src/lib/shared/bankDataApi.request.ts#L8)
 
+#### [TODO-659083]
+Empty states - for now, I've add PLN as default currency, but it needs to be fixed!<br/>
+File: [src/lib/shared/helpers.ts:5](./src/lib/shared/helpers.ts#L5)
+
 #### [TODO-7c1d9c]
 Right now I've decided to go with one middleware file due to need of creating separate parser for multiple middleware files - Will do it later, when more middlewares will be needed<br/>
 File: [src/middleware.ts:15](./src/middleware.ts#L15)

@@ -53,7 +53,7 @@ export const returnBalanceTotals = async (): Promise<{
   const balancesData = await getBalanceForCurrentUser();
   const total = balancesData.reduce((acc, balance) => acc + balance.amount, 0);
   return {
-    currency: balancesData[0].currency,
+    currency: balancesData[0]?.currency,
     total,
   };
 };
