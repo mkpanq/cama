@@ -1,8 +1,8 @@
-import { returnBalanceStatsData } from "@/lib/balance/balance.service";
+import { returnBalanceTotals } from "@/lib/balance/balance.service";
 import { currencyFormat } from "@/lib/shared/helpers";
 
 export default async function Stats() {
-  const { totalBalancesByCurrency } = await returnBalanceStatsData();
+  const { currency, total } = await returnBalanceTotals();
 
   return (
     <dl className="mx-auto grid grid-cols-1 gap-px bg-gray-900/5 sm:grid-cols-2 lg:grid-cols-4">
@@ -12,9 +12,7 @@ export default async function Stats() {
       >
         <dt className="text-sm/6 font-medium text-gray-500">Total</dt>
         <dd className="w-full flex-none text-3xl/10 font-medium tracking-tight text-gray-900">
-          {Object.entries(totalBalancesByCurrency).map(([currency, amount]) => (
-            <div key={currency}>{currencyFormat(amount, currency)}</div>
-          ))}
+          {currencyFormat(total, currency)}
         </dd>
       </div>
       {/* <div

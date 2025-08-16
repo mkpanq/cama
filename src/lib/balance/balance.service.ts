@@ -45,37 +45,16 @@ export const saveBalanceData = async (balances: AccountBalance[]) => {
   return savedBalanacesIds;
 };
 
-export const returnBalanceStatsData = async (): Promise<{
-  totalBalancesByCurrency: Record<string, number>;
+// TODO: Add currency handling
+export const returnBalanceTotals = async (): Promise<{
+  currency: string;
+  total: number;
 }> => {
   const balancesData = await getBalanceForCurrentUser();
-
-  const groupedByCurrency = balancesData.reduce(
-    (acc, balance) => {
-      if (!acc[balance.currency]) {
-        acc[balance.currency] = [];
-      }
-      acc[balance.currency].push(balance);
-      return acc;
-    },
-    {} as Record<string, AccountBalance[]>,
-  );
-
-  const totalBalancesByCurrency = Object.keys(groupedByCurrency).reduce(
-    (acc, currency) => {
-      const balancesForCurrency = groupedByCurrency[currency];
-      const totalForCurrency = balancesForCurrency.reduce(
-        (sum, balance) => sum + balance.amount,
-        0,
-      );
-      acc[currency] = totalForCurrency;
-      return acc;
-    },
-    {} as Record<string, number>,
-  );
-
+  const total = balancesData.reduce((acc, balance) => acc + balance.amount, 0);
   return {
-    totalBalancesByCurrency,
+    currency: balancesData[0].currency,
+    total,
   };
 };
 
