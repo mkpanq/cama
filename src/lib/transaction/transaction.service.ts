@@ -6,7 +6,7 @@ import bankDataApiRequest from "../shared/bankDataApi.request";
 import type { Transaction } from "./transaction.type";
 import { transactionsTable } from "@/db/schema/transaction";
 import { getCurrentUser } from "../shared/supabaseServerClient";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, gte, and } from "drizzle-orm";
 import { accountsTable } from "@/db/schema/account";
 import type { DisplayedTransaction } from "./transaction.type";
 
@@ -108,7 +108,15 @@ export const getAllTransactions = async (): Promise<DisplayedTransaction[]> => {
   const dbTransactions = await db
     .select()
     .from(transactionsTable)
-    .where(eq(transactionsTable.userId, id))
+    .where(
+      and(
+        eq(transactionsTable.userId, id),
+        gte(
+          transactionsTable.bookingDate,
+          new Date(new Date().setDate(new Date().getDate() - 30)),
+        ),
+      ),
+    )
     .orderBy(desc(transactionsTable.bookingDate))
     .leftJoin(accountsTable, eq(transactionsTable.accountId, accountsTable.id));
 

@@ -1,5 +1,9 @@
 # TODOs in Codebase
 
+#### [TODO-b79335]
+Add last update date / set cron for automatic update every day<br/>
+File: [src/app/(dashboard)/(home)/page.tsx:9](./src/app/(dashboard)/(home)/page.tsx#L9)
+
 #### [TODO-03677c]
 Think about zod library for parsing and validate such input<br/>
 File: [src/app/auth/_lib/actions.ts:9](./src/app/auth/_lib/actions.ts#L9)
