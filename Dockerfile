@@ -66,8 +66,8 @@ COPY --from=application_building /root/app/.next/standalone ./
 COPY --from=application_building /root/app/.next/static ./.next/static
 COPY --from=application_building /root/app/entrypoint.sh ./entrypoint.sh
 
-ENV PORT=3001
-EXPOSE 3001
+ENV PORT=3000
+EXPOSE 3000
 ENV HOSTNAME="0.0.0.0"
 RUN chmod 755 ./entrypoint.sh
 ENTRYPOINT [ "./entrypoint.sh" ]
