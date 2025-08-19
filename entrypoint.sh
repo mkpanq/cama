@@ -1,2 +1,2 @@
 #!/bin/bash
-node server.js -p 3001
+node server.js -p 3000
