@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
       new URL("https://storage.googleapis.com/**"),
     ],
   },
+  output: "standalone",
 };
 
 export default nextConfig;

@@ -93,7 +93,7 @@ export const getAllConnections = async (): Promise<BankConnection[]> => {
 
 export const deleteBankConnection = async (
   bankConnectionId: string,
-): Promise<string> => {
+): Promise<string | undefined> => {
   const db = getDBClient();
   const data = await db
     .select({ id: bankConnectionTable.requisitionId })
