@@ -60,7 +60,8 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 WORKDIR /root/app
 
-COPY --from=application_building /root/app/public ./public
+# We do not have any public resources, so comment this line for now
+# COPY --from=application_building /root/app/public ./public
 COPY --from=application_building /root/app/.next/standalone ./
 COPY --from=application_building /root/app/.next/static ./.next/static
 COPY --from=application_building /root/app/entrypoint.sh ./entrypoint.sh
