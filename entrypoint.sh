@@ -1,2 +1,2 @@
 #!/bin/bash
-node server.js
+PORT=3000 node server.js
