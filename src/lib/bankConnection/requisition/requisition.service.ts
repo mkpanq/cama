@@ -31,7 +31,7 @@ export const requestForRequisition = async (
     path: APP_CONFIG.API_CONFIG.API_URL_CREATE_REQUISITION,
     auth: await getCurrentApiToken(),
     body: {
-      redirect: `${process.env.HOSTNAME}${APP_CONFIG.ROUTE_CONFIG.API_CREATE_REQUISITION_WEBHOOK}`,
+      redirect: `${process.env.APPLICATION_MAIN_URL}${APP_CONFIG.ROUTE_CONFIG.API_CREATE_REQUISITION_WEBHOOK}`,
       institution_id: bankConnection.institutionId,
       agreement: bankConnection.agreementId,
       reference: bankConnection.referenceId,
