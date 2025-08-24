@@ -61,10 +61,10 @@ WORKDIR /root/app
 # COPY --from=application_building /root/app/public ./public
 COPY --from=application_building /root/app/.next/standalone ./
 COPY --from=application_building /root/app/.next/static ./.next/static
-COPY --from=application_building /root/app/entrypoint.sh ./docker/entrypoint.sh
+COPY --from=application_building /root/app/docker/entrypoint.sh ./entrypoint.sh
 
 ENV PORT=3000
 EXPOSE 3000
 ENV HOSTNAME="0.0.0.0"
-RUN chmod 755 ./docker/entrypoint.sh
-ENTRYPOINT [ "./docker/entrypoint.sh" ]
+RUN chmod 755 ./entrypoint.sh
+ENTRYPOINT [ "./entrypoint.sh" ]
