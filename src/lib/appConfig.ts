@@ -49,11 +49,16 @@ const JOBS_CONFIG = {
   ACCOUNT_DATA_WORKER_CONCURRENCY: 3,
 };
 
+const AUTH_CONFIG = {
+  COOKIE_NAME: "auth-session-cookie",
+};
+
 const APP_CONFIG = {
   ROUTE_CONFIG,
   UI_CONFIG,
   API_CONFIG,
   JOBS_CONFIG,
+  AUTH_CONFIG,
 };
 
 export default APP_CONFIG;

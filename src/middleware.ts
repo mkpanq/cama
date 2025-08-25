@@ -1,5 +1,3 @@
-/** biome-ignore-all lint/style/noNonNullAssertion: This is a temporary fix to avoid linting errors */
-import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import APP_CONFIG from "./lib/appConfig";
 import type {
@@ -11,49 +9,26 @@ import {
   isTokenValid,
 } from "./lib/shared/apiToken/apiToken.service";
 import { signOut } from "./lib/auth/auth.service";
+import { isJWTTokenValid } from "./lib/auth/jwtUtils";
 
-// TODO: Right now I've decided to go with one middleware file due to need of creating separate parser for multiple middleware files - Will do it later, when more middlewares will be needed
 export async function middleware(request: NextRequest) {
-  let outputResponse = NextResponse.next({
+  const outputResponse = NextResponse.next({
     request,
   });
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll();
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value),
-          );
-          outputResponse = NextResponse.next({
-            request,
-          });
-          cookiesToSet.forEach(({ name, value, options }) =>
-            outputResponse.cookies.set(name, value, options),
-          );
-        },
-      },
-    },
-  );
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // TODO: Create normal, fully working AUTH mechanism
+  const cookieToken = request.cookies.get(APP_CONFIG.AUTH_CONFIG.COOKIE_NAME);
+  const verifiedToken = isJWTTokenValid(cookieToken?.value);
 
   if (
-    !user &&
+    !verifiedToken &&
     !request.nextUrl.pathname.startsWith(APP_CONFIG.ROUTE_CONFIG.AUTH_PATH)
   ) {
     const url = request.nextUrl.clone();
     url.pathname = APP_CONFIG.ROUTE_CONFIG.AUTH_PATH;
     return NextResponse.redirect(url);
   } else if (
-    user &&
+    verifiedToken &&
     request.nextUrl.pathname.startsWith(APP_CONFIG.ROUTE_CONFIG.AUTH_PATH)
   ) {
     const url = request.nextUrl.clone();
@@ -107,6 +82,7 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
+  runtime: "nodejs",
   matcher: [
     "/((?!_next/static|_next/image|favicon.ico|api/health|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],

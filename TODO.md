@@ -52,6 +52,6 @@ File: [src/lib/shared/bankDataApi.request.ts:8](./src/lib/shared/bankDataApi.req
 Empty states - for now, I've add PLN as default currency, but it needs to be fixed!<br/>
 File: [src/lib/shared/helpers.ts:5](./src/lib/shared/helpers.ts#L5)
 
-#### [TODO-7c1d9c]
-Right now I've decided to go with one middleware file due to need of creating separate parser for multiple middleware files - Will do it later, when more middlewares will be needed<br/>
-File: [src/middleware.ts:15](./src/middleware.ts#L15)
+#### [TODO-8c8009]
+Create normal, fully working AUTH mechanism<br/>
+File: [src/middleware.ts:19](./src/middleware.ts#L19)
