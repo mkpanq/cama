@@ -1,6 +1,5 @@
 type BankConnection = {
   id: string;
-  userId: string;
   referenceId: string;
   institutionId: string;
   agreementId: string;

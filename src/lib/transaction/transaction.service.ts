@@ -5,14 +5,12 @@ import APP_CONFIG from "../appConfig";
 import bankDataApiRequest from "../shared/bankDataApi.request";
 import type { Transaction } from "./transaction.type";
 import { transactionsTable } from "@/db/schema/transaction";
-import { getCurrentUser } from "../shared/supabaseServerClient";
-import { eq, desc, gte, and } from "drizzle-orm";
+import { eq, desc, gte } from "drizzle-orm";
 import { accountsTable } from "@/db/schema/account";
 import type { DisplayedTransaction } from "./transaction.type";
 
 export const getBookedTransactionsDataFromAPI = async (
   accountId: string,
-  userId: string,
   token: string,
   maxHistoricalDays: number | null,
 ): Promise<Transaction[]> => {
@@ -62,7 +60,6 @@ export const getBookedTransactionsDataFromAPI = async (
       return {
         id: rawTransaction.internalTransactionId,
         accountId: accountId,
-        userId: userId,
         bookingDate: new Date(rawTransaction.bookingDate),
         type:
           parseFloat(rawTransaction.transactionAmount.amount) > 0
@@ -102,19 +99,15 @@ export const saveTransactionsDataToDB = async (transactions: Transaction[]) => {
 
 export const getAllTransactions = async (): Promise<DisplayedTransaction[]> => {
   const db = getDBClient();
-  const { id } = await getCurrentUser();
 
   // Fetch transactions from the database
   const dbTransactions = await db
     .select()
     .from(transactionsTable)
     .where(
-      and(
-        eq(transactionsTable.userId, id),
-        gte(
-          transactionsTable.bookingDate,
-          new Date(new Date().setDate(new Date().getDate() - 30)),
-        ),
+      gte(
+        transactionsTable.bookingDate,
+        new Date(new Date().setDate(new Date().getDate() - 30)),
       ),
     )
     .orderBy(desc(transactionsTable.bookingDate))
@@ -128,7 +121,6 @@ export const getAllTransactions = async (): Promise<DisplayedTransaction[]> => {
         accountId: dbTransaction.transactions.accountId,
         accountName: dbTransaction.accounts?.name,
         institutionName: dbTransaction.accounts?.institutionName,
-        userId: dbTransaction.transactions.userId,
         bookingDate: new Date(dbTransaction.transactions.bookingDate),
         type: dbTransaction.transactions.type,
         amount: dbTransaction.transactions.amount,

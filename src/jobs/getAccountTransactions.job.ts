@@ -1,7 +1,6 @@
 import "server-only";
 import APP_CONFIG from "@/lib/appConfig";
 import { type Job, Queue, Worker } from "bullmq";
-import { getCurrentUser } from "@/lib/shared/supabaseServerClient";
 import { getCurrentApiToken } from "@/lib/shared/apiToken/apiToken.service";
 import { getMaxHistoricalDays } from "@/lib/account/account.service";
 import {
@@ -42,7 +41,7 @@ new Worker(
       string
     >,
   ) => {
-    const { accountId, userId, token } = job.data;
+    const { accountId, token } = job.data;
 
     const maxDays = await getMaxHistoricalDays(accountId);
     job.updateProgress(
@@ -51,7 +50,6 @@ new Worker(
 
     const transactions = await getBookedTransactionsDataFromAPI(
       accountId,
-      userId,
       token,
       maxDays,
     );
@@ -76,14 +74,12 @@ new Worker(
 export const addAccountTransactionDataRetrivalJob = async (
   accountId: string,
 ) => {
-  const { id } = await getCurrentUser();
   const token = await getCurrentApiToken();
 
   await getAccountTransactionDataQueue.add(
     APP_CONFIG.JOBS_CONFIG.JOB_NAMES.TRANSACTIONS_JOB_NAME,
     {
       accountId,
-      userId: id,
       token,
     },
   );

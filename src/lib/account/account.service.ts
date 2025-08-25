@@ -4,7 +4,6 @@ import getDBClient from "@/db/client";
 import { accountsTable } from "@/db/schema/account";
 import { getCurrentApiToken } from "../shared/apiToken/apiToken.service";
 import bankDataApiRequest from "../shared/bankDataApi.request";
-import { getCurrentUser } from "../shared/supabaseServerClient";
 import type Account from "./account.type";
 import { bankConnectionTable } from "@/db/schema/bankConnection";
 import { eq } from "drizzle-orm";
@@ -32,11 +31,9 @@ export const getAccountInfo = async (
   const institutionDetails = await getInstitutionDetails(
     accountMetadata.institution_id,
   );
-  const currentUser = await getCurrentUser();
 
   return {
     id: accountMetadata.id,
-    userId: currentUser.id,
     bankConnectionId: bankConnectionId,
     institutionId: accountMetadata.institution_id,
     institutionName: institutionDetails.name,
@@ -113,12 +110,8 @@ export const getMaxHistoricalDays = async (
 
 export const getAccountList = async (): Promise<Account[]> => {
   const db = getDBClient();
-  const { id } = await getCurrentUser();
 
-  const data = await db
-    .select()
-    .from(accountsTable)
-    .where(eq(accountsTable.userId, id));
+  const data = await db.select().from(accountsTable);
 
   return data as Account[];
 };

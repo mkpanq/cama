@@ -1,10 +1,8 @@
 import { pgTable, uuid, varchar } from "drizzle-orm/pg-core";
-import { authUsers } from "drizzle-orm/supabase";
 import { bankConnectionTable } from "./bankConnection";
 
 export const accountsTable = pgTable("accounts", {
   id: uuid("id").primaryKey(),
-  userId: uuid("user_id").references(() => authUsers.id),
   bankConnectionId: uuid("bank_connection_id").references(
     () => bankConnectionTable.id,
     { onDelete: "cascade" },

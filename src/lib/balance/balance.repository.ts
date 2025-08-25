@@ -1,7 +1,6 @@
 import getDBClient from "@/db/client";
 import { balancesTable } from "@/db/schema/balance";
-import { and, eq, sql } from "drizzle-orm";
-import { getCurrentUser } from "../shared/supabaseServerClient";
+import { eq, sql } from "drizzle-orm";
 import type AccountBalance from "./balance.type";
 
 export const saveBalanceDataToDB = async (balances: AccountBalance[]) => {
@@ -24,13 +23,9 @@ export const saveBalanceDataToDB = async (balances: AccountBalance[]) => {
 
 export const getBalanceForCurrentUser = async (): Promise<AccountBalance[]> => {
   const db = getDBClient();
-  const { id } = await getCurrentUser();
 
-  return db
-    .select()
-    .from(balancesTable)
-    .where(
-      // For now get only "expected" type of balances
-      and(eq(balancesTable.userId, id), eq(balancesTable.type, "expected")),
-    );
+  return db.select().from(balancesTable).where(
+    // For now get only "expected" type of balances
+    eq(balancesTable.type, "expected"),
+  );
 };

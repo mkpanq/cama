@@ -9,7 +9,6 @@ import {
 
 export const getBalanceDataFromAPI = async (
   accountId: string,
-  userId: string,
   token: string,
 ): Promise<AccountBalance[]> => {
   const data = await bankDataApiRequest<{
@@ -29,7 +28,6 @@ export const getBalanceDataFromAPI = async (
 
   const accountBalances: AccountBalance[] = data.balances.map((balance) => ({
     id: crypto.randomUUID(),
-    userId: userId,
     accountId: accountId,
     amount: parseFloat(balance.balanceAmount.amount),
     currency: balance.balanceAmount.currency,

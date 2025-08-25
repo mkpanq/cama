@@ -3,7 +3,6 @@ import "server-only";
 import APP_CONFIG from "@/lib/appConfig";
 import { getCurrentApiToken } from "@/lib/shared/apiToken/apiToken.service";
 import bankDataApiRequest from "@/lib/shared/bankDataApi.request";
-import { getCurrentUser } from "@/lib/shared/supabaseServerClient";
 import type Agreement from "./agreement.type";
 
 export const requestForNewAgreement = async (
@@ -32,11 +31,8 @@ export const requestForNewAgreement = async (
     },
   });
 
-  const currentUser = await getCurrentUser();
-
   return {
     id: data.id,
-    userId: currentUser.id,
     institutionId: institutionId,
     maxHistoricalDays: maxHistoricalDays,
     validFor: validFor,

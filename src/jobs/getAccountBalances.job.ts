@@ -13,7 +13,6 @@ import {
   progressLog,
   redisConnection,
 } from "./jobs.config";
-import { getCurrentUser } from "@/lib/shared/supabaseServerClient";
 
 const getAccountBalanceDataQueue = new Queue(
   APP_CONFIG.JOBS_CONFIG.QUEUES.BALANCES_QUEUE_NAME,
@@ -40,12 +39,12 @@ new Worker(
       string
     >,
   ) => {
-    const { accountId, userId, token } = job.data;
+    const { accountId, token } = job.data;
 
     job.updateProgress(
       `Downloading balance data from API for account: ${accountId}`,
     );
-    const balanceData = await getBalanceDataFromAPI(accountId, userId, token);
+    const balanceData = await getBalanceDataFromAPI(accountId, token);
 
     job.updateProgress(
       `Data downloaded. Saving balance data for account: ${accountId}`,
@@ -65,14 +64,12 @@ new Worker(
 
 // TODO: Not a fan of this solution when need to extract token and userId separately just for those methods - will need to rethink implementation of strict job methods
 export const addAccountBalanceDataRetrivalJob = async (accountId: string) => {
-  const { id } = await getCurrentUser();
   const token = await getCurrentApiToken();
 
   await getAccountBalanceDataQueue.add(
     APP_CONFIG.JOBS_CONFIG.JOB_NAMES.BALANCES_JOB_NAME,
     {
       accountId,
-      userId: id,
       token,
     },
   );

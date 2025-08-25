@@ -1,6 +1,5 @@
 type Account = {
   id: string;
-  userId: string;
   bankConnectionId: string;
   institutionId: string;
   institutionName: string;

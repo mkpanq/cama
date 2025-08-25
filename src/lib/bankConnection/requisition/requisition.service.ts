@@ -2,7 +2,6 @@ import "server-only";
 import APP_CONFIG from "@/lib/appConfig";
 import { getCurrentApiToken } from "@/lib/shared/apiToken/apiToken.service";
 import bankDataApiRequest from "@/lib/shared/bankDataApi.request";
-import { getCurrentUser } from "@/lib/shared/supabaseServerClient";
 import type Requisition from "./requisition.type";
 import type BankConnection from "../bankConnection.type";
 
@@ -77,12 +76,10 @@ export const getRequisitionFromApi = async (
   });
 
   if (data.status !== "LN") throw new Error("Requisition is not linked !");
-  const user = await getCurrentUser();
 
   return {
     requisitionDetails: {
       id: data.id,
-      userId: user.id,
       institutionId: data.institution_id,
       agreementId: data.agreement,
       created: new Date(data.created),

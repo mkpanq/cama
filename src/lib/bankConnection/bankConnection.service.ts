@@ -3,7 +3,6 @@ import { requestForNewAgreement } from "./agreement/agreement.service";
 import getDBClient from "@/db/client";
 import { bankConnectionTable } from "@/db/schema/bankConnection";
 import type BankConnection from "./bankConnection.type";
-import { getCurrentUser } from "../shared/supabaseServerClient";
 import { eq, and, isNotNull } from "drizzle-orm";
 import { deleteRequisitionFromApi } from "./requisition/requisition.service";
 
@@ -20,13 +19,11 @@ export const initializeBankConnection = async (
 
   const db = getDBClient();
 
-  const currentUser = await getCurrentUser();
   const data = await db
     .insert(bankConnectionTable)
     .values({
       id: crypto.randomUUID(),
       referenceId: crypto.randomUUID(),
-      userId: currentUser.id,
       institutionId,
       agreementId: bankConnectionAgreement.id,
       maxHistoricalDays,
@@ -76,13 +73,11 @@ export const updateRequisitionCreationDateForBankConnection = async (
 
 export const getAllConnections = async (): Promise<BankConnection[]> => {
   const db = getDBClient();
-  const { id } = await getCurrentUser();
   const connections = await db
     .select()
     .from(bankConnectionTable)
     .where(
       and(
-        eq(bankConnectionTable.userId, id),
         isNotNull(bankConnectionTable.requisitionId),
         isNotNull(bankConnectionTable.requisitionCreationDate),
       ),

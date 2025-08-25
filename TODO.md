@@ -8,17 +8,13 @@ File: [src/app/(dashboard)/(home)/page.tsx:9](./src/app/(dashboard)/(home)/page.
 Think about zod library for parsing and validate such input<br/>
 File: [src/app/auth/_lib/actions.ts:9](./src/app/auth/_lib/actions.ts#L9)
 
-#### [TODO-06c741]
-Set default userId automatically - setup RLS<br/>
-File: [src/db/client.ts:5](./src/db/client.ts#L5)
-
 #### [TODO-34ce4f]
 Not a fan of this solution when need to extract token and userId separately just for those methods - will need to rethink implementation of strict job methods<br/>
-File: [src/jobs/getAccountBalances.job.ts:66](./src/jobs/getAccountBalances.job.ts#L66)
+File: [src/jobs/getAccountBalances.job.ts:65](./src/jobs/getAccountBalances.job.ts#L65)
 
 #### [TODO-5b8c4a]
 Remember to improve Error handling - thanks to that we would know what happened in the background jobs<br/>
-File: [src/jobs/getAccountTransactions.job.ts:35](./src/jobs/getAccountTransactions.job.ts#L35)
+File: [src/jobs/getAccountTransactions.job.ts:34](./src/jobs/getAccountTransactions.job.ts#L34)
 
 #### [TODO-76c4fc]
 Create separate "Job Method wrapper" to identify why some requests needs to have tokens and current user passed as an argument, instead of getting parsed from the method itself<br/>
@@ -26,11 +22,11 @@ File: [src/jobs/jobs.config.ts:26](./src/jobs/jobs.config.ts#L26)
 
 #### [TODO-e66542]
 Needs refactor - rather save historical days together with the accounts table rather than making such joins<br/>
-File: [src/lib/account/account.service.ts:96](./src/lib/account/account.service.ts#L96)
+File: [src/lib/account/account.service.ts:93](./src/lib/account/account.service.ts#L93)
 
 #### [TODO-8f92ea]
 Add currency handling<br/>
-File: [src/lib/balance/balance.service.ts:48](./src/lib/balance/balance.service.ts#L48)
+File: [src/lib/balance/balance.service.ts:46](./src/lib/balance/balance.service.ts#L46)
 
 #### [TODO-7cb099]
 Institutions data should be saved to DB and it's most important details like name and logo should be joined to multiple records<br/>

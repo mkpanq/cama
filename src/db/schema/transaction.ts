@@ -7,7 +7,6 @@ import {
   date,
 } from "drizzle-orm/pg-core";
 import { accountsTable } from "./account";
-import { authUsers } from "drizzle-orm/supabase";
 
 export const transactionTypeEnum = pgEnum("transaction_type", [
   "INCOMING",
@@ -18,9 +17,6 @@ export const transactionsTable = pgTable("transactions", {
   id: uuid("id").primaryKey(),
   accountId: uuid("account_id")
     .references(() => accountsTable.id, { onDelete: "cascade" })
-    .notNull(),
-  userId: uuid("user_id")
-    .references(() => authUsers.id)
     .notNull(),
   type: transactionTypeEnum("type").notNull(),
   bookingDate: date("booking_date", { mode: "date" }).notNull(),
