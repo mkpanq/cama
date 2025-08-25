@@ -15,8 +15,6 @@
   "dependencies": {
     "@headlessui/react": "^2.2.6",
     "@heroicons/react": "^2.2.0",
-    "@supabase/ssr": "^0.6.1",
-    "@supabase/supabase-js": "^2.53.0",
     "bullmq": "^5.56.9",
     "client-only": "^0.0.1",
     "drizzle-orm": "^0.44.4",
@@ -35,7 +33,6 @@
     "@types/react-dom": "^19",
     "drizzle-kit": "^0.31.4",
     "lefthook": "^1.12.2",
-    "supabase": "^2.34.3",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
