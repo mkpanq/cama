@@ -1,1 +1,0 @@
-ALTER TABLE "bank_connections" ALTER COLUMN "requisition_id" DROP NOT NULL;

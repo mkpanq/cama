@@ -7,7 +7,13 @@ let dbInstance: ReturnType<typeof drizzle> | null = null;
 
 export default function getDbClient() {
   if (!dbInstance) {
-    const client = postgres(process.env.DATABASE_URL!);
+    const client = postgres({
+      port: parseInt(process.env.DB_PORT!),
+      host: process.env.DB_HOST!,
+      user: process.env.DB_USER!,
+      password: process.env.DB_PASSWORD!,
+      database: process.env.DB_NAME!,
+    });
     dbInstance = drizzle(client);
   }
 

@@ -1,1 +1,0 @@
-ALTER TABLE "balances" ALTER COLUMN "reference_date" SET DATA TYPE date;
