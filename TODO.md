@@ -32,6 +32,10 @@ File: [src/jobs/jobs.config.ts:26](./src/jobs/jobs.config.ts#L26)
 Needs refactor - rather save historical days together with the accounts table rather than making such joins<br/>
 File: [src/lib/account/account.service.ts:93](./src/lib/account/account.service.ts#L93)
 
+#### [TODO-a024e2]
+Watch out for balance types<br/>
+File: [src/lib/balance/balance.repository.ts:28](./src/lib/balance/balance.repository.ts#L28)
+
 #### [TODO-8f92ea]
 Add currency handling<br/>
 File: [src/lib/balance/balance.service.ts:46](./src/lib/balance/balance.service.ts#L46)

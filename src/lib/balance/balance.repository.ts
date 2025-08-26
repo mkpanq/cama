@@ -25,7 +25,7 @@ export const getBalanceForCurrentUser = async (): Promise<AccountBalance[]> => {
   const db = getDBClient();
 
   return db.select().from(balancesTable).where(
-    // For now get only "expected" type of balances
-    eq(balancesTable.type, "expected"),
+    // TODO: Watch out for balance types
+    eq(balancesTable.type, "interimAvailable"),
   );
 };
