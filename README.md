@@ -19,7 +19,6 @@ I’m aware the code is a bit messy. A lot of it was written on the fly without 
 The current stack (which obviously can be changed in future) includes:
 - TypeScript
 - NextJS (v15)
-- Supabase for auth and database management
 - DrizzleORM for database operations
 - GoCardless Bank Data API for bank data retrieval
 
