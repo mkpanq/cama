@@ -40,14 +40,6 @@ File: [src/lib/balance/balance.service.ts:46](./src/lib/balance/balance.service.
 Institutions data should be saved to DB and it's most important details like name and logo should be joined to multiple records<br/>
 File: [src/lib/institution/institution.service.ts:7](./src/lib/institution/institution.service.ts#L7)
 
-#### [TODO-465426]
-For testing and development let's add just test bank<br/>
-File: [src/lib/institution/institution.service.ts:23](./src/lib/institution/institution.service.ts#L23)
-
-#### [TODO-04f44b]
-Just for testing<br/>
-File: [src/lib/institution/institution.service.ts:29](./src/lib/institution/institution.service.ts#L29)
-
 #### [TODO-16083b]
 Add Tanstack Query for improving data caching and Errors and it's handling - decide where to return empty return and where to throw exception to catch it later.<br/>
 File: [src/lib/shared/bankDataApi.request.ts:8](./src/lib/shared/bankDataApi.request.ts#L8)
