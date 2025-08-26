@@ -5,6 +5,9 @@ import type Account from "@/lib/account/account.type";
 import { currencyFormat } from "@/lib/shared/helpers";
 import Image from "next/image";
 
+// TODO: Better handle static/dyamic rendering - look at the docs and see if we can use some partial rerendering
+export const dynamic = "force-dynamic";
+
 export default async function AccountsPage() {
   const accountsBalancesData = await getAccountPageData();
 

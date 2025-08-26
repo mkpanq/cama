@@ -1,8 +1,16 @@
 # TODOs in Codebase
 
+#### [TODO-7bed3c]
+Better handle static/dyamic rendering - look at the docs and see if we can use some partial rerendering<br/>
+File: [src/app/(dashboard)/(home)/page.tsx:9](./src/app/(dashboard)/(home)/page.tsx#L9)
+
 #### [TODO-b79335]
 Add last update date / set cron for automatic update every day<br/>
-File: [src/app/(dashboard)/(home)/page.tsx:9](./src/app/(dashboard)/(home)/page.tsx#L9)
+File: [src/app/(dashboard)/(home)/page.tsx:12](./src/app/(dashboard)/(home)/page.tsx#L12)
+
+#### [TODO-be3186]
+Better handle static/dyamic rendering - look at the docs and see if we can use some partial rerendering<br/>
+File: [src/app/(dashboard)/accounts/page.tsx:8](./src/app/(dashboard)/accounts/page.tsx#L8)
 
 #### [TODO-03677c]
 Think about zod library for parsing and validate such input<br/>

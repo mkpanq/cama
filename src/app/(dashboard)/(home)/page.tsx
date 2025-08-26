@@ -6,6 +6,9 @@ import type { DisplayedTransaction } from "@/lib/transaction/transaction.type";
 import { syncBankData } from "./_lib/actions";
 import Form from "next/form";
 
+// TODO: Better handle static/dyamic rendering - look at the docs and see if we can use some partial rerendering
+export const dynamic = "force-dynamic";
+
 // TODO: Add last update date / set cron for automatic update every day
 export default async function DashboardPage() {
   const transactions: DisplayedTransaction[] = await getAllTransactions();
