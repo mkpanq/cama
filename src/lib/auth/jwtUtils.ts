@@ -15,7 +15,7 @@ export function isJWTTokenValid(token: string | undefined): any {
     if (decoded) return true;
 
     return false;
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Error verifying token: ${error.message}`);
 
     return false;
