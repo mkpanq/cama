@@ -12,20 +12,9 @@ import type { DisplayedTransaction } from "./transaction.type";
 export const getBookedTransactionsDataFromAPI = async (
   accountId: string,
   token: string,
-  maxHistoricalDays: number | null,
 ): Promise<Transaction[]> => {
-  let path = APP_CONFIG.API_CONFIG.API_URL_GET_ACCOUNT_TRANSACTIONS(accountId);
-
-  if (maxHistoricalDays) {
-    const endDate = new Date();
-    const startDate = new Date();
-    startDate.setDate(endDate.getDate() - maxHistoricalDays);
-
-    const formattedStartDate = startDate.toISOString().split("T")[0];
-    const formattedEndDate = endDate.toISOString().split("T")[0];
-
-    path = `${path}?date_from=${formattedStartDate}&date_to=${formattedEndDate}`;
-  }
+  const path =
+    APP_CONFIG.API_CONFIG.API_URL_GET_ACCOUNT_TRANSACTIONS(accountId);
 
   const data = await bankDataApiRequest<{
     transactions: {
@@ -44,7 +33,7 @@ export const getBookedTransactionsDataFromAPI = async (
         creditorAccount: {
           iban: string;
         };
-        remittanceInformationUnstructured: string;
+        remittanceInformationUnstructuredArray: string[];
         proprietaryBankTransactionCode: string;
         internalTransactionId: string;
       }[];
@@ -67,15 +56,14 @@ export const getBookedTransactionsDataFromAPI = async (
             : "OUTGOING",
         amount: Math.abs(parseFloat(rawTransaction.transactionAmount.amount)),
         currency: rawTransaction.transactionAmount.currency,
-        counterpartyDetails: {
-          // I assume that only creditor or deptor data could be in single object
-          name: rawTransaction.creditorName ?? rawTransaction.debtorName,
-          iban:
-            rawTransaction.creditorAccount?.iban ??
-            rawTransaction.debtorAccount?.iban,
-        },
+        counterpartyName:
+          rawTransaction.creditorName ?? rawTransaction.debtorName,
+        counterpartyIban:
+          rawTransaction.creditorAccount?.iban ??
+          rawTransaction.debtorAccount?.iban,
         transactionCode: rawTransaction.proprietaryBankTransactionCode,
-        description: rawTransaction.remittanceInformationUnstructured,
+        description:
+          rawTransaction.remittanceInformationUnstructuredArray.join("-"),
       };
     },
   );
@@ -125,10 +113,8 @@ export const getAllTransactions = async (): Promise<DisplayedTransaction[]> => {
         type: dbTransaction.transactions.type,
         amount: dbTransaction.transactions.amount,
         currency: dbTransaction.transactions.currency,
-        counterpartyDetails: {
-          name: dbTransaction.transactions.counterpartyName,
-          iban: dbTransaction.transactions.counterpartyIban,
-        },
+        counterpartyName: dbTransaction.transactions.counterpartyName,
+        counterpartyIban: dbTransaction.transactions.counterpartyIban,
         transactionCode: dbTransaction.transactions.transactionCode,
         description: dbTransaction.transactions.description,
       };

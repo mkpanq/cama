@@ -5,10 +5,8 @@ export type Transaction = {
   type: "OUTGOING" | "INCOMING";
   amount: number;
   currency: string;
-  counterpartyDetails: {
-    name: string | null;
-    iban: string | null;
-  };
+  counterpartyName: string | null;
+  counterpartyIban: string | null;
   transactionCode: string | null;
   description: string | null;
 };

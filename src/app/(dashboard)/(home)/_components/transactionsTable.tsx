@@ -82,7 +82,7 @@ export default function TransactionsTable({
                     {transaction.description}
                   </td>
                   <td className="max-sm:hidden px-2 py-2 text-sm whitespace-nowrap text-gray-900">
-                    {transaction.accountName} - {transaction.institutionName}
+                    {transaction.institutionName}
                   </td>
                   <td className="max-sm:hidden px-2 py-2 text-sm whitespace-nowrap text-gray-500">
                     {transaction.bookingDate.toDateString()}
