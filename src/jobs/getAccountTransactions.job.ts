@@ -43,15 +43,13 @@ new Worker(
   ) => {
     const { accountId, token } = job.data;
 
-    const maxDays = await getMaxHistoricalDays(accountId);
     job.updateProgress(
-      `Downloading transactions from last ${maxDays} days from API for account: ${accountId}`,
+      `Downloading transactions from API for account: ${accountId}`,
     );
 
     const transactions = await getBookedTransactionsDataFromAPI(
       accountId,
       token,
-      maxDays,
     );
 
     job.updateProgress(
