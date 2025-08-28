@@ -7,14 +7,18 @@ export const accountsTable = pgTable("accounts", {
     () => bankConnectionTable.id,
     { onDelete: "cascade" },
   ),
-  institutionId: varchar("institution_id", { length: 256 }).notNull(),
-  institutionName: varchar("institution_name", { length: 256 }).notNull(),
-  institutionLogoUrl: varchar("institution_logo_url", { length: 256 }),
+  // API-aligned fields
+  created: timestamp("created", { mode: "date" }).notNull(),
+  lastAccessed: timestamp("last_accessed", { mode: "date" }).notNull(),
   iban: varchar("iban", { length: 256 }).notNull(),
-  currency: varchar("currency", { length: 256 }),
   bban: varchar("bban", { length: 256 }),
   status: varchar("status", { length: 256 }),
+  institutionId: varchar("institution_id", { length: 256 }).notNull(),
   ownerName: varchar("owner_name", { length: 256 }),
   name: varchar("name", { length: 256 }),
+  // existing extra fields kept as-is
+  institutionName: varchar("institution_name", { length: 256 }).notNull(),
+  institutionLogoUrl: varchar("institution_logo_url", { length: 256 }),
+  currency: varchar("currency", { length: 256 }),
   lastSync: timestamp("last_sync", { mode: "date" }),
 });

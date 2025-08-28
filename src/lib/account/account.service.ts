@@ -34,22 +34,24 @@ export const getAccountInfo = async (
   accountId: string,
 ): Promise<Account> => {
   const accountMetadata = await getAccountMetadata(accountId);
-  // const accountDetails = await getAccountDetails(accountId);
   const institutionDetails = await getInstitutionDetails(
     accountMetadata.institution_id,
   );
 
   return {
     id: accountMetadata.id,
-    bankConnectionId: bankConnectionId,
-    institutionId: accountMetadata.institution_id,
-    institutionName: institutionDetails.name,
-    institutionLogoUrl: institutionDetails.logo,
+    created: new Date(accountMetadata.created),
+    lastAccessed: new Date(accountMetadata.last_accessed),
     iban: accountMetadata.iban,
     bban: accountMetadata.bban,
     status: accountMetadata.status,
+    institutionId: accountMetadata.institution_id,
     ownerName: accountMetadata.owner_name,
     name: accountMetadata.name,
+    // keep existing extras
+    bankConnectionId: bankConnectionId,
+    institutionName: institutionDetails.name,
+    institutionLogoUrl: institutionDetails.logo,
     lastSync: null,
   };
 };

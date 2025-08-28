@@ -30,7 +30,7 @@ File: [src/jobs/jobs.config.ts:26](./src/jobs/jobs.config.ts#L26)
 
 #### [TODO-e66542]
 Needs refactor - rather save historical days together with the accounts table rather than making such joins<br/>
-File: [src/lib/account/account.service.ts:97](./src/lib/account/account.service.ts#L97)
+File: [src/lib/account/account.service.ts:99](./src/lib/account/account.service.ts#L99)
 
 #### [TODO-a024e2]
 Watch out for balance types<br/>

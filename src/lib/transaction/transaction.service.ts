@@ -8,6 +8,10 @@ import { transactionsTable } from "@/db/schema/transaction";
 import { eq, desc, gte } from "drizzle-orm";
 import { accountsTable } from "@/db/schema/account";
 import type { DisplayedTransaction } from "./transaction.type";
+import type {
+  AccountTransactions,
+  TransactionSchema,
+} from "./transaction.api.types";
 
 export const getBookedTransactionsDataFromAPI = async (
   accountId: string,
@@ -16,62 +20,44 @@ export const getBookedTransactionsDataFromAPI = async (
   const path =
     APP_CONFIG.API_CONFIG.API_URL_GET_ACCOUNT_TRANSACTIONS(accountId);
 
-  const data = await bankDataApiRequest<{
-    transactions: {
-      booked: {
-        transactionId: string;
-        bookingDate: string;
-        transactionAmount: {
-          amount: string;
-          currency: string;
-        };
-        debtorName: string;
-        debtorAccount: {
-          iban: string;
-        };
-        creditorName: string;
-        creditorAccount: {
-          iban: string;
-        };
-        remittanceInformationUnstructuredArray: string[];
-        remittanceInformationUnstructured: string;
-        proprietaryBankTransactionCode: string;
-        internalTransactionId: string;
-      }[];
-    };
-  }>({
+  const data = await bankDataApiRequest<AccountTransactions>({
     method: "GET",
     path,
     auth: token,
   });
 
-  const convertedData: Transaction[] = data.transactions.booked.map(
-    (rawTransaction) => {
-      return {
-        id: rawTransaction.internalTransactionId,
-        accountId: accountId,
-        bookingDate: new Date(rawTransaction.bookingDate),
-        type:
-          parseFloat(rawTransaction.transactionAmount.amount) > 0
-            ? "INCOMING"
-            : "OUTGOING",
-        amount: Math.abs(parseFloat(rawTransaction.transactionAmount.amount)),
-        currency: rawTransaction.transactionAmount.currency,
-        counterpartyName:
-          rawTransaction.creditorName ?? rawTransaction.debtorName,
-        counterpartyIban:
-          rawTransaction.creditorAccount?.iban ??
-          rawTransaction.debtorAccount?.iban,
-        transactionCode: rawTransaction.proprietaryBankTransactionCode,
-        description:
-          rawTransaction.remittanceInformationUnstructured ??
-          rawTransaction.remittanceInformationUnstructuredArray.join("-"),
-      };
-    },
-  );
+  const booked: TransactionSchema[] = data.transactions.booked ?? [];
+
+  const convertedData: Transaction[] = booked.map((raw) => {
+    const amountStr = raw.transactionAmount.amount ?? "0";
+    const amountNum = parseFloat(amountStr);
+
+    return {
+      id: raw.internalTransactionId ?? raw.transactionId ?? cryptoRandomId(),
+      accountId,
+      bookingDate: new Date(
+        raw.bookingDateTime ?? raw.bookingDate ?? new Date().toISOString(),
+      ),
+      type: amountNum > 0 ? "INCOMING" : "OUTGOING",
+      amount: Math.abs(amountNum),
+      currency: raw.transactionAmount.currency,
+      counterpartyName: raw.creditorName ?? raw.debtorName ?? null,
+      counterpartyIban:
+        raw.creditorAccount?.iban ?? raw.debtorAccount?.iban ?? null,
+      transactionCode: raw.proprietaryBankTransactionCode ?? null,
+      description:
+        raw.remittanceInformationUnstructured ??
+        (raw.remittanceInformationUnstructuredArray ?? []).join("-") ??
+        null,
+    };
+  });
 
   return convertedData;
 };
+
+// Small helper to generate a stable-ish ID if API misses internalTransactionId
+const cryptoRandomId = () =>
+  Math.random().toString(36).slice(2) + Date.now().toString(36);
 
 export const saveTransactionsDataToDB = async (transactions: Transaction[]) => {
   const db = getDBClient();
