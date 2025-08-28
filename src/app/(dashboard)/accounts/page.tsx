@@ -50,7 +50,7 @@ export default async function AccountsPage() {
               )}
               <div className="min-w-0 flex-auto">
                 <p className="text-sm/6 font-semibold text-gray-900">
-                  {data.account?.name ?? data.account?.ownerName}
+                  {data.account?.ownerName}
                 </p>
                 <p className="mt-1 truncate text-xs/5 text-gray-500">
                   {data.account.institutionName}
