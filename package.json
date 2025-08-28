@@ -10,7 +10,8 @@
     "generate": "drizzle-kit generate",
     "migrate": "drizzle-kit migrate",
     "drop": "drizzle-kit drop",
-    "todos": "node ./generateTodos.js"
+    "todos": "node ./generateTodos.js",
+    "pr:create": "node ./scripts/create-pr.js"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.6",
