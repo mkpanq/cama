@@ -5,8 +5,6 @@ import { accountsTable } from "@/db/schema/account";
 import { getCurrentApiToken } from "../shared/apiToken/apiToken.service";
 import bankDataApiRequest from "../shared/bankDataApi.request";
 import type Account from "./account.type";
-import { bankConnectionTable } from "@/db/schema/bankConnection";
-import { eq } from "drizzle-orm";
 import { getInstitutionDetails } from "../institution/institution.service";
 
 export const saveAccountsToDB = async (
@@ -27,7 +25,7 @@ export const getAccountInfo = async (
   accountId: string,
 ): Promise<Account> => {
   const accountMetadata = await getAccountMetadata(accountId);
-  const accountDetails = await getAccountDetails(accountId);
+  // const accountDetails = await getAccountDetails(accountId);
   const institutionDetails = await getInstitutionDetails(
     accountMetadata.institution_id,
   );
@@ -38,15 +36,11 @@ export const getAccountInfo = async (
     institutionId: accountMetadata.institution_id,
     institutionName: institutionDetails.name,
     institutionLogoUrl: institutionDetails.logo,
-    institutionResourceId: accountDetails.account.resourceId,
     iban: accountMetadata.iban,
-    currency: accountDetails.account.currency,
     bban: accountMetadata.bban,
     status: accountMetadata.status,
-    ownerName: accountMetadata.owner_name || accountDetails.account.ownerName,
-    name: accountMetadata.name || accountDetails.account.name,
-    product: accountDetails.account.product,
-    cashAccountType: accountDetails.account.cashAccountType,
+    ownerName: accountMetadata.owner_name,
+    name: accountMetadata.name,
   };
 };
 
@@ -70,43 +64,43 @@ const getAccountMetadata = async (accountId: string) => {
   return data;
 };
 
-const getAccountDetails = async (accountId: string) => {
-  const data = bankDataApiRequest<{
-    account: {
-      resourceId: string;
-      iban: string;
-      currency: string;
-      ownerName: string;
-      name: string;
-      product: string;
-      cashAccountType: string;
-    };
-  }>({
-    method: "GET",
-    path: APP_CONFIG.API_CONFIG.API_URL_GET_ACCOUNT_DETAILS(accountId),
-    auth: await getCurrentApiToken(),
-  });
+// const getAccountDetails = async (accountId: string) => {
+//   const data = bankDataApiRequest<{
+//     account: {
+//       resourceId: string;
+//       iban: string;
+//       currency: string;
+//       ownerName: string;
+//       name: string;
+//       product: string;
+//       cashAccountType: string;
+//     };
+//   }>({
+//     method: "GET",
+//     path: APP_CONFIG.API_CONFIG.API_URL_GET_ACCOUNT_DETAILS(accountId),
+//     auth: await getCurrentApiToken(),
+//   });
 
-  return data;
-};
+//   return data;
+// };
 
 // TODO: Needs refactor - rather save historical days together with the accounts table rather than making such joins
-export const getMaxHistoricalDays = async (
-  accountId: string,
-): Promise<number | null> => {
-  const db = getDBClient();
+// export const getMaxHistoricalDays = async (
+//   accountId: string,
+// ): Promise<number | null> => {
+//   const db = getDBClient();
 
-  const data = await db
-    .select({ maxDays: bankConnectionTable.maxHistoricalDays })
-    .from(accountsTable)
-    .where(eq(accountsTable.id, accountId))
-    .leftJoin(
-      bankConnectionTable,
-      eq(accountsTable.bankConnectionId, bankConnectionTable.id),
-    );
+//   const data = await db
+//     .select({ maxDays: bankConnectionTable.maxHistoricalDays })
+//     .from(accountsTable)
+//     .where(eq(accountsTable.id, accountId))
+//     .leftJoin(
+//       bankConnectionTable,
+//       eq(accountsTable.bankConnectionId, bankConnectionTable.id),
+//     );
 
-  return data[0].maxDays;
-};
+//   return data[0].maxDays;
+// };
 
 export const getAccountList = async (): Promise<Account[]> => {
   const db = getDBClient();

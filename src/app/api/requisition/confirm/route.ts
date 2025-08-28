@@ -37,13 +37,13 @@ export async function GET(request: Request) {
     );
     if (!savedAccountsIds) throw new Error("Account IDs could not be saved");
 
-    savedAccountsIds.forEach(
-      async (id) => await addAccountBalanceDataRetrivalJob(id),
-    );
+    // savedAccountsIds.forEach(
+    //   async (id) => await addAccountBalanceDataRetrivalJob(id),
+    // );
 
-    savedAccountsIds.forEach(
-      async (id) => await addAccountTransactionDataRetrivalJob(id),
-    );
+    // savedAccountsIds.forEach(
+    //   async (id) => await addAccountTransactionDataRetrivalJob(id),
+    // );
   } catch (error) {
     console.error(error);
   }

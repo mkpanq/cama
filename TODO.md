@@ -22,7 +22,7 @@ File: [src/jobs/getAccountBalances.job.ts:65](./src/jobs/getAccountBalances.job.
 
 #### [TODO-5b8c4a]
 Remember to improve Error handling - thanks to that we would know what happened in the background jobs<br/>
-File: [src/jobs/getAccountTransactions.job.ts:34](./src/jobs/getAccountTransactions.job.ts#L34)
+File: [src/jobs/getAccountTransactions.job.ts:33](./src/jobs/getAccountTransactions.job.ts#L33)
 
 #### [TODO-76c4fc]
 Create separate "Job Method wrapper" to identify why some requests needs to have tokens and current user passed as an argument, instead of getting parsed from the method itself<br/>
@@ -30,7 +30,7 @@ File: [src/jobs/jobs.config.ts:26](./src/jobs/jobs.config.ts#L26)
 
 #### [TODO-e66542]
 Needs refactor - rather save historical days together with the accounts table rather than making such joins<br/>
-File: [src/lib/account/account.service.ts:93](./src/lib/account/account.service.ts#L93)
+File: [src/lib/account/account.service.ts:87](./src/lib/account/account.service.ts#L87)
 
 #### [TODO-a024e2]
 Watch out for balance types<br/>
