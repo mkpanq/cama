@@ -4,13 +4,15 @@ import { getBalancesList } from "@/lib/balance/balance.service";
 import type Account from "@/lib/account/account.type";
 import { currencyFormat } from "@/lib/shared/helpers";
 import Image from "next/image";
+import Form from "next/form";
+import { updateAccountData } from "./_lib/actions";
+import type AccountBalance from "@/lib/balance/balance.type";
 
 // TODO: Better handle static/dyamic rendering - look at the docs and see if we can use some partial rerendering
 export const dynamic = "force-dynamic";
 
 export default async function AccountsPage() {
   const accountsBalancesData = await getAccountPageData();
-
   return (
     <div>
       <PageHeader title="Accounts" />
@@ -55,9 +57,22 @@ export default async function AccountsPage() {
                 </p>
               </div>
             </div>
+            <Form action={updateAccountData}>
+              <input name="accountId" type="hidden" value={data.account.id} />
+              <button
+                className="hover:cursor-pointer rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50"
+                type="submit"
+              >
+                Update account data
+              </button>
+            </Form>
+            <p>
+              {data.account.lastSync?.toDateString()} /{" "}
+              {data.account.lastSync?.toLocaleTimeString()}
+            </p>
             <div className="shrink-0 sm:flex sm:flex-col sm:items-end">
               <p className="text-xl font-bold text-gray-900">
-                {currencyFormat(data.balance, data.currency)}
+                {currencyFormat(data?.balance ?? 0, "PLN")}
               </p>
             </div>
           </li>
@@ -70,8 +85,7 @@ export default async function AccountsPage() {
 const getAccountPageData = async (): Promise<
   {
     account: Account;
-    currency: string;
-    balance: number;
+    balance?: number;
   }[]
 > => {
   const accounts = await getAccountList();
@@ -79,31 +93,27 @@ const getAccountPageData = async (): Promise<
 
   const pageData: {
     account: Account;
-    currency: string;
-    balance: number;
+    balance?: number;
   }[] = [];
 
   accounts.forEach((account) => {
     const balanceData = balances.filter(
       (balance) => balance.accountId === account.id,
     );
-    const currencyMap: { [currency: string]: number } = {};
 
-    balanceData.forEach((balance) => {
-      if (currencyMap[balance.currency]) {
-        currencyMap[balance.currency] += balance.amount;
-      } else {
-        currencyMap[balance.currency] = balance.amount;
-      }
-    });
-
-    Object.entries(currencyMap).forEach(([currency, balance]) => {
+    if (balanceData.length > 0) {
+      balanceData.forEach((balance: AccountBalance) => {
+        const amount = balance.amount;
+        pageData.push({
+          account,
+          balance: amount,
+        });
+      });
+    } else {
       pageData.push({
         account,
-        currency,
-        balance,
       });
-    });
+    }
   });
 
   return pageData;

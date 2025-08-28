@@ -15,6 +15,20 @@
       "when": 1756372089656,
       "tag": "0001_brown_shriek",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1756374748477,
+      "tag": "0002_gray_gabe_jones",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1756375763875,
+      "tag": "0003_salty_firestar",
+      "breakpoints": true
     }
   ]
 }

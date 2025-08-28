@@ -13,13 +13,14 @@ import {
   progressLog,
   redisConnection,
 } from "./jobs.config";
+import { updateLastSyncDate } from "@/lib/account/account.service";
 
 const getAccountBalanceDataQueue = new Queue(
   APP_CONFIG.JOBS_CONFIG.QUEUES.BALANCES_QUEUE_NAME,
   {
     connection: redisConnection,
     defaultJobOptions: {
-      attempts: 5,
+      attempts: 1,
       removeOnComplete: true,
       removeOnFail: true,
       backoff: {
@@ -60,7 +61,10 @@ new Worker(
   .on("progress", (job, progress) => progressLog(job, progress))
   .on("error", (err) => errorLog(err))
   .on("failed", (job, failedReason) => failedLog(job, failedReason))
-  .on("completed", (job) => completedLog(job));
+  .on("completed", (job) => {
+    completedLog(job);
+    updateLastSyncDate(job.data.accountId);
+  });
 
 // TODO: Not a fan of this solution when need to extract token and userId separately just for those methods - will need to rethink implementation of strict job methods
 export const addAccountBalanceDataRetrivalJob = async (accountId: string) => {

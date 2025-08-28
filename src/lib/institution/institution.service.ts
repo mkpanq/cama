@@ -24,6 +24,11 @@ export const getInstitutionList = async (): Promise<Institution[]> => {
     auth: await getCurrentApiToken(),
   });
 
+  // For only data testing in the dev
+  // const testData = data.filter((data) => {
+  //   return data.id === "SANDBOXFINANCE_SFIN0000";
+  // });
+
   return data.map((rawInstitution) => ({
     id: rawInstitution.id,
     name: rawInstitution.name,

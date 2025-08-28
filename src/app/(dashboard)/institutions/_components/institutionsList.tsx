@@ -2,6 +2,7 @@ import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import type Institution from "../../../../lib/institution/institution.type";
 import Image from "next/image";
 import { createBankConnection } from "../_lib/actions";
+import Form from "next/form";
 
 export default function InstitutionList({
   institutionsList,
@@ -55,7 +56,7 @@ function InstitutionListElement({ institution }: { institution: Institution }) {
             </p>
           </div>
         </div>
-        <form action={createBankConnection}>
+        <Form action={createBankConnection}>
           <input type="hidden" name="institutionId" value={institution.id} />
           <input
             type="hidden"
@@ -76,7 +77,7 @@ function InstitutionListElement({ institution }: { institution: Institution }) {
               />
             </div>
           </button>
-        </form>
+        </Form>
       </div>
     </li>
   );

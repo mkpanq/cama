@@ -9,6 +9,7 @@ type Account = {
   status: string | null;
   ownerName: string | null;
   name: string | null;
+  lastSync: Date | null;
 };
 
 export default Account;

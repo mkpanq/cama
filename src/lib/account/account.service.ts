@@ -6,6 +6,7 @@ import { getCurrentApiToken } from "../shared/apiToken/apiToken.service";
 import bankDataApiRequest from "../shared/bankDataApi.request";
 import type Account from "./account.type";
 import { getInstitutionDetails } from "../institution/institution.service";
+import { eq } from "drizzle-orm";
 
 export const saveAccountsToDB = async (
   accounts: Account[],
@@ -18,6 +19,14 @@ export const saveAccountsToDB = async (
     .returning({ id: accountsTable.id });
 
   return data.map((acc) => acc.id);
+};
+
+export const updateLastSyncDate = async (accountId: string) => {
+  const db = getDBClient();
+  await db
+    .update(accountsTable)
+    .set({ lastSync: new Date() })
+    .where(eq(accountsTable.id, accountId));
 };
 
 export const getAccountInfo = async (
@@ -41,6 +50,7 @@ export const getAccountInfo = async (
     status: accountMetadata.status,
     ownerName: accountMetadata.owner_name,
     name: accountMetadata.name,
+    lastSync: null,
   };
 };
 

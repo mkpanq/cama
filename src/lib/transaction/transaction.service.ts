@@ -34,6 +34,7 @@ export const getBookedTransactionsDataFromAPI = async (
           iban: string;
         };
         remittanceInformationUnstructuredArray: string[];
+        remittanceInformationUnstructured: string;
         proprietaryBankTransactionCode: string;
         internalTransactionId: string;
       }[];
@@ -63,6 +64,7 @@ export const getBookedTransactionsDataFromAPI = async (
           rawTransaction.debtorAccount?.iban,
         transactionCode: rawTransaction.proprietaryBankTransactionCode,
         description:
+          rawTransaction.remittanceInformationUnstructured ??
           rawTransaction.remittanceInformationUnstructuredArray.join("-"),
       };
     },

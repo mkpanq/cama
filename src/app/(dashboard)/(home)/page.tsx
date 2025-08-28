@@ -3,8 +3,6 @@ import { PageHeader } from "../_shared/header";
 import Stats from "./_components/stats";
 import TransactionsTable from "./_components/transactionsTable";
 import type { DisplayedTransaction } from "@/lib/transaction/transaction.type";
-import { syncBankData } from "./_lib/actions";
-import Form from "next/form";
 
 // TODO: Better handle static/dyamic rendering - look at the docs and see if we can use some partial rerendering
 export const dynamic = "force-dynamic";
@@ -17,14 +15,14 @@ export default async function DashboardPage() {
     <>
       <div className="flex justify-between items-center">
         <PageHeader title="Dashboard" />
-        <Form action={syncBankData}>
+        {/* <Form action={syncBankData}>
           <button
             className="hover:cursor-pointer rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50"
             type="submit"
           >
             Update data
           </button>
-        </Form>
+        </Form> */}
       </div>
       <Stats transactions={transactions} />
       <TransactionsTable transactions={transactions} />

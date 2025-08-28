@@ -2,15 +2,15 @@
 
 #### [TODO-7bed3c]
 Better handle static/dyamic rendering - look at the docs and see if we can use some partial rerendering<br/>
-File: [src/app/(dashboard)/(home)/page.tsx:9](./src/app/(dashboard)/(home)/page.tsx#L9)
+File: [src/app/(dashboard)/(home)/page.tsx:7](./src/app/(dashboard)/(home)/page.tsx#L7)
 
 #### [TODO-b79335]
 Add last update date / set cron for automatic update every day<br/>
-File: [src/app/(dashboard)/(home)/page.tsx:12](./src/app/(dashboard)/(home)/page.tsx#L12)
+File: [src/app/(dashboard)/(home)/page.tsx:10](./src/app/(dashboard)/(home)/page.tsx#L10)
 
 #### [TODO-be3186]
 Better handle static/dyamic rendering - look at the docs and see if we can use some partial rerendering<br/>
-File: [src/app/(dashboard)/accounts/page.tsx:8](./src/app/(dashboard)/accounts/page.tsx#L8)
+File: [src/app/(dashboard)/accounts/page.tsx:11](./src/app/(dashboard)/accounts/page.tsx#L11)
 
 #### [TODO-03677c]
 Think about zod library for parsing and validate such input<br/>
@@ -18,11 +18,11 @@ File: [src/app/auth/_lib/actions.ts:9](./src/app/auth/_lib/actions.ts#L9)
 
 #### [TODO-34ce4f]
 Not a fan of this solution when need to extract token and userId separately just for those methods - will need to rethink implementation of strict job methods<br/>
-File: [src/jobs/getAccountBalances.job.ts:65](./src/jobs/getAccountBalances.job.ts#L65)
+File: [src/jobs/getAccountBalances.job.ts:69](./src/jobs/getAccountBalances.job.ts#L69)
 
 #### [TODO-5b8c4a]
 Remember to improve Error handling - thanks to that we would know what happened in the background jobs<br/>
-File: [src/jobs/getAccountTransactions.job.ts:33](./src/jobs/getAccountTransactions.job.ts#L33)
+File: [src/jobs/getAccountTransactions.job.ts:34](./src/jobs/getAccountTransactions.job.ts#L34)
 
 #### [TODO-76c4fc]
 Create separate "Job Method wrapper" to identify why some requests needs to have tokens and current user passed as an argument, instead of getting parsed from the method itself<br/>
@@ -30,7 +30,7 @@ File: [src/jobs/jobs.config.ts:26](./src/jobs/jobs.config.ts#L26)
 
 #### [TODO-e66542]
 Needs refactor - rather save historical days together with the accounts table rather than making such joins<br/>
-File: [src/lib/account/account.service.ts:87](./src/lib/account/account.service.ts#L87)
+File: [src/lib/account/account.service.ts:97](./src/lib/account/account.service.ts#L97)
 
 #### [TODO-a024e2]
 Watch out for balance types<br/>

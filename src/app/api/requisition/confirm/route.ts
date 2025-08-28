@@ -9,8 +9,6 @@ import {
   getBankConnectionViaReferenceId,
   updateRequisitionCreationDateForBankConnection,
 } from "@/lib/bankConnection/bankConnection.service";
-import { addAccountBalanceDataRetrivalJob } from "@/jobs/getAccountBalances.job";
-import { addAccountTransactionDataRetrivalJob } from "@/jobs/getAccountTransactions.job";
 
 export async function GET(request: Request) {
   try {

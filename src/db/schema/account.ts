@@ -1,4 +1,4 @@
-import { pgTable, uuid, varchar } from "drizzle-orm/pg-core";
+import { pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 import { bankConnectionTable } from "./bankConnection";
 
 export const accountsTable = pgTable("accounts", {
@@ -16,4 +16,5 @@ export const accountsTable = pgTable("accounts", {
   status: varchar("status", { length: 256 }),
   ownerName: varchar("owner_name", { length: 256 }),
   name: varchar("name", { length: 256 }),
+  lastSync: timestamp("last_sync", { mode: "date" }),
 });
