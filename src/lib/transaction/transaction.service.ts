@@ -200,7 +200,10 @@ export const getAllTransactions = async (): Promise<DisplayedTransaction[]> => {
         counterpartyName: dbTransaction.transactions.counterpartyName,
         counterpartyIban: dbTransaction.transactions.counterpartyIban,
         transactionCode: dbTransaction.transactions.transactionCode,
-        description: dbTransaction.transactions.description,
+        description:
+          dbTransaction.transactions.description ??
+          dbTransaction.transactions.creditorName ??
+          dbTransaction.transactions.debtorName,
       };
     },
   );
