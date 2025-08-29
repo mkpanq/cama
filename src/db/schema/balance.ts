@@ -5,6 +5,8 @@ import {
   unique,
   uuid,
   varchar,
+  boolean,
+  timestamp,
 } from "drizzle-orm/pg-core";
 import { accountsTable } from "./account";
 
@@ -27,6 +29,11 @@ export const balancesTable = pgTable(
     referenceDate: date("reference_date", { mode: "date" })
       .notNull()
       .defaultNow(),
+    creditLimitIncluded: boolean("credit_limit_included"),
+    lastChangeDateTime: timestamp("last_change_datetime", { mode: "date" }),
+    lastCommittedTransaction: varchar("last_committed_transaction", {
+      length: 256,
+    }),
   },
   (t) => [unique().on(t.accountId, t.type)],
 );

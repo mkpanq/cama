@@ -1,0 +1,32 @@
+ALTER TABLE "accounts" ADD COLUMN "created_at" timestamp;--> statement-breakpoint
+ALTER TABLE "accounts" ADD COLUMN "last_accessed" timestamp;--> statement-breakpoint
+ALTER TABLE "balances" ADD COLUMN "credit_limit_included" boolean;--> statement-breakpoint
+ALTER TABLE "balances" ADD COLUMN "last_change_datetime" timestamp;--> statement-breakpoint
+ALTER TABLE "balances" ADD COLUMN "last_committed_transaction" varchar(256);--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "transaction_id" varchar(256);--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "entry_reference" varchar(256);--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "end_to_end_id" varchar(256);--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "mandate_id" varchar(256);--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "check_id" varchar(256);--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "creditor_id" varchar(256);--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "value_date" date;--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "booking_date_time" timestamp;--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "value_date_time" timestamp;--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "currency_exchange" jsonb;--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "creditor_name" varchar(256);--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "creditor_account" jsonb;--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "ultimate_creditor" varchar(256);--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "debtor_name" varchar(256);--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "debtor_account" jsonb;--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "ultimate_debtor" varchar(256);--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "remittance_unstructured" varchar(2048);--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "remittance_unstructured_array" jsonb;--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "remittance_structured" varchar(2048);--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "remittance_structured_array" jsonb;--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "additional_information" varchar(2048);--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "purpose_code" varchar(256);--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "bank_transaction_code" varchar(256);--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "proprietary_bank_transaction_code" varchar(256);--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "internal_transaction_id" varchar(256);--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "balance_after_amount" numeric(10, 2);--> statement-breakpoint
+ALTER TABLE "transactions" ADD COLUMN "balance_after_currency" varchar(8);

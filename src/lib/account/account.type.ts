@@ -9,6 +9,8 @@ type Account = {
   status: string | null;
   ownerName: string | null;
   name: string | null;
+  createdAt: Date | null;
+  lastAccessed: Date | null;
   lastSync: Date | null;
 };
 

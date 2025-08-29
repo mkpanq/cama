@@ -19,25 +19,63 @@ export const getBookedTransactionsDataFromAPI = async (
   const data = await bankDataApiRequest<{
     transactions: {
       booked: {
-        transactionId: string;
+        transactionId?: string;
+        entryReference?: string;
+        endToEndId?: string;
+        mandateId?: string;
+        checkId?: string;
+        creditorId?: string;
         bookingDate: string;
+        valueDate?: string;
+        bookingDateTime?: string;
+        valueDateTime?: string;
         transactionAmount: {
           amount: string;
           currency: string;
         };
-        debtorName: string;
-        debtorAccount: {
-          iban: string;
+        currencyExchange?: Array<{
+          sourceCurrency?: string;
+          exchangeRate?: string;
+          unitCurrency?: string;
+          targetCurrency?: string;
+          quotationDate?: string;
+          contractIdentification?: string;
+        }>;
+        creditorName?: string;
+        creditorAccount?: {
+          iban?: string;
+          bban?: string;
+          pan?: string;
+          maskedPan?: string;
+          msisdn?: string;
+          currency?: string;
         };
-        creditorName: string;
-        creditorAccount: {
-          iban: string;
+        ultimateCreditor?: string;
+        debtorName?: string;
+        debtorAccount?: {
+          iban?: string;
+          bban?: string;
+          pan?: string;
+          maskedPan?: string;
+          msisdn?: string;
+          currency?: string;
         };
-        remittanceInformationUnstructuredArray: string[];
-        remittanceInformationUnstructured: string;
-        proprietaryBankTransactionCode: string;
+        ultimateDebtor?: string;
+        remittanceInformationUnstructuredArray?: string[];
+        remittanceInformationUnstructured?: string;
+        remittanceInformationStructured?: string;
+        remittanceInformationStructuredArray?: string[];
+        additionalInformation?: string;
+        purposeCode?: string;
+        bankTransactionCode?: string;
+        proprietaryBankTransactionCode?: string;
         internalTransactionId: string;
+        balanceAfterTransaction?: {
+          amount: string;
+          currency?: string;
+        };
       }[];
+      pending?: unknown;
     };
   }>({
     method: "GET",
@@ -47,25 +85,69 @@ export const getBookedTransactionsDataFromAPI = async (
 
   const convertedData: Transaction[] = data.transactions.booked.map(
     (rawTransaction) => {
+      const amount = parseFloat(rawTransaction.transactionAmount.amount);
       return {
         id: rawTransaction.internalTransactionId,
         accountId: accountId,
         bookingDate: new Date(rawTransaction.bookingDate),
-        type:
-          parseFloat(rawTransaction.transactionAmount.amount) > 0
-            ? "INCOMING"
-            : "OUTGOING",
-        amount: Math.abs(parseFloat(rawTransaction.transactionAmount.amount)),
+        type: amount > 0 ? "INCOMING" : "OUTGOING",
+        amount: Math.abs(amount),
         currency: rawTransaction.transactionAmount.currency,
         counterpartyName:
-          rawTransaction.creditorName ?? rawTransaction.debtorName,
+          rawTransaction.creditorName ?? rawTransaction.debtorName ?? null,
         counterpartyIban:
           rawTransaction.creditorAccount?.iban ??
-          rawTransaction.debtorAccount?.iban,
-        transactionCode: rawTransaction.proprietaryBankTransactionCode,
+          rawTransaction.debtorAccount?.iban ??
+          null,
+        transactionCode: rawTransaction.proprietaryBankTransactionCode ?? null,
         description:
           rawTransaction.remittanceInformationUnstructured ??
-          rawTransaction.remittanceInformationUnstructuredArray.join("-"),
+          (rawTransaction.remittanceInformationUnstructuredArray
+            ? rawTransaction.remittanceInformationUnstructuredArray.join("-")
+            : null),
+        // Extended mapping
+        transactionId: rawTransaction.transactionId ?? null,
+        entryReference: rawTransaction.entryReference ?? null,
+        endToEndId: rawTransaction.endToEndId ?? null,
+        mandateId: rawTransaction.mandateId ?? null,
+        checkId: rawTransaction.checkId ?? null,
+        creditorId: rawTransaction.creditorId ?? null,
+        valueDate: rawTransaction.valueDate
+          ? new Date(rawTransaction.valueDate)
+          : null,
+        bookingDateTime: rawTransaction.bookingDateTime
+          ? new Date(rawTransaction.bookingDateTime)
+          : null,
+        valueDateTime: rawTransaction.valueDateTime
+          ? new Date(rawTransaction.valueDateTime)
+          : null,
+        currencyExchange: rawTransaction.currencyExchange ?? null,
+        creditorName: rawTransaction.creditorName ?? null,
+        creditorAccount: rawTransaction.creditorAccount ?? null,
+        ultimateCreditor: rawTransaction.ultimateCreditor ?? null,
+        debtorName: rawTransaction.debtorName ?? null,
+        debtorAccount: rawTransaction.debtorAccount ?? null,
+        ultimateDebtor: rawTransaction.ultimateDebtor ?? null,
+        remittanceInformationUnstructured:
+          rawTransaction.remittanceInformationUnstructured ?? null,
+        remittanceInformationUnstructuredArray:
+          rawTransaction.remittanceInformationUnstructuredArray ?? null,
+        remittanceInformationStructured:
+          rawTransaction.remittanceInformationStructured ?? null,
+        remittanceInformationStructuredArray:
+          rawTransaction.remittanceInformationStructuredArray ?? null,
+        additionalInformation: rawTransaction.additionalInformation ?? null,
+        purposeCode: rawTransaction.purposeCode ?? null,
+        bankTransactionCode: rawTransaction.bankTransactionCode ?? null,
+        proprietaryBankTransactionCode:
+          rawTransaction.proprietaryBankTransactionCode ?? null,
+        internalTransactionId: rawTransaction.internalTransactionId ?? null,
+        balanceAfterTransactionAmount: rawTransaction.balanceAfterTransaction
+          ?.amount
+          ? Math.abs(parseFloat(rawTransaction.balanceAfterTransaction.amount))
+          : null,
+        balanceAfterTransactionCurrency:
+          rawTransaction.balanceAfterTransaction?.currency ?? null,
       };
     },
   );

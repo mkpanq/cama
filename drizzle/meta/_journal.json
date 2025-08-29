@@ -29,6 +29,13 @@
       "when": 1756375763875,
       "tag": "0003_salty_firestar",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1756465235111,
+      "tag": "0004_mute_stranger",
+      "breakpoints": true
     }
   ]
 }

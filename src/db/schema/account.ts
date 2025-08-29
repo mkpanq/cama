@@ -16,5 +16,8 @@ export const accountsTable = pgTable("accounts", {
   status: varchar("status", { length: 256 }),
   ownerName: varchar("owner_name", { length: 256 }),
   name: varchar("name", { length: 256 }),
+  // API metadata timestamps
+  createdAt: timestamp("created_at", { mode: "date" }),
+  lastAccessed: timestamp("last_accessed", { mode: "date" }),
   lastSync: timestamp("last_sync", { mode: "date" }),
 });
