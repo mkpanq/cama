@@ -1,6 +1,6 @@
 import getDBClient from "@/db/client";
 import { balancesTable } from "@/db/schema/balance";
-import { eq, sql } from "drizzle-orm";
+import { eq, or, sql } from "drizzle-orm";
 import type AccountBalance from "./balance.type";
 
 export const saveBalanceDataToDB = async (balances: AccountBalance[]) => {
@@ -27,8 +27,13 @@ export const saveBalanceDataToDB = async (balances: AccountBalance[]) => {
 export const getBalanceForCurrentUser = async (): Promise<AccountBalance[]> => {
   const db = getDBClient();
 
-  return db.select().from(balancesTable).where(
-    // TODO: Watch out for balance types
-    eq(balancesTable.type, "interimAvailable"),
-  );
+  return db
+    .select()
+    .from(balancesTable)
+    .where(
+      or(
+        eq(balancesTable.type, "interimAvailable"),
+        eq(balancesTable.type, "interimBooked"),
+      ),
+    );
 };
