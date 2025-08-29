@@ -38,7 +38,7 @@ File: [src/lib/balance/balance.repository.ts:31](./src/lib/balance/balance.repos
 
 #### [TODO-8f92ea]
 Add currency handling<br/>
-File: [src/lib/balance/balance.service.ts:54](./src/lib/balance/balance.service.ts#L54)
+File: [src/lib/balance/balance.service.ts:56](./src/lib/balance/balance.service.ts#L56)
 
 #### [TODO-7cb099]
 Institutions data should be saved to DB and it's most important details like name and logo should be joined to multiple records<br/>

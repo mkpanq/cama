@@ -4,7 +4,7 @@ type AccountBalance = {
   amount: number;
   currency: string;
   type: string | null;
-  referenceDate: Date;
+  referenceDate: Date | null;
   creditLimitIncluded: boolean | null;
   lastChangeDateTime: Date | null;
   lastCommittedTransaction: string | null;

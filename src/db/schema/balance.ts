@@ -26,9 +26,7 @@ export const balancesTable = pgTable(
     }).notNull(),
     currency: varchar("currency", { length: 256 }).notNull(),
     type: varchar("type", { length: 256 }),
-    referenceDate: date("reference_date", { mode: "date" })
-      .notNull()
-      .defaultNow(),
+    referenceDate: date("reference_date", { mode: "date" }),
     creditLimitIncluded: boolean("credit_limit_included"),
     lastChangeDateTime: timestamp("last_change_datetime", { mode: "date" }),
     lastCommittedTransaction: varchar("last_committed_transaction", {

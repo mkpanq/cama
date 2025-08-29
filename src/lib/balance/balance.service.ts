@@ -20,7 +20,7 @@ export const getBalanceDataFromAPI = async (
       balanceType: string;
       creditLimitIncluded?: boolean;
       lastChangeDateTime?: string;
-      referenceDate: string;
+      referenceDate?: string;
       lastCommittedTransaction?: string;
     }[];
   }>({
@@ -35,7 +35,9 @@ export const getBalanceDataFromAPI = async (
     amount: parseFloat(balance.balanceAmount.amount),
     currency: balance.balanceAmount.currency,
     type: balance.balanceType,
-    referenceDate: new Date(balance.referenceDate),
+    referenceDate: balance.referenceDate
+      ? new Date(balance.referenceDate)
+      : null,
     creditLimitIncluded: balance.creditLimitIncluded ?? null,
     lastChangeDateTime: balance.lastChangeDateTime
       ? new Date(balance.lastChangeDateTime)

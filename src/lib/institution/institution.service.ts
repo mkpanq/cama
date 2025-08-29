@@ -20,16 +20,17 @@ export const getInstitutionList = async (): Promise<Institution[]> => {
     }[]
   >({
     method: "GET",
-    path: `${APP_CONFIG.API_CONFIG.API_URL_INSTITUTIONS_LIST}?country=PL`,
+    path: `${APP_CONFIG.API_CONFIG.API_URL_INSTITUTIONS_LIST}`,
+    // path: `${APP_CONFIG.API_CONFIG.API_URL_INSTITUTIONS_LIST}?country=PL`,
     auth: await getCurrentApiToken(),
   });
 
   // For only data testing in the dev
-  // const testData = data.filter((data) => {
-  //   return data.id === "SANDBOXFINANCE_SFIN0000";
-  // });
+  const testData = data.filter((data) => {
+    return data.id === "SANDBOXFINANCE_SFIN0000";
+  });
 
-  return data.map((rawInstitution) => ({
+  return testData.map((rawInstitution) => ({
     id: rawInstitution.id,
     name: rawInstitution.name,
     bic: rawInstitution.bic,
