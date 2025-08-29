@@ -18,7 +18,10 @@ export const getBalanceDataFromAPI = async (
         currency: string;
       };
       balanceType: string;
+      creditLimitIncluded?: boolean;
+      lastChangeDateTime?: string;
       referenceDate: string;
+      lastCommittedTransaction?: string;
     }[];
   }>({
     method: "GET",
@@ -33,6 +36,11 @@ export const getBalanceDataFromAPI = async (
     currency: balance.balanceAmount.currency,
     type: balance.balanceType,
     referenceDate: new Date(balance.referenceDate),
+    creditLimitIncluded: balance.creditLimitIncluded ?? null,
+    lastChangeDateTime: balance.lastChangeDateTime
+      ? new Date(balance.lastChangeDateTime)
+      : null,
+    lastCommittedTransaction: balance.lastCommittedTransaction ?? null,
   }));
 
   return accountBalances;

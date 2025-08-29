@@ -14,6 +14,9 @@ export const saveBalanceDataToDB = async (balances: AccountBalance[]) => {
       set: {
         amount: sql`excluded.amount`,
         referenceDate: sql`excluded.reference_date`,
+        creditLimitIncluded: sql`excluded.credit_limit_included`,
+        lastChangeDateTime: sql`excluded.last_change_datetime`,
+        lastCommittedTransaction: sql`excluded.last_committed_transaction`,
       },
     })
     .returning({ id: balancesTable.id });

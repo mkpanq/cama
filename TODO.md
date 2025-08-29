@@ -30,15 +30,15 @@ File: [src/jobs/jobs.config.ts:26](./src/jobs/jobs.config.ts#L26)
 
 #### [TODO-e66542]
 Needs refactor - rather save historical days together with the accounts table rather than making such joins<br/>
-File: [src/lib/account/account.service.ts:97](./src/lib/account/account.service.ts#L97)
+File: [src/lib/account/account.service.ts:103](./src/lib/account/account.service.ts#L103)
 
 #### [TODO-a024e2]
 Watch out for balance types<br/>
-File: [src/lib/balance/balance.repository.ts:28](./src/lib/balance/balance.repository.ts#L28)
+File: [src/lib/balance/balance.repository.ts:31](./src/lib/balance/balance.repository.ts#L31)
 
 #### [TODO-8f92ea]
 Add currency handling<br/>
-File: [src/lib/balance/balance.service.ts:46](./src/lib/balance/balance.service.ts#L46)
+File: [src/lib/balance/balance.service.ts:54](./src/lib/balance/balance.service.ts#L54)
 
 #### [TODO-7cb099]
 Institutions data should be saved to DB and it's most important details like name and logo should be joined to multiple records<br/>

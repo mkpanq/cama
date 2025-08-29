@@ -50,6 +50,12 @@ export const getAccountInfo = async (
     status: accountMetadata.status,
     ownerName: accountMetadata.owner_name,
     name: accountMetadata.name,
+    createdAt: accountMetadata.created
+      ? new Date(accountMetadata.created)
+      : null,
+    lastAccessed: accountMetadata.last_accessed
+      ? new Date(accountMetadata.last_accessed)
+      : null,
     lastSync: null,
   };
 };
