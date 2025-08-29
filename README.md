@@ -22,5 +22,8 @@ The current stack (which obviously can be changed in future) includes:
 - DrizzleORM for database operations
 - GoCardless Bank Data API for bank data retrieval
 
+### Agentic AI development
+I decided that due to a little chaos that has been created here, would be a good opportuity to learn how to effective use AI Agent in terms of development. That's why I decided to write less code by myself, but let the [Codex](https://chatgpt.com/codex) do the heavylifting for me. I think it's a good opportunity to learn how to use such tools and see what pros and cons are bringing to the table.
+
 ### Contact
 See my [profile](https://github.com/mkpanq) for contact info
