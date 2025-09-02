@@ -1,41 +1,39 @@
 import "server-only";
 
 import APP_CONFIG from "@/lib/appConfig";
-import getDBClient from "@/db/client";
-import { accountsTable } from "@/db/schema/account";
 import { getCurrentApiToken } from "../shared/apiToken/apiToken.service";
 import bankDataApiRequest from "../shared/bankDataApi.request";
-import type Account from "./account.type";
 import { getInstitutionDetails } from "../institution/institution.service";
-import { eq } from "drizzle-orm";
+import { bulkSave, getAll, updateLastSyncDate } from "./account.repository";
+import type { ErrorResponse } from "../shared/bankDataApi.type";
+import type { Account, AccountApiResponse } from "./account.type";
 
 export const saveAccountsToDB = async (
   accounts: Account[],
 ): Promise<string[]> => {
-  const db = getDBClient();
+  const ids = await bulkSave(accounts);
+  if (!ids || ids.length === 0)
+    throw new Error("Failed to save accounts to DB");
 
-  const data = await db
-    .insert(accountsTable)
-    .values(accounts)
-    .returning({ id: accountsTable.id });
-
-  return data.map((acc) => acc.id);
+  return ids;
 };
 
-export const updateLastSyncDate = async (accountId: string) => {
-  const db = getDBClient();
-  await db
-    .update(accountsTable)
-    .set({ lastSync: new Date() })
-    .where(eq(accountsTable.id, accountId));
+export const syncAccount = async (accountId: string) => {
+  const id = await updateLastSyncDate(accountId);
+  if (!id) throw new Error("Failed to update account sync date");
+
+  return id;
 };
 
-export const getAccountInfo = async (
+export const getAccountList = async (): Promise<Account[]> => {
+  return await getAll();
+};
+
+export const returnAccountData = async (
   bankConnectionId: string,
   accountId: string,
 ): Promise<Account> => {
-  const accountMetadata = await getAccountMetadata(accountId);
-  // const accountDetails = await getAccountDetails(accountId);
+  const accountMetadata = await sendRequstForAccountMetadata(accountId);
   const institutionDetails = await getInstitutionDetails(
     accountMetadata.institution_id,
   );
@@ -61,48 +59,19 @@ export const getAccountInfo = async (
   };
 };
 
-const getAccountMetadata = async (accountId: string) => {
-  const data = bankDataApiRequest<{
-    id: string;
-    created: string;
-    last_accessed: string;
-    iban: string;
-    institution_id: string;
-    status: string;
-    owner_name: string | null;
-    bban: string | null;
-    name: string;
-  }>({
+const sendRequstForAccountMetadata = async (accountId: string) => {
+  const responseData = await bankDataApiRequest<AccountApiResponse>({
     method: "GET",
     path: APP_CONFIG.API_CONFIG.API_URL_GET_ACCOUNT_METADATA(accountId),
     auth: await getCurrentApiToken(),
   });
 
-  return data;
-};
+  if (!responseData.ok) {
+    const errorMessage = JSON.stringify(responseData.data as ErrorResponse);
+    throw new Error(
+      `Failed to retrieve account (${accountId}) metadata: ${errorMessage}`,
+    );
+  }
 
-// TODO: Needs refactor - rather save historical days together with the accounts table rather than making such joins
-// export const getMaxHistoricalDays = async (
-//   accountId: string,
-// ): Promise<number | null> => {
-//   const db = getDBClient();
-
-//   const data = await db
-//     .select({ maxDays: bankConnectionTable.maxHistoricalDays })
-//     .from(accountsTable)
-//     .where(eq(accountsTable.id, accountId))
-//     .leftJoin(
-//       bankConnectionTable,
-//       eq(accountsTable.bankConnectionId, bankConnectionTable.id),
-//     );
-
-//   return data[0].maxDays;
-// };
-
-export const getAccountList = async (): Promise<Account[]> => {
-  const db = getDBClient();
-
-  const data = await db.select().from(accountsTable);
-
-  return data as Account[];
+  return responseData.data as AccountApiResponse;
 };

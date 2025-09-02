@@ -1,11 +1,11 @@
-type Institution = {
+export type InstitutionApiResponse = {
   id: string;
   name: string;
   bic: string;
-  maxTransactionTotalDays: number;
+  transaction_total_days: string;
+  countries: string[];
   logo: string;
-  supportedFeatures: string[];
-  maxDaysAccess: number;
+  supported_features: string[];
+  identification_codes: string[];
+  max_access_valid_for_days: string;
 };
-
-export default Institution;
