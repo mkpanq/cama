@@ -1,14 +1,14 @@
 import APP_CONFIG from "@/lib/appConfig";
 import { redirect } from "next/navigation";
 import {
-  getAccountInfo,
-  saveAccountsToDB,
-} from "@/lib/account/account.service";
-import {
   getExistingBankConnectionViaReferenceId,
   updateRequisitionCreationDateForBankConnection,
 } from "@/lib/bankConnection/bankConnection.service";
 import { returnExisitingRequisitionDetails } from "@/lib/bankConnection/requisition/requisition.service";
+import {
+  returnAccountData,
+  saveAccountsToDB,
+} from "@/lib/account/account.service";
 
 export async function GET(request: Request) {
   try {
@@ -55,13 +55,13 @@ const getAndSaveAccounts = async (
 ) => {
   const accountsData = await Promise.all(
     accounts.map(async (accountId) => {
-      const data = await getAccountInfo(bankConnectionId, accountId);
+      const data = await returnAccountData(bankConnectionId, accountId);
       if (!data) throw new Error("Account data could not be fetched");
 
       return data;
     }),
   );
-  const accountIds = await saveAccountsToDB(accountsData);
 
+  const accountIds = await saveAccountsToDB(accountsData);
   return accountIds;
 };

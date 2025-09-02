@@ -13,7 +13,7 @@ import {
   progressLog,
   redisConnection,
 } from "./jobs.config";
-import { updateLastSyncDate } from "@/lib/account/account.service";
+import { updateLastSyncDate } from "@/lib/account/account.repository";
 
 const getAccountBalanceDataQueue = new Queue(
   APP_CONFIG.JOBS_CONFIG.QUEUES.BALANCES_QUEUE_NAME,

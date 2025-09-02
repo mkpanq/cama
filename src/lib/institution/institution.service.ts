@@ -2,75 +2,49 @@ import "server-only";
 import APP_CONFIG from "@/lib/appConfig";
 import { getCurrentApiToken } from "@/lib/shared/apiToken/apiToken.service";
 import bankDataApiRequest from "@/lib/shared/bankDataApi.request";
-import type Institution from "./institution.type";
+import type { InstitutionApiResponse } from "./institution.type";
+import type { ErrorResponse } from "../shared/bankDataApi.type";
 
-// TODO: Institutions data should be saved to DB and it's most important details like name and logo should be joined to multiple records
-export const getInstitutionList = async (): Promise<Institution[]> => {
-  const data = await bankDataApiRequest<
-    {
-      id: string;
-      name: string;
-      bic: string;
-      transaction_total_days: string;
-      countries: string[];
-      logo: string;
-      supported_features: string[];
-      identification_codes: string[];
-      max_access_valid_for_days: string;
-    }[]
-  >({
+export const getInstitutionList = async (): Promise<
+  InstitutionApiResponse[]
+> => {
+  const responseData = await bankDataApiRequest<InstitutionApiResponse[]>({
     method: "GET",
     path: `${APP_CONFIG.API_CONFIG.API_URL_INSTITUTIONS_LIST}`,
     // path: `${APP_CONFIG.API_CONFIG.API_URL_INSTITUTIONS_LIST}?country=PL`,
     auth: await getCurrentApiToken(),
   });
 
+  if (!responseData.ok) {
+    const errorMessage = JSON.stringify(responseData.data as ErrorResponse);
+    throw new Error(`Failed to institutions list: ${errorMessage}`);
+  }
+
+  const institutionsData = responseData.data as InstitutionApiResponse[];
+
   // For only data testing in the dev
-  const testData = data.filter((data) => {
+  const testData = institutionsData.filter((data) => {
     return data.id === "SANDBOXFINANCE_SFIN0000";
   });
 
-  return testData.map((rawInstitution) => ({
-    id: rawInstitution.id,
-    name: rawInstitution.name,
-    bic: rawInstitution.bic,
-    maxTransactionTotalDays: Number.parseInt(
-      rawInstitution.transaction_total_days,
-    ),
-    logo: rawInstitution.logo,
-    supportedFeatures: rawInstitution.supported_features,
-    maxDaysAccess: Number.parseInt(rawInstitution.max_access_valid_for_days),
-  }));
+  return testData;
 };
 
 export const getInstitutionDetails = async (
   institutionId: string,
-): Promise<Institution> => {
-  const rawInstitution = await bankDataApiRequest<{
-    id: string;
-    name: string;
-    bic: string;
-    transaction_total_days: string;
-    countries: string[];
-    logo: string;
-    supported_features: string[];
-    identification_codes: string[];
-    max_access_valid_for_days: string;
-  }>({
+): Promise<InstitutionApiResponse> => {
+  const responseData = await bankDataApiRequest<InstitutionApiResponse>({
     method: "GET",
     path: `${APP_CONFIG.API_CONFIG.API_URL_INSTITUTION_DETAILS(institutionId)}`,
     auth: await getCurrentApiToken(),
   });
 
-  return {
-    id: rawInstitution.id,
-    name: rawInstitution.name,
-    bic: rawInstitution.bic,
-    maxTransactionTotalDays: Number.parseInt(
-      rawInstitution.transaction_total_days,
-    ),
-    logo: rawInstitution.logo,
-    supportedFeatures: rawInstitution.supported_features,
-    maxDaysAccess: Number.parseInt(rawInstitution.max_access_valid_for_days),
-  };
+  if (!responseData.ok) {
+    const errorMessage = JSON.stringify(responseData.data as ErrorResponse);
+    throw new Error(
+      `Failed to get institution (${institutionId}) data: ${errorMessage}`,
+    );
+  }
+
+  return responseData.data as InstitutionApiResponse;
 };
