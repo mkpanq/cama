@@ -1,4 +1,5 @@
 import "server-only";
+
 import APP_CONFIG from "@/lib/appConfig";
 import getDBClient from "@/db/client";
 import { accountsTable } from "@/db/schema/account";
@@ -79,26 +80,6 @@ const getAccountMetadata = async (accountId: string) => {
 
   return data;
 };
-
-// const getAccountDetails = async (accountId: string) => {
-//   const data = bankDataApiRequest<{
-//     account: {
-//       resourceId: string;
-//       iban: string;
-//       currency: string;
-//       ownerName: string;
-//       name: string;
-//       product: string;
-//       cashAccountType: string;
-//     };
-//   }>({
-//     method: "GET",
-//     path: APP_CONFIG.API_CONFIG.API_URL_GET_ACCOUNT_DETAILS(accountId),
-//     auth: await getCurrentApiToken(),
-//   });
-
-//   return data;
-// };
 
 // TODO: Needs refactor - rather save historical days together with the accounts table rather than making such joins
 // export const getMaxHistoricalDays = async (

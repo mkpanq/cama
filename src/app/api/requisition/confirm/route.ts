@@ -1,4 +1,3 @@
-import { getRequisitionFromApi } from "@/lib/bankConnection/requisition/requisition.service";
 import APP_CONFIG from "@/lib/appConfig";
 import { redirect } from "next/navigation";
 import {
@@ -6,9 +5,10 @@ import {
   saveAccountsToDB,
 } from "@/lib/account/account.service";
 import {
-  getBankConnectionViaReferenceId,
+  getExistingBankConnectionViaReferenceId,
   updateRequisitionCreationDateForBankConnection,
 } from "@/lib/bankConnection/bankConnection.service";
+import { returnExisitingRequisitionDetails } from "@/lib/bankConnection/requisition/requisition.service";
 
 export async function GET(request: Request) {
   try {
@@ -16,32 +16,26 @@ export async function GET(request: Request) {
     if (!referenceId) throw new Error("No reference ID found in URL");
 
     const currentBankConnection =
-      await getBankConnectionViaReferenceId(referenceId);
-    if (!currentBankConnection)
-      throw new Error("Related bank connection not found");
+      await getExistingBankConnectionViaReferenceId(referenceId);
 
-    const { requisitionDetails, accounts } = await getRequisitionFromApi(
+    const requisitionData = await returnExisitingRequisitionDetails(
       currentBankConnection.requisitionId,
     );
+    if (!requisitionData)
+      throw new Error(
+        `No requisition details found for specific id: ${currentBankConnection.requisitionId}`,
+      );
 
     await updateRequisitionCreationDateForBankConnection(
       currentBankConnection.id,
-      requisitionDetails.created,
+      requisitionData.createdAt,
     );
 
     const savedAccountsIds = await getAndSaveAccounts(
-      accounts,
+      requisitionData.accounts,
       currentBankConnection.id,
     );
     if (!savedAccountsIds) throw new Error("Account IDs could not be saved");
-
-    // savedAccountsIds.forEach(
-    //   async (id) => await addAccountBalanceDataRetrivalJob(id),
-    // );
-
-    // savedAccountsIds.forEach(
-    //   async (id) => await addAccountTransactionDataRetrivalJob(id),
-    // );
   } catch (error) {
     console.error(error);
   }

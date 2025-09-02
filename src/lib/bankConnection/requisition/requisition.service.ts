@@ -2,90 +2,96 @@ import "server-only";
 import APP_CONFIG from "@/lib/appConfig";
 import { getCurrentApiToken } from "@/lib/shared/apiToken/apiToken.service";
 import bankDataApiRequest from "@/lib/shared/bankDataApi.request";
-import type Requisition from "./requisition.type";
-import type BankConnection from "../bankConnection.type";
+import type { Requisition, RequisitionApiResponse } from "./requisition.type";
+import type { ErrorResponse } from "@/lib/shared/bankDataApi.type";
 
-export const requestForRequisition = async (
-  bankConnection: BankConnection,
-): Promise<{
-  requisitionId: string;
-  redirectLink: string;
-}> => {
-  const data = await bankDataApiRequest<{
-    id: string;
-    created: string;
-    redirect: string;
-    status: string;
-    institution_id: string;
-    agreement: string;
-    reference: string;
-    accounts: string[];
-    user_language: string;
-    link: string;
-    ssn: string;
-    account_selection: boolean;
-    redirect_immediate: boolean;
-  }>({
+export const returnExisitingRequisitionDetails = async (id: string | null) => {
+  try {
+    if (!id) throw new Error("No requisition Id for existing bank connection");
+
+    const requisitionData = await sendRequestForExistingRequisition(id);
+
+    return {
+      accounts: requisitionData.accounts,
+      createdAt: new Date(requisitionData.created),
+    };
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+};
+
+export const returnNewRequisition = async (
+  institutionId: string,
+  agreementId: string,
+  referenceId: string,
+): Promise<Requisition | undefined> => {
+  try {
+    const requisitionData = await sendRequestForNewRequisition(
+      institutionId,
+      agreementId,
+      referenceId,
+    );
+
+    return {
+      id: requisitionData.id,
+      redirectUrl: requisitionData.redirect,
+    };
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+};
+
+const sendRequestForNewRequisition = async (
+  institutionId: string,
+  agreementId: string,
+  referenceId: string,
+): Promise<RequisitionApiResponse> => {
+  const responseData = await bankDataApiRequest<RequisitionApiResponse>({
     method: "POST",
     path: APP_CONFIG.API_CONFIG.API_URL_CREATE_REQUISITION,
     auth: await getCurrentApiToken(),
     body: {
       redirect: `${process.env.APPLICATION_MAIN_URL}${APP_CONFIG.ROUTE_CONFIG.API_CREATE_REQUISITION_WEBHOOK}`,
-      institution_id: bankConnection.institutionId,
-      agreement: bankConnection.agreementId,
-      reference: bankConnection.referenceId,
+      institution_id: institutionId,
+      agreement: agreementId,
+      reference: referenceId,
     },
   });
 
-  // Throw error if status is rejected or it's expired (by any means)
-  if (data.status === "RJ" || data.status === "EX")
+  if (!responseData.ok) {
+    const errorMessage = JSON.stringify(responseData.data as ErrorResponse);
+    throw new Error(`Failed to create requistion: ${errorMessage}`);
+  }
+
+  const requisitionData = responseData.data as RequisitionApiResponse;
+
+  if (requisitionData.status === "RJ" || requisitionData.status === "EX")
     throw new Error(
-      `Can't request for new requisition - wrong requisition status: -${data.status}`,
+      `Failed to create requistion: wrong requisition status - ${requisitionData.status}`,
     );
 
-  return {
-    requisitionId: data.id,
-    redirectLink: data.link,
-  };
+  return responseData.data as RequisitionApiResponse;
 };
 
-export const getRequisitionFromApi = async (
-  requisitionId: string,
-): Promise<{
-  requisitionDetails: Requisition;
-  accounts: string[];
-}> => {
-  const data = await bankDataApiRequest<{
-    id: string;
-    created: string;
-    redirect: string;
-    status: string;
-    institution_id: string;
-    agreement: string;
-    reference: string;
-    accounts: string[];
-    user_language: string;
-    link: string;
-    ssn: string;
-    account_selection: boolean;
-    redirect_immediate: boolean;
-  }>({
+const sendRequestForExistingRequisition = async (id: string) => {
+  const responseData = await bankDataApiRequest<RequisitionApiResponse>({
     method: "GET",
-    path: APP_CONFIG.API_CONFIG.API_URL_GET_REQUISITION(requisitionId),
+    path: APP_CONFIG.API_CONFIG.API_URL_GET_REQUISITION(id),
     auth: await getCurrentApiToken(),
   });
 
-  if (data.status !== "LN") throw new Error("Requisition is not linked !");
+  if (!responseData.ok) {
+    const errorMessage = JSON.stringify(responseData.data as ErrorResponse);
+    throw new Error(`Failed to retrieve requistion: ${errorMessage}`);
+  }
+  const requisitionData = responseData.data as RequisitionApiResponse;
 
-  return {
-    requisitionDetails: {
-      id: data.id,
-      institutionId: data.institution_id,
-      agreementId: data.agreement,
-      created: new Date(data.created),
-    },
-    accounts: data.accounts,
-  };
+  if (requisitionData.status !== "LN")
+    throw new Error("Requisition is not linked !");
+
+  return responseData.data as RequisitionApiResponse;
 };
 
 export const deleteRequisitionFromApi = async (requisitionId: string) => {

@@ -1,117 +1,75 @@
 import "server-only";
-import { requestForNewAgreement } from "./agreement/agreement.service";
-import getDBClient from "@/db/client";
-import { bankConnectionTable } from "@/db/schema/bankConnection";
+import { returnNewAgreement } from "./agreement/agreement.service";
+import {
+  createBankConnection,
+  getViaReferenceId,
+  updateRequisitionCreationDate,
+} from "./bankConnection.repository";
 import type BankConnection from "./bankConnection.type";
-import { eq, and, isNotNull } from "drizzle-orm";
-import { deleteRequisitionFromApi } from "./requisition/requisition.service";
 
-export const initializeBankConnection = async (
+export const initializeBankConnectionWithAgreement = async (
   institutionId: string,
   maxHistoricalDays: number,
   validFor: number,
-): Promise<BankConnection> => {
-  const bankConnectionAgreement = await requestForNewAgreement(
+): Promise<{
+  institutionId: string;
+  agreementId: string;
+  referenceId: string;
+}> => {
+  const bankConnectionAgreement = await returnNewAgreement(
     institutionId,
     maxHistoricalDays,
     validFor,
   );
+  if (!bankConnectionAgreement)
+    throw new Error(
+      "Cannot create bank connection - cannot retrieve end user agreement",
+    );
 
-  const db = getDBClient();
+  const createdBankConnection = await createBankConnection(
+    bankConnectionAgreement,
+  );
+  if (!createdBankConnection)
+    throw new Error("Cannot create bank connection - DB error during saving");
 
-  const data = await db
-    .insert(bankConnectionTable)
-    .values({
-      id: crypto.randomUUID(),
-      referenceId: crypto.randomUUID(),
-      institutionId,
-      agreementId: bankConnectionAgreement.id,
-      maxHistoricalDays,
-      validFor,
-      agreementCreationDate: new Date(bankConnectionAgreement.created),
-      agreementExpirationDate: new Date(bankConnectionAgreement.expirationDate),
-    })
-    .returning();
-
-  const bankConnection = data[0] as BankConnection;
-  return bankConnection;
-};
-
-export const getBankConnectionViaReferenceId = async (
-  referenceId: string,
-): Promise<BankConnection> => {
-  const db = getDBClient();
-  const bankConnection = await db
-    .select()
-    .from(bankConnectionTable)
-    .where(eq(bankConnectionTable.referenceId, referenceId));
-
-  return bankConnection[0] as BankConnection;
-};
-
-export const updateRequisitionIdForBankConnection = async (
-  bankConnectionId: string,
-  requisitionId: string,
-): Promise<void> => {
-  const db = getDBClient();
-  await db
-    .update(bankConnectionTable)
-    .set({ requisitionId: requisitionId })
-    .where(eq(bankConnectionTable.id, bankConnectionId));
+  return {
+    institutionId: createdBankConnection.institutionId,
+    agreementId: createdBankConnection.agreementId,
+    referenceId: createdBankConnection.referenceId,
+  };
 };
 
 export const updateRequisitionCreationDateForBankConnection = async (
   bankConnectionId: string,
   requisitionCreationDate: Date,
 ): Promise<void> => {
-  const db = getDBClient();
-  await db
-    .update(bankConnectionTable)
-    .set({ requisitionCreationDate: requisitionCreationDate })
-    .where(eq(bankConnectionTable.id, bankConnectionId));
-};
+  const connectionId = await updateRequisitionCreationDate(
+    bankConnectionId,
+    requisitionCreationDate,
+  );
 
-export const getAllConnections = async (): Promise<BankConnection[]> => {
-  const db = getDBClient();
-  const connections = await db
-    .select()
-    .from(bankConnectionTable)
-    .where(
-      and(
-        isNotNull(bankConnectionTable.requisitionId),
-        isNotNull(bankConnectionTable.requisitionCreationDate),
-      ),
+  if (!connectionId)
+    throw new Error(
+      `Cannot update requisition id for connection: ${bankConnectionId}`,
     );
-
-  return connections as BankConnection[];
 };
 
-export const deleteBankConnection = async (
-  bankConnectionId: string,
-): Promise<string | undefined> => {
-  const db = getDBClient();
-  const data = await db
-    .select({ id: bankConnectionTable.requisitionId })
-    .from(bankConnectionTable)
-    .where(and(eq(bankConnectionTable.id, bankConnectionId)));
+export const getExistingBankConnectionViaReferenceId = async (
+  referenceId: string,
+): Promise<BankConnection> => {
+  const bankConnectionRecord = await getViaReferenceId(referenceId);
+  if (!bankConnectionRecord) throw new Error("No bank connection found");
 
-  const requisitionId = data[0]?.id;
-  if (!requisitionId) {
-    console.error("No requisition found for the given bank connection ID");
-    return;
-  }
-
-  const result = await deleteRequisitionFromApi(requisitionId);
-
-  if (!result) {
-    console.error("Failed to delete requisition from API");
-    return;
-  }
-
-  const deletedId = await db
-    .delete(bankConnectionTable)
-    .where(eq(bankConnectionTable.id, bankConnectionId))
-    .returning({ id: bankConnectionTable.id });
-
-  return deletedId[0]?.id;
+  return {
+    id: bankConnectionRecord.id,
+    referenceId: bankConnectionRecord.referenceId,
+    requisitionId: bankConnectionRecord.requisitionId,
+    agreement: {
+      id: bankConnectionRecord.agreementId,
+      institutionId: bankConnectionRecord.institutionId,
+      maxHistoricalDays: bankConnectionRecord.maxHistoricalDays,
+      createdDate: bankConnectionRecord.agreementCreationDate,
+      expirationDate: bankConnectionRecord.agreementExpirationDate,
+    },
+  };
 };

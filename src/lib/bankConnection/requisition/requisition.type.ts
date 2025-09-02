@@ -1,8 +1,20 @@
-type Requisition = {
+export type Requisition = {
   id: string;
-  institutionId: string;
-  agreementId: string;
-  created: Date;
+  redirectUrl: string;
 };
 
-export default Requisition;
+export type RequisitionApiResponse = {
+  id: string;
+  created: string;
+  redirect: string;
+  status: string;
+  institution_id: string;
+  agreement: string;
+  reference: string;
+  accounts: string[];
+  user_language: string;
+  link: string;
+  ssn: string;
+  account_selection: boolean;
+  redirect_immediate: boolean;
+};
