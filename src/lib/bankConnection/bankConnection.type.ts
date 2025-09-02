@@ -1,14 +1,11 @@
+import type { EndUserAgreement } from "./agreement/agreement.type";
+
 type BankConnection = {
   id: string;
   referenceId: string;
-  institutionId: string;
-  agreementId: string;
-  requisitionId: string;
-  maxHistoricalDays: number;
-  validFor: number;
-  agreementCreationDate: Date;
-  agreementExpirationDate: Date;
-  requisitionCreationDate: Date;
+  requisitionId: string | null;
+
+  agreement: EndUserAgreement;
 };
 
 export default BankConnection;

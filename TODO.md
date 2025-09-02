@@ -30,7 +30,7 @@ File: [src/jobs/jobs.config.ts:26](./src/jobs/jobs.config.ts#L26)
 
 #### [TODO-e66542]
 Needs refactor - rather save historical days together with the accounts table rather than making such joins<br/>
-File: [src/lib/account/account.service.ts:103](./src/lib/account/account.service.ts#L103)
+File: [src/lib/account/account.service.ts:84](./src/lib/account/account.service.ts#L84)
 
 #### [TODO-8f92ea]
 Add currency handling<br/>
@@ -39,10 +39,6 @@ File: [src/lib/balance/balance.service.ts:56](./src/lib/balance/balance.service.
 #### [TODO-7cb099]
 Institutions data should be saved to DB and it's most important details like name and logo should be joined to multiple records<br/>
 File: [src/lib/institution/institution.service.ts:7](./src/lib/institution/institution.service.ts#L7)
-
-#### [TODO-16083b]
-Add Tanstack Query for improving data caching and Errors and it's handling - decide where to return empty return and where to throw exception to catch it later.<br/>
-File: [src/lib/shared/bankDataApi.request.ts:8](./src/lib/shared/bankDataApi.request.ts#L8)
 
 #### [TODO-659083]
 Empty states - for now, I've add PLN as default currency, but it needs to be fixed!<br/>

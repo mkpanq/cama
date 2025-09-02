@@ -1,41 +1,44 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { requestForRequisition } from "../../../../lib/bankConnection/requisition/requisition.service";
-import {
-  deleteBankConnection,
-  initializeBankConnection,
-  updateRequisitionIdForBankConnection,
-} from "@/lib/bankConnection/bankConnection.service";
+import { returnNewRequisition } from "../../../../lib/bankConnection/requisition/requisition.service";
+import { initializeBankConnectionWithAgreement } from "@/lib/bankConnection/bankConnection.service";
 import APP_CONFIG from "@/lib/appConfig";
+import { updateRequisitionId } from "@/lib/bankConnection/bankConnection.repository";
 
 export async function createBankConnection(formData: FormData) {
-  const institutionId = formData.get("institutionId") as string;
-  const maxDaysAccess = Number.parseInt(
-    formData.get("maxDaysAccess") as string,
-  );
-  const maxTransactionTotalDays = Number.parseInt(
-    formData.get("maxTransactionTotalDays") as string,
-  );
+  const { requestedInstitutionId, maxDaysAccess, maxTransactionTotalDays } =
+    getFormDataForCreation(formData);
 
-  const bankConnection = await initializeBankConnection(
-    institutionId,
-    maxTransactionTotalDays,
-    maxDaysAccess,
-  );
-  const inititalRequisition = await requestForRequisition(bankConnection);
-
-  if (!bankConnection || !inititalRequisition)
-    throw new Error(
-      "Failed to create initital bank connection with requisition",
+  const { institutionId, agreementId, referenceId } =
+    await initializeBankConnectionWithAgreement(
+      requestedInstitutionId,
+      maxTransactionTotalDays,
+      maxDaysAccess,
     );
 
-  await updateRequisitionIdForBankConnection(
-    bankConnection.id,
-    inititalRequisition.requisitionId,
+  const inititalRequisition = await returnNewRequisition(
+    institutionId,
+    agreementId,
+    referenceId,
   );
 
-  redirect(inititalRequisition.redirectLink);
+  if (!inititalRequisition)
+    throw new Error(
+      "Failed to create initital bank connection: Cannot create new requisition",
+    );
+
+  const requisitionId = await updateRequisitionId(
+    referenceId,
+    inititalRequisition.id,
+  );
+
+  if (!requisitionId)
+    throw new Error(
+      "Cannot save requisition id to new bank connection - DB error during saving",
+    );
+
+  redirect(inititalRequisition.redirectUrl);
 }
 
 export async function removeBankConnection(formData: FormData) {
@@ -46,3 +49,19 @@ export async function removeBankConnection(formData: FormData) {
 
   redirect(APP_CONFIG.ROUTE_CONFIG.HOME_PATH);
 }
+
+const getFormDataForCreation = (formData: FormData) => {
+  const requestedInstitutionId = formData.get("institutionId") as string;
+  const maxDaysAccess = Number.parseInt(
+    formData.get("maxDaysAccess") as string,
+  );
+  const maxTransactionTotalDays = Number.parseInt(
+    formData.get("maxTransactionTotalDays") as string,
+  );
+
+  return {
+    requestedInstitutionId,
+    maxDaysAccess,
+    maxTransactionTotalDays,
+  };
+};
