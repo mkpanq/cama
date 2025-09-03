@@ -2,10 +2,12 @@ import "server-only";
 import getDBClient from "@/db/client";
 import { bankConnectionTable } from "@/db/schema/bankConnection";
 import type { EndUserAgreement } from "./agreement/agreement.type";
-import { eq } from "drizzle-orm";
+import { and, eq, isNotNull } from "drizzle-orm";
 
 export const createBankConnection = async (
   bankConnectionAgreement: EndUserAgreement,
+  institutionName?: string,
+  institutionLogo?: string,
 ) => {
   const db = getDBClient();
   const data = await db
@@ -15,6 +17,8 @@ export const createBankConnection = async (
       referenceId: crypto.randomUUID(),
       agreementId: bankConnectionAgreement.id,
       institutionId: bankConnectionAgreement.institutionId,
+      institutionName: institutionName,
+      institutionLogo: institutionLogo,
       maxHistoricalDays: bankConnectionAgreement.maxHistoricalDays,
       agreementCreationDate: bankConnectionAgreement.createdDate,
       agreementExpirationDate: bankConnectionAgreement.expirationDate,
@@ -80,17 +84,15 @@ export const deleteConnection = async (id: string) => {
   return deletedId[0]?.id;
 };
 
-// const getAllConnections = async (): Promise<BankConnection[]> => {
-//   const db = getDBClient();
-//   const connections = await db
-//     .select()
-//     .from(bankConnectionTable)
-//     .where(
-//       and(
-//         isNotNull(bankConnectionTable.requisitionId),
-//         isNotNull(bankConnectionTable.requisitionCreationDate),
-//       ),
-//     );
-
-//   return connections as BankConnection[];
-// };
+export const getAll = async () => {
+  const db = getDBClient();
+  return await db
+    .select()
+    .from(bankConnectionTable)
+    .where(
+      and(
+        isNotNull(bankConnectionTable.requisitionId),
+        isNotNull(bankConnectionTable.requisitionCreationDate),
+      ),
+    );
+};

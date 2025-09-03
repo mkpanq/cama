@@ -1,12 +1,12 @@
 import { getAccountList } from "@/lib/account/account.service";
 import { PageHeader } from "../_shared/header";
 import { getBalancesList } from "@/lib/balance/balance.service";
-import type Account from "@/lib/account/account.type";
 import { currencyFormat } from "@/lib/shared/helpers";
 import Image from "next/image";
 import Form from "next/form";
 import { updateAccountData } from "./_lib/actions";
-import type AccountBalance from "@/lib/balance/balance.type";
+import type { Account } from "@/lib/account/account.type";
+import type { AccountBalance } from "@/lib/balance/balance.type";
 
 // TODO: Better handle static/dyamic rendering - look at the docs and see if we can use some partial rerendering
 export const dynamic = "force-dynamic";

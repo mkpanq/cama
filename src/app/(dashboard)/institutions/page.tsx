@@ -5,12 +5,11 @@ import {
 import InstitutionList from "./_components/institutionsList";
 import { PageHeader } from "../_shared/header";
 import ConnectionsList from "./_components/connectionsList";
-import { getAllConnections } from "@/lib/bankConnection/bankConnection.service";
-import type BankConnection from "@/lib/bankConnection/bankConnection.type";
+import { getAllActiveConnections } from "@/lib/bankConnection/bankConnection.service";
 
 export default async function MainInstitutionsPage() {
   const institutions = await getInstitutionList();
-  const connections = await getConnectionsData();
+  const connections = await getAllActiveConnections();
 
   return (
     <>
@@ -21,35 +20,3 @@ export default async function MainInstitutionsPage() {
     </>
   );
 }
-
-const getConnectionsData = async (): Promise<
-  (BankConnection & {
-    institutionName: string;
-    institutionLogo: string;
-  })[]
-> => {
-  const bankConnections: (BankConnection & {
-    institutionName: string;
-    institutionLogo: string;
-  })[] = [];
-
-  const connections = await getAllConnections();
-
-  await Promise.all(
-    connections.map(async (connection) => {
-      const relatedInstitutionData = await getInstitutionDetails(
-        connection.institutionId,
-      );
-
-      const updatedConnection = {
-        ...connection,
-        institutionName: relatedInstitutionData.name,
-        institutionLogo: relatedInstitutionData.logo,
-      };
-
-      bankConnections.push(updatedConnection);
-    }),
-  );
-
-  return bankConnections;
-};
