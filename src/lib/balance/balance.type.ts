@@ -1,4 +1,4 @@
-type AccountBalance = {
+export type AccountBalance = {
   id: string;
   accountId: string;
   amount: number;
@@ -10,4 +10,16 @@ type AccountBalance = {
   lastCommittedTransaction: string | null;
 };
 
-export default AccountBalance;
+export type AccountBalanceApiResponse = {
+  balances: {
+    balanceAmount: {
+      amount: string;
+      currency: string;
+    };
+    balanceType: string;
+    creditLimitIncluded?: boolean;
+    lastChangeDateTime?: string;
+    referenceDate?: string;
+    lastCommittedTransaction?: string;
+  }[];
+};

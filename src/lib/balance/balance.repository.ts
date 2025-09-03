@@ -1,7 +1,7 @@
 import getDBClient from "@/db/client";
 import { balancesTable } from "@/db/schema/balance";
 import { eq, or, sql } from "drizzle-orm";
-import type AccountBalance from "./balance.type";
+import type { AccountBalance } from "./balance.type";
 
 export const saveBalanceDataToDB = async (balances: AccountBalance[]) => {
   const db = getDBClient();
