@@ -1,35 +1,31 @@
 import "server-only";
 import APP_CONFIG from "../appConfig";
 import bankDataApiRequest from "../shared/bankDataApi.request";
-import type AccountBalance from "./balance.type";
 import {
   getBalanceForCurrentUser,
   saveBalanceDataToDB,
 } from "./balance.repository";
+import type { AccountBalance, AccountBalanceApiResponse } from "./balance.type";
+import type { ErrorResponse } from "../shared/bankDataApi.type";
 
 export const getBalanceDataFromAPI = async (
   accountId: string,
   token: string,
 ): Promise<AccountBalance[]> => {
-  const data = await bankDataApiRequest<{
-    balances: {
-      balanceAmount: {
-        amount: string;
-        currency: string;
-      };
-      balanceType: string;
-      creditLimitIncluded?: boolean;
-      lastChangeDateTime?: string;
-      referenceDate?: string;
-      lastCommittedTransaction?: string;
-    }[];
-  }>({
+  const responseData = await bankDataApiRequest<AccountBalanceApiResponse>({
     method: "GET",
     path: APP_CONFIG.API_CONFIG.API_URL_GET_ACCOUNT_BALANCES(accountId),
     auth: token,
   });
 
-  const accountBalances: AccountBalance[] = data.balances.map((balance) => ({
+  if (!responseData.ok) {
+    const errorMessage = JSON.stringify(responseData.data as ErrorResponse);
+    throw new Error(`Failed to get balance: ${errorMessage}`);
+  }
+
+  const accountBalances: AccountBalance[] = (
+    responseData.data as AccountBalanceApiResponse
+  ).balances.map((balance) => ({
     id: crypto.randomUUID(),
     accountId: accountId,
     amount: parseFloat(balance.balanceAmount.amount),

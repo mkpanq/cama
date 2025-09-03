@@ -61,3 +61,66 @@ export type DisplayedTransaction = Transaction & {
   accountName: string | undefined | null;
   institutionName: string | undefined;
 };
+
+export type TransactionApiResponse = {
+  transactions: {
+    booked: {
+      transactionId?: string;
+      entryReference?: string;
+      endToEndId?: string;
+      mandateId?: string;
+      checkId?: string;
+      creditorId?: string;
+      bookingDate: string;
+      valueDate?: string;
+      bookingDateTime?: string;
+      valueDateTime?: string;
+      transactionAmount: {
+        amount: string;
+        currency: string;
+      };
+      currencyExchange?: Array<{
+        sourceCurrency?: string;
+        exchangeRate?: string;
+        unitCurrency?: string;
+        targetCurrency?: string;
+        quotationDate?: string;
+        contractIdentification?: string;
+      }>;
+      creditorName?: string;
+      creditorAccount?: {
+        iban?: string;
+        bban?: string;
+        pan?: string;
+        maskedPan?: string;
+        msisdn?: string;
+        currency?: string;
+      };
+      ultimateCreditor?: string;
+      debtorName?: string;
+      debtorAccount?: {
+        iban?: string;
+        bban?: string;
+        pan?: string;
+        maskedPan?: string;
+        msisdn?: string;
+        currency?: string;
+      };
+      ultimateDebtor?: string;
+      remittanceInformationUnstructuredArray?: string[];
+      remittanceInformationUnstructured?: string;
+      remittanceInformationStructured?: string;
+      remittanceInformationStructuredArray?: string[];
+      additionalInformation?: string;
+      purposeCode?: string;
+      bankTransactionCode?: string;
+      proprietaryBankTransactionCode?: string;
+      internalTransactionId: string;
+      balanceAfterTransaction?: {
+        amount: string;
+        currency?: string;
+      };
+    }[];
+    pending?: unknown;
+  };
+};
