@@ -2,10 +2,13 @@ import "server-only";
 import { returnNewAgreement } from "./agreement/agreement.service";
 import {
   createBankConnection,
+  deleteConnection,
+  getViaConnectionId,
   getViaReferenceId,
   updateRequisitionCreationDate,
 } from "./bankConnection.repository";
 import type BankConnection from "./bankConnection.type";
+import { deleteRequisitionFromApi } from "./requisition/requisition.service";
 
 export const initializeBankConnectionWithAgreement = async (
   institutionId: string,
@@ -72,4 +75,22 @@ export const getExistingBankConnectionViaReferenceId = async (
       expirationDate: bankConnectionRecord.agreementExpirationDate,
     },
   };
+};
+
+export const deleteBankConnection = async (
+  bankConnectionId: string,
+): Promise<string | undefined> => {
+  const connection = await getViaConnectionId(bankConnectionId);
+
+  const requisitionId = connection[0]?.id;
+  if (!requisitionId) {
+    console.error("No requisition found for the given bank connection ID");
+    return;
+  }
+
+  await deleteRequisitionFromApi(requisitionId);
+
+  const deletedId = await deleteConnection(bankConnectionId);
+
+  return deletedId;
 };
