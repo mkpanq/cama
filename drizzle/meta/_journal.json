@@ -43,6 +43,13 @@
       "when": 1756467703258,
       "tag": "0005_messy_quasimodo",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1756895703755,
+      "tag": "0006_far_dark_beast",
+      "breakpoints": true
     }
   ]
 }

@@ -1,32 +1,34 @@
 import APP_CONFIG from "@/lib/appConfig";
-import type { AccessToken, ApiToken } from "./apiToken.type";
+import type { AccessToken, ApiToken, TokenApiResponse } from "./apiToken.type";
 import bankDataApiRequest from "../bankDataApi.request";
 import { cookies } from "next/headers";
+import type { ErrorResponse } from "../bankDataApi.type";
 
 export const getNewToken = async (): Promise<ApiToken | undefined> => {
   const secretId = process.env.GOCARDLESS_SECRET_ID;
   const secretKey = process.env.GOCARDLESS_SECRET_KEY;
 
   try {
-    const data = await bankDataApiRequest<{
-      access: string;
-      access_expires: number;
-      refresh: string;
-      refresh_expires: number;
-    }>({
+    const responseData = await bankDataApiRequest<TokenApiResponse>({
       path: APP_CONFIG.API_CONFIG.API_URL_NEW_TOKEN,
       method: "POST",
       body: { secret_id: secretId, secret_key: secretKey },
     });
 
+    if (!responseData.ok) {
+      const errorMessage = JSON.stringify(responseData.data as ErrorResponse);
+      throw new Error(`Failed to retrieve token: ${errorMessage}`);
+    }
+
+    const token = responseData.data as TokenApiResponse;
     return {
       access: {
-        access: data.access,
-        access_expires: convertExpirationTimeToDate(data.access_expires),
+        access: token.access,
+        access_expires: convertExpirationTimeToDate(token.access_expires),
       },
       refresh: {
-        refresh: data.refresh,
-        refresh_expires: convertExpirationTimeToDate(data.refresh_expires),
+        refresh: token.refresh,
+        refresh_expires: convertExpirationTimeToDate(token.refresh_expires),
       },
     };
   } catch (error) {
@@ -39,15 +41,22 @@ export const getRefreshedToken = async (
   refreshToken: string,
 ): Promise<AccessToken | undefined> => {
   try {
-    const data = await bankDataApiRequest<AccessToken>({
+    const responseData = await bankDataApiRequest<AccessToken>({
       path: APP_CONFIG.API_CONFIG.API_URL_REFRESH_TOKEN,
       method: "POST",
       body: { refresh: refreshToken },
     });
 
+    if (!responseData.ok) {
+      const errorMessage = JSON.stringify(responseData.data as ErrorResponse);
+      throw new Error(`Failed to refresh token: ${errorMessage}`);
+    }
+
+    const token = responseData.data as TokenApiResponse;
+
     return {
-      access: data.access,
-      access_expires: convertExpirationTimeToDate(data.access_expires),
+      access: token.access,
+      access_expires: convertExpirationTimeToDate(token.access_expires),
     };
   } catch (error) {
     console.error(error);

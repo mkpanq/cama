@@ -12,6 +12,9 @@ export const bankConnectionTable = pgTable("bank_connections", {
 
   agreementId: uuid("agreement_id").unique().notNull(),
   institutionId: varchar("institution_id", { length: 256 }).notNull(),
+  institutionName: varchar("institution_name", { length: 256 }),
+  institutionLogo: varchar("institution_logo", { length: 1024 }),
+
   maxHistoricalDays: integer("max_historical_days"),
   agreementCreationDate: timestamp("agreement_creation_date")
     .notNull()

@@ -3,12 +3,14 @@ import { returnNewAgreement } from "./agreement/agreement.service";
 import {
   createBankConnection,
   deleteConnection,
+  getAll,
   getViaConnectionId,
   getViaReferenceId,
   updateRequisitionCreationDate,
 } from "./bankConnection.repository";
 import type BankConnection from "./bankConnection.type";
 import { deleteRequisitionFromApi } from "./requisition/requisition.service";
+import { getInstitutionDetails } from "../institution/institution.service";
 
 export const initializeBankConnectionWithAgreement = async (
   institutionId: string,
@@ -29,8 +31,11 @@ export const initializeBankConnectionWithAgreement = async (
       "Cannot create bank connection - cannot retrieve end user agreement",
     );
 
+  const { name, logo } = await getInstitutionDetails(institutionId);
   const createdBankConnection = await createBankConnection(
     bankConnectionAgreement,
+    name,
+    logo,
   );
   if (!createdBankConnection)
     throw new Error("Cannot create bank connection - DB error during saving");
@@ -67,6 +72,8 @@ export const getExistingBankConnectionViaReferenceId = async (
     id: bankConnectionRecord.id,
     referenceId: bankConnectionRecord.referenceId,
     requisitionId: bankConnectionRecord.requisitionId,
+    institutionLogo: bankConnectionRecord.institutionLogo,
+    institutionName: bankConnectionRecord.institutionName,
     agreement: {
       id: bankConnectionRecord.agreementId,
       institutionId: bankConnectionRecord.institutionId,
@@ -93,4 +100,25 @@ export const deleteBankConnection = async (
   const deletedId = await deleteConnection(bankConnectionId);
 
   return deletedId;
+};
+
+export const getAllActiveConnections = async (): Promise<BankConnection[]> => {
+  const connections = await getAll();
+
+  return connections.map((connection) => {
+    return {
+      id: connection.id,
+      referenceId: connection.referenceId,
+      requisitionId: connection.requisitionId,
+      institutionLogo: connection.institutionLogo,
+      institutionName: connection.institutionName,
+      agreement: {
+        id: connection.agreementId,
+        institutionId: connection.institutionId,
+        maxHistoricalDays: connection.maxHistoricalDays,
+        createdDate: connection.agreementCreationDate,
+        expirationDate: connection.agreementExpirationDate,
+      },
+    };
+  });
 };

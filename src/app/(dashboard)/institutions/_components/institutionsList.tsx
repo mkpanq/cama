@@ -1,13 +1,13 @@
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
-import type Institution from "../../../../lib/institution/institution.type";
 import Image from "next/image";
 import { createBankConnection } from "../_lib/actions";
 import Form from "next/form";
+import type { InstitutionApiResponse } from "@/lib/institution/institution.type";
 
 export default function InstitutionList({
   institutionsList,
 }: {
-  institutionsList: Institution[];
+  institutionsList: InstitutionApiResponse[];
 }) {
   return (
     <ul className="divide-y divide-gray-100 space-y-2">
@@ -21,7 +21,11 @@ export default function InstitutionList({
   );
 }
 
-function InstitutionListElement({ institution }: { institution: Institution }) {
+function InstitutionListElement({
+  institution,
+}: {
+  institution: InstitutionApiResponse;
+}) {
   return (
     <li className="relative flex justify-between py-5 border-b border-gray-200 px-3">
       <div className="flex gap-x-4 pr-6 sm:w-1/2 sm:flex-none">
@@ -44,14 +48,14 @@ function InstitutionListElement({ institution }: { institution: Institution }) {
           <p className="text-sm/6 text-gray-900">
             Transaction total days:{" "}
             <span className="font-black">
-              {institution.maxTransactionTotalDays} days
+              {institution.transaction_total_days} days
             </span>
           </p>
           <div className="mt-1 flex items-center gap-x-1.5">
             <p className="text-xs/5 text-gray-500">
               Max access:{" "}
               <span className="font-black">
-                {institution.maxDaysAccess} days
+                {institution.max_access_valid_for_days} days
               </span>
             </p>
           </div>
@@ -61,12 +65,12 @@ function InstitutionListElement({ institution }: { institution: Institution }) {
           <input
             type="hidden"
             name="maxTransactionTotalDays"
-            value={institution.maxTransactionTotalDays}
+            value={institution.transaction_total_days}
           />
           <input
             type="hidden"
             name="maxDaysAccess"
-            value={institution.maxDaysAccess}
+            value={institution.max_access_valid_for_days}
           />
           <button type="submit" className="hover:cursor-pointer">
             <div className="flex items-center px-3 py-1 rounded-2xl border border-gray-300">
