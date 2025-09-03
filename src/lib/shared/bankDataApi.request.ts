@@ -1,5 +1,6 @@
 import type { BankDataApiResponse } from "./bankDataApi.type";
 
+// TODO: Think about better error handling from the API
 const bankDataApiRequest = async <T>({
   path,
   method,

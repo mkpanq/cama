@@ -4,6 +4,7 @@ import postgres from "postgres";
 
 let dbInstance: ReturnType<typeof drizzle> | null = null;
 
+// TODO: Think about better error handling from the Database
 export default function getDbClient() {
   if (!dbInstance) {
     const client = postgres({

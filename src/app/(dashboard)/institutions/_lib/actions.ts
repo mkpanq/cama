@@ -9,6 +9,7 @@ import {
 import APP_CONFIG from "@/lib/appConfig";
 import { updateRequisitionId } from "@/lib/bankConnection/bankConnection.repository";
 
+// TODO: Such complicated methods should be wrapped in transactions
 export async function createBankConnection(formData: FormData) {
   const { requestedInstitutionId, maxDaysAccess, maxTransactionTotalDays } =
     getFormDataForCreation(formData);

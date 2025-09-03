@@ -12,9 +12,17 @@ File: [src/app/(dashboard)/(home)/page.tsx:10](./src/app/(dashboard)/(home)/page
 Better handle static/dyamic rendering - look at the docs and see if we can use some partial rerendering<br/>
 File: [src/app/(dashboard)/accounts/page.tsx:11](./src/app/(dashboard)/accounts/page.tsx#L11)
 
+#### [TODO-6a744d]
+Such complicated methods should be wrapped in transactions<br/>
+File: [src/app/(dashboard)/institutions/_lib/actions.ts:12](./src/app/(dashboard)/institutions/_lib/actions.ts#L12)
+
 #### [TODO-03677c]
 Think about zod library for parsing and validate such input<br/>
 File: [src/app/auth/_lib/actions.ts:9](./src/app/auth/_lib/actions.ts#L9)
+
+#### [TODO-8b489b]
+Think about better error handling from the Database<br/>
+File: [src/db/client.ts:7](./src/db/client.ts#L7)
 
 #### [TODO-34ce4f]
 Not a fan of this solution when need to extract token and userId separately just for those methods - will need to rethink implementation of strict job methods<br/>
@@ -31,6 +39,10 @@ File: [src/jobs/jobs.config.ts:26](./src/jobs/jobs.config.ts#L26)
 #### [TODO-8f92ea]
 Add currency handling<br/>
 File: [src/lib/balance/balance.service.ts:52](./src/lib/balance/balance.service.ts#L52)
+
+#### [TODO-79526f]
+Think about better error handling from the API<br/>
+File: [src/lib/shared/bankDataApi.request.ts:3](./src/lib/shared/bankDataApi.request.ts#L3)
 
 #### [TODO-659083]
 Empty states - for now, I've add PLN as default currency, but it needs to be fixed!<br/>
