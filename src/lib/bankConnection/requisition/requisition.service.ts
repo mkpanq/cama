@@ -95,18 +95,18 @@ const sendRequestForExistingRequisition = async (id: string) => {
 };
 
 export const deleteRequisitionFromApi = async (requisitionId: string) => {
-  try {
-    await bankDataApiRequest<{
-      summary: string;
-      detail: string;
-    }>({
-      method: "DELETE",
-      path: APP_CONFIG.API_CONFIG.API_URL_GET_REQUISITION(requisitionId),
-      auth: await getCurrentApiToken(),
-    });
-  } catch (error) {
-    console.error(`Error deleting requisition ${requisitionId}: `, error);
-    return false;
+  const responseData = await bankDataApiRequest<{
+    summary: string;
+    detail: string;
+  }>({
+    method: "DELETE",
+    path: APP_CONFIG.API_CONFIG.API_URL_GET_REQUISITION(requisitionId),
+    auth: await getCurrentApiToken(),
+  });
+
+  if (!responseData.ok) {
+    const errorMessage = JSON.stringify(responseData.data as ErrorResponse);
+    throw new Error(`Failed to delete requistion: ${errorMessage}`);
   }
 
   return true;

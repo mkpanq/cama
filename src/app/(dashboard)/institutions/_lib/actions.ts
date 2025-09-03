@@ -2,7 +2,10 @@
 
 import { redirect } from "next/navigation";
 import { returnNewRequisition } from "../../../../lib/bankConnection/requisition/requisition.service";
-import { initializeBankConnectionWithAgreement } from "@/lib/bankConnection/bankConnection.service";
+import {
+  deleteBankConnection,
+  initializeBankConnectionWithAgreement,
+} from "@/lib/bankConnection/bankConnection.service";
 import APP_CONFIG from "@/lib/appConfig";
 import { updateRequisitionId } from "@/lib/bankConnection/bankConnection.repository";
 

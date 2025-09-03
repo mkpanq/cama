@@ -62,6 +62,24 @@ export const updateRequisitionCreationDate = async (
   return connection[0].id;
 };
 
+export const getViaConnectionId = async (id: string) => {
+  const db = getDBClient();
+  return await db
+    .select()
+    .from(bankConnectionTable)
+    .where(eq(bankConnectionTable.id, id));
+};
+
+export const deleteConnection = async (id: string) => {
+  const db = getDBClient();
+  const deletedId = await db
+    .delete(bankConnectionTable)
+    .where(eq(bankConnectionTable.id, id))
+    .returning({ id: bankConnectionTable.id });
+
+  return deletedId[0]?.id;
+};
+
 // const getAllConnections = async (): Promise<BankConnection[]> => {
 //   const db = getDBClient();
 //   const connections = await db
@@ -75,34 +93,4 @@ export const updateRequisitionCreationDate = async (
 //     );
 
 //   return connections as BankConnection[];
-// };
-
-// const deleteBankConnection = async (
-//   bankConnectionId: string,
-// ): Promise<string | undefined> => {
-//   const db = getDBClient();
-//   const data = await db
-//     .select({ id: bankConnectionTable.requisitionId })
-//     .from(bankConnectionTable)
-//     .where(and(eq(bankConnectionTable.id, bankConnectionId)));
-
-//   const requisitionId = data[0]?.id;
-//   if (!requisitionId) {
-//     console.error("No requisition found for the given bank connection ID");
-//     return;
-//   }
-
-//   const result = await deleteRequisitionFromApi(requisitionId);
-
-//   if (!result) {
-//     console.error("Failed to delete requisition from API");
-//     return;
-//   }
-
-//   const deletedId = await db
-//     .delete(bankConnectionTable)
-//     .where(eq(bankConnectionTable.id, bankConnectionId))
-//     .returning({ id: bankConnectionTable.id });
-
-//   return deletedId[0]?.id;
 // };
