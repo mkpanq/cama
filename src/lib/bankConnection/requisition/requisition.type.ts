@@ -1,6 +1,6 @@
 export type Requisition = {
   id: string;
-  redirectUrl: string;
+  link: string;
 };
 
 export type RequisitionApiResponse = {
