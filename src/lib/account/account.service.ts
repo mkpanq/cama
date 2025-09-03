@@ -5,7 +5,6 @@ import { getCurrentApiToken } from "../shared/apiToken/apiToken.service";
 import bankDataApiRequest from "../shared/bankDataApi.request";
 import { getInstitutionDetails } from "../institution/institution.service";
 import { bulkSave, getAll, updateLastSyncDate } from "./account.repository";
-import type { ErrorResponse } from "../shared/bankDataApi.type";
 import type { Account, AccountApiResponse } from "./account.type";
 
 export const saveAccountsToDB = async (
@@ -60,18 +59,11 @@ export const returnAccountData = async (
 };
 
 const sendRequstForAccountMetadata = async (accountId: string) => {
-  const responseData = await bankDataApiRequest<AccountApiResponse>({
+  const accountData = await bankDataApiRequest<AccountApiResponse>({
     method: "GET",
     path: APP_CONFIG.API_CONFIG.API_URL_GET_ACCOUNT_METADATA(accountId),
     auth: await getCurrentApiToken(),
   });
 
-  if (!responseData.ok) {
-    const errorMessage = JSON.stringify(responseData.data as ErrorResponse);
-    throw new Error(
-      `Failed to retrieve account (${accountId}) metadata: ${errorMessage}`,
-    );
-  }
-
-  return responseData.data as AccountApiResponse;
+  return accountData;
 };

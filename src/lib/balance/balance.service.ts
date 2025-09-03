@@ -6,7 +6,6 @@ import {
   saveBalanceDataToDB,
 } from "./balance.repository";
 import type { AccountBalance, AccountBalanceApiResponse } from "./balance.type";
-import type { ErrorResponse } from "../shared/bankDataApi.type";
 
 export const getBalanceDataFromAPI = async (
   accountId: string,
@@ -17,29 +16,23 @@ export const getBalanceDataFromAPI = async (
     path: APP_CONFIG.API_CONFIG.API_URL_GET_ACCOUNT_BALANCES(accountId),
     auth: token,
   });
-
-  if (!responseData.ok) {
-    const errorMessage = JSON.stringify(responseData.data as ErrorResponse);
-    throw new Error(`Failed to get balance: ${errorMessage}`);
-  }
-
-  const accountBalances: AccountBalance[] = (
-    responseData.data as AccountBalanceApiResponse
-  ).balances.map((balance) => ({
-    id: crypto.randomUUID(),
-    accountId: accountId,
-    amount: parseFloat(balance.balanceAmount.amount),
-    currency: balance.balanceAmount.currency,
-    type: balance.balanceType,
-    referenceDate: balance.referenceDate
-      ? new Date(balance.referenceDate)
-      : null,
-    creditLimitIncluded: balance.creditLimitIncluded ?? null,
-    lastChangeDateTime: balance.lastChangeDateTime
-      ? new Date(balance.lastChangeDateTime)
-      : null,
-    lastCommittedTransaction: balance.lastCommittedTransaction ?? null,
-  }));
+  const accountBalances: AccountBalance[] = responseData.balances.map(
+    (balance) => ({
+      id: crypto.randomUUID(),
+      accountId: accountId,
+      amount: parseFloat(balance.balanceAmount.amount),
+      currency: balance.balanceAmount.currency,
+      type: balance.balanceType,
+      referenceDate: balance.referenceDate
+        ? new Date(balance.referenceDate)
+        : null,
+      creditLimitIncluded: balance.creditLimitIncluded ?? null,
+      lastChangeDateTime: balance.lastChangeDateTime
+        ? new Date(balance.lastChangeDateTime)
+        : null,
+      lastCommittedTransaction: balance.lastCommittedTransaction ?? null,
+    }),
+  );
 
   return accountBalances;
 };

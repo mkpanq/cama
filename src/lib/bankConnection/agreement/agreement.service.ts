@@ -7,7 +7,6 @@ import type {
   EndUserAgreement,
   EndUserAgreementApiResponse,
 } from "./agreement.type";
-import type { ErrorResponse } from "@/lib/shared/bankDataApi.type";
 
 export const returnNewAgreement = async (
   institutionId: string,
@@ -51,10 +50,5 @@ const sendRequestForNewAgreement = async (
     },
   });
 
-  if (!responseData.ok) {
-    const errorMessage = JSON.stringify(responseData.data as ErrorResponse);
-    throw new Error(`Failed to create enduser agreement: ${errorMessage}`);
-  }
-
-  return responseData.data as EndUserAgreementApiResponse;
+  return responseData;
 };

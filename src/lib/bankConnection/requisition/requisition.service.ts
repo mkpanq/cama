@@ -3,7 +3,6 @@ import APP_CONFIG from "@/lib/appConfig";
 import { getCurrentApiToken } from "@/lib/shared/apiToken/apiToken.service";
 import bankDataApiRequest from "@/lib/shared/bankDataApi.request";
 import type { Requisition, RequisitionApiResponse } from "./requisition.type";
-import type { ErrorResponse } from "@/lib/shared/bankDataApi.type";
 
 export const returnExisitingRequisitionDetails = async (id: string | null) => {
   try {
@@ -48,7 +47,7 @@ const sendRequestForNewRequisition = async (
   agreementId: string,
   referenceId: string,
 ): Promise<RequisitionApiResponse> => {
-  const responseData = await bankDataApiRequest<RequisitionApiResponse>({
+  const requisitionData = await bankDataApiRequest<RequisitionApiResponse>({
     method: "POST",
     path: APP_CONFIG.API_CONFIG.API_URL_CREATE_REQUISITION,
     auth: await getCurrentApiToken(),
@@ -60,42 +59,29 @@ const sendRequestForNewRequisition = async (
     },
   });
 
-  if (!responseData.ok) {
-    const errorMessage = JSON.stringify(responseData.data as ErrorResponse);
-    throw new Error(`Failed to create requistion: ${errorMessage}`);
-  }
-
-  const requisitionData = responseData.data as RequisitionApiResponse;
-
   if (requisitionData.status === "RJ" || requisitionData.status === "EX")
     throw new Error(
       `Failed to create requistion: wrong requisition status - ${requisitionData.status}`,
     );
 
-  return responseData.data as RequisitionApiResponse;
+  return requisitionData;
 };
 
 const sendRequestForExistingRequisition = async (id: string) => {
-  const responseData = await bankDataApiRequest<RequisitionApiResponse>({
+  const requisitionData = await bankDataApiRequest<RequisitionApiResponse>({
     method: "GET",
     path: APP_CONFIG.API_CONFIG.API_URL_GET_REQUISITION(id),
     auth: await getCurrentApiToken(),
   });
 
-  if (!responseData.ok) {
-    const errorMessage = JSON.stringify(responseData.data as ErrorResponse);
-    throw new Error(`Failed to retrieve requistion: ${errorMessage}`);
-  }
-  const requisitionData = responseData.data as RequisitionApiResponse;
-
   if (requisitionData.status !== "LN")
     throw new Error("Requisition is not linked !");
 
-  return responseData.data as RequisitionApiResponse;
+  return requisitionData;
 };
 
 export const deleteRequisitionFromApi = async (requisitionId: string) => {
-  const responseData = await bankDataApiRequest<{
+  await bankDataApiRequest<{
     summary: string;
     detail: string;
   }>({
@@ -103,11 +89,6 @@ export const deleteRequisitionFromApi = async (requisitionId: string) => {
     path: APP_CONFIG.API_CONFIG.API_URL_GET_REQUISITION(requisitionId),
     auth: await getCurrentApiToken(),
   });
-
-  if (!responseData.ok) {
-    const errorMessage = JSON.stringify(responseData.data as ErrorResponse);
-    throw new Error(`Failed to delete requistion: ${errorMessage}`);
-  }
 
   return true;
 };

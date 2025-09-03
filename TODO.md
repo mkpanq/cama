@@ -38,11 +38,7 @@ File: [src/jobs/jobs.config.ts:26](./src/jobs/jobs.config.ts#L26)
 
 #### [TODO-8f92ea]
 Add currency handling<br/>
-File: [src/lib/balance/balance.service.ts:52](./src/lib/balance/balance.service.ts#L52)
-
-#### [TODO-79526f]
-Think about better error handling from the API<br/>
-File: [src/lib/shared/bankDataApi.request.ts:3](./src/lib/shared/bankDataApi.request.ts#L3)
+File: [src/lib/balance/balance.service.ts:45](./src/lib/balance/balance.service.ts#L45)
 
 #### [TODO-659083]
 Empty states - for now, I've add PLN as default currency, but it needs to be fixed!<br/>
