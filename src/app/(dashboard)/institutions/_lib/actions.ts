@@ -41,7 +41,9 @@ export async function createBankConnection(formData: FormData) {
       "Cannot save requisition id to new bank connection - DB error during saving",
     );
 
-  redirect(inititalRequisition.redirectUrl);
+  console.log(inititalRequisition);
+
+  redirect(inititalRequisition.link);
 }
 
 export async function removeBankConnection(formData: FormData) {

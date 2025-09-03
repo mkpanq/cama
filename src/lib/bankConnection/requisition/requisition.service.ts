@@ -35,7 +35,7 @@ export const returnNewRequisition = async (
 
     return {
       id: requisitionData.id,
-      redirectUrl: requisitionData.redirect,
+      link: requisitionData.link,
     };
   } catch (error) {
     console.error(error);

@@ -89,7 +89,7 @@ export const deleteBankConnection = async (
 ): Promise<string | undefined> => {
   const connection = await getViaConnectionId(bankConnectionId);
 
-  const requisitionId = connection[0]?.id;
+  const requisitionId = connection[0]?.requisitionId;
   if (!requisitionId) {
     console.error("No requisition found for the given bank connection ID");
     return;

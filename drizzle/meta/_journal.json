@@ -5,50 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1756202445163,
-      "tag": "0000_lyrical_betty_brant",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1756372089656,
-      "tag": "0001_brown_shriek",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1756374748477,
-      "tag": "0002_gray_gabe_jones",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1756375763875,
-      "tag": "0003_salty_firestar",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1756465235111,
-      "tag": "0004_mute_stranger",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1756467703258,
-      "tag": "0005_messy_quasimodo",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1756895703755,
-      "tag": "0006_far_dark_beast",
+      "when": 1756896405832,
+      "tag": "0000_curved_jack_murdock",
       "breakpoints": true
     }
   ]

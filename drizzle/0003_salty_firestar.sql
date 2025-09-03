@@ -1,1 +1,0 @@
-ALTER TABLE "accounts" ALTER COLUMN "last_sync" SET DATA TYPE timestamp;
